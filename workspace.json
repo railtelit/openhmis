@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "health-appointments": "libs/health/appointments",
+    "health-patients": "libs/health/patients",
     "hmis": "apps/hmis",
     "hmis-e2e": "apps/hmis-e2e"
   }

@@ -3,4 +3,5 @@
 
 export const environment = {
   production: false,
+  FHIR_SERVER:'http://fhir.erpapps.in'
 };

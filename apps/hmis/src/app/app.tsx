@@ -1,13 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
-import Button  from '@mui/material/Button'
+
+ 
+ 
+
+import { HealthPatients } from '@ha/health/patients';
+import { Route, Link, Routes, Outlet } from 'react-router-dom';
+import Home from './home/home';
+
+ 
+
 export function App() {
   return (
-    <>
-      <nav>
-        <h3>HMIS</h3>
-      </nav>
+    <>      
       <div />
+        <Home></Home>     
     </>
   );
 }

@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ha/health/appointments": ["libs/health/appointments/src/index.ts"],
+      "@ha/health/patients": ["libs/health/patients/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
