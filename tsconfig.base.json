@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ha/appfhir": ["libs/appfhir/src/index.ts"],
       "@ha/health/appointments": ["libs/health/appointments/src/index.ts"],
       "@ha/health/patients": ["libs/health/patients/src/index.ts"]
     }

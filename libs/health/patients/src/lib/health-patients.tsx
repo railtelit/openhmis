@@ -1,4 +1,7 @@
+import { Grid } from '@mui/material';
+import { Box } from '@mui/system';
 import { useEffect } from 'react';
+import PatientsHome from '../views/patients-home/patients-home';
 import styles from './health-patients.module.scss';
 
 /* eslint-disable-next-line */
@@ -6,16 +9,16 @@ export interface HealthPatientsProps {}
 
 export function HealthPatients(props: HealthPatientsProps) {
 
-  useEffect(()=>{
-        fetch('http://fhir.erpapps.in/fhir/Patient/123').then(res=>{
-           console.log('Patients Loaded '); 
-
-         });
-  },[])
-
+   
   return (
     <div className={styles['container']}>
-      <h1>Welcome to HealthPatients!</h1>
+       <Grid justifyContent='space-between'>
+          <h3>Patients</h3>
+
+       </Grid>
+       <Box>
+           <PatientsHome/>
+       </Box>
     </div>
   );
 }

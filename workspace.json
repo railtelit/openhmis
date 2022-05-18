@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "appfhir": "libs/appfhir",
     "health-appointments": "libs/health/appointments",
     "health-patients": "libs/health/patients",
     "hmis": "apps/hmis",
