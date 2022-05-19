@@ -24,7 +24,7 @@ export function PatientsHome(props: PatientsHomeProps) {
              }
         </Grid>
         <Box component={Paper} sx={{padding:2}}>          
-          {mode==='list'?<PatientsList/>:<PatientsEdit/>}
+          {mode==='list'?<PatientsList/>:<PatientsEdit onClose={()=> setMode('list')}/>}
         </Box>
     </div>
   );

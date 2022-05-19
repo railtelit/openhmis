@@ -23,7 +23,7 @@ export function PatientsList(props: PatientsListProps) {
       ]; 
   const [rows,setRows]=useState([{ id:1, name:'Test',sex:'Male',status:'Active' }]);
   async function handleCreate(){
-      createPatient({});  
+      //   createPatient({});  
   }
   useEffect(()=>{
        console.log(patients)
