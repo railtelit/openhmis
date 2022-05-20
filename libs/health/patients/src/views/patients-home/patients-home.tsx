@@ -12,9 +12,13 @@ export interface PatientsHomeProps {}
 
 export function PatientsHome(props: PatientsHomeProps) {
   const [mode,setMode]=useState<MODE>('list'); 
-  
+  const [record,setRecord]=useState()
   function toggleMode(){
          setMode(mode==='list'?'edit':'list');
+  }
+  function startEdit(r:any){
+      setRecord(r); 
+      setMode(m=>'edit');
   }
   return (
     <div className={styles['container']}>
@@ -24,7 +28,10 @@ export function PatientsHome(props: PatientsHomeProps) {
              }
         </Grid>
         <Box component={Paper} sx={{padding:2}}>          
-          {mode==='list'?<PatientsList/>:<PatientsEdit onClose={()=> setMode('list')}/>}
+          {mode==='list'?<PatientsList onEditRow={(row)=>{
+             //
+               startEdit(row);
+          }} />:<PatientsEdit mode={mode} record={record} onClose={()=> setMode('list')}/>}
         </Box>
     </div>
   );

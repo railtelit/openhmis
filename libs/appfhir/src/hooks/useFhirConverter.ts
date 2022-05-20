@@ -12,10 +12,13 @@ export class PatientConverter implements FhirConverter{
             //
             // console.log('Converting'); 
             // console.log(form)
-            return {...form, 
+            const {name,gender,mobileno,birthDate}= form||{}
+            return {
+                gender,mobileno,birthDate,                
                 name:[
                     {family: form['name']}
                 ],
+                telecom:[{system:'phone',use:'mobile',value:mobileno}],
                 address:(form['address'] as any[]).map(
                     a=>({ ...a, line:[ a.line1,a.line2 ]})
                 ),
@@ -25,7 +28,15 @@ export class PatientConverter implements FhirConverter{
             }
      }
      toForm(resource: any){
-         //
+        const {name,gender,telecom,birthDate}=resource||{} 
+        if(resource){
+            return {
+                gender,name:resource['name'][0]?.family,
+                mobileno:resource['telecom'][0]?.value,
+                birthDate,uid:resource['identifier']?.[0]?.value
+            }
+        }
+        return {}
      }
 }; 
 
@@ -49,8 +60,9 @@ export const useFhirConverter=(resourceType:ResourceConvert):{
             return val;
     }
     const convertToForm=useCallback((res:any)=>{
-            setResult(converter.toForm(res));
-             return result;
+            const value = (converter.toForm(res));
+            setResult(value)
+             return value;
     },[])
 
     return {convertToResource,convertToForm,result}

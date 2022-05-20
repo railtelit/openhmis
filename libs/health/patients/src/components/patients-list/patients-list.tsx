@@ -1,4 +1,4 @@
-import { useFhirCreate, useFhirQuery } from '@ha/appfhir';
+import { useFhirCreate, useFhirQuery, useFhirResolver } from '@ha/appfhir';
 import { Button, Icon } from '@mui/material';
 import { Box } from '@mui/system';
 import { DataGrid, GridColDef, GridColType, GridColumns } from '@mui/x-data-grid';
@@ -6,24 +6,28 @@ import { useEffect, useState } from 'react';
 import styles from './patients-list.module.scss';
 
 /* eslint-disable-next-line */
-export interface PatientsListProps {}
+export interface PatientsListProps {
+    onEditRow?:(row:any)=>void
+}
 
-export function PatientsList(props: PatientsListProps) {
+export function PatientsList({onEditRow}: PatientsListProps) {
   const [patients,queryerror,makeRequest,deleteResource,createPatient] = useFhirQuery('Patient'); 
-  const [newPatient,createerror,createResource ]=useFhirCreate('Patient')
+  const [newPatient,createerror,createResource ]=useFhirCreate('Patient');
+  const [ resolve]=useFhirResolver()
   const cols:GridColDef[]=[ 
             {field:'id',headerName:'Id'},  {field:'name',headerName:'Patient Name',flex:1,
-              valueGetter:(v)=> v.row?.fullUrl },
-            {field:'gender',headerName:'Gender'},  {field:'status',headerName:'Status'},
+              valueGetter:(v)=> resolve('name.0.family',v.row)  },
+              {field:'contact',headerName:'Contact',valueGetter:(v)=> resolve('telecom.0.value',v.row) },
+            {field:'gender',headerName:'Gender', valueGetter:(({row})=>row?.gender) },  {field:'status',headerName:'Status'},
             {field:'action', renderCell:(v)=>{
                 return <Button onClick={()=>{
                      deleteResource(v.row?.id); 
-                }} ><Icon>delete</Icon> </Button>
+                }} ><Icon color='error'>delete</Icon> </Button>
             } }
       ]; 
   const [rows,setRows]=useState([{ id:1, name:'Test',sex:'Male',status:'Active' }]);
   async function handleCreate(){
-      //   createPatient({});  
+         createPatient({});  
   }
   useEffect(()=>{
        console.log(patients)
@@ -38,9 +42,12 @@ export function PatientsList(props: PatientsListProps) {
   
   return (
     <div className={styles['container']}>
-      <Button onClick={()=>handleCreate()}> <Icon>add</Icon> </Button>
+      {/* <Button onClick={()=>handleCreate()}> <Icon>add</Icon> </Button> */}
       <Box sx={{minHeight:300,alignSelf:'stretch',height:500}}>
-          <DataGrid rows={rows} columns={cols} pageSize={25}  showCellRightBorder={true}  />               
+          <DataGrid rows={rows} onRowDoubleClick={(r)=>{
+            if(onEditRow)
+              onEditRow(r.row)
+          }} columns={cols} pageSize={25}  showCellRightBorder={true}  />               
       </Box>
     </div>
   );

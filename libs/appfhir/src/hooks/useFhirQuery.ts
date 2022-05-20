@@ -29,11 +29,11 @@ export const useFhirQuery = (resourceType:string,params:any={}):[any,any,()=>voi
     },[resourceType]);
  
     const createResource=useCallback(async (payload:any={})=>{
-        // const payload ={resourceType, gender:'male', identifier:[
+        //   payload ={resourceType, gender:'male', identifier:[
         //             { system:DEFAULT_SYSTEM,value:'111112'}
         //     ],birthDate:'1987-10-02',name:[{family:'Rocks'}]}
- 
-        const create = Axios.post(`${DEFAULT_FHIR_SERVER}/${resourceType}`,{...payload}).then(res=>{
+        const id=`P1`;
+        const create = Axios.post(`${DEFAULT_FHIR_SERVER}/${resourceType}`,{...payload,resourceType}).then(res=>{
             setResults((v)=>[...v,res.data])
         }); 
  
