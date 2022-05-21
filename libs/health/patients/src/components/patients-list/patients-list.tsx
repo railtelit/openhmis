@@ -7,11 +7,12 @@ import styles from './patients-list.module.scss';
 
 /* eslint-disable-next-line */
 export interface PatientsListProps {
-    onEditRow?:(row:any)=>void
+    onEditRow?:(row:any)=>void,
+    query?:any
 }
 
-export function PatientsList({onEditRow}: PatientsListProps) {
-  const [patients,queryerror,makeRequest,deleteResource,createPatient] = useFhirQuery('Patient'); 
+export function PatientsList({onEditRow,query}: PatientsListProps) {
+  const [patients,queryerror,makeRequest,deleteResource,createPatient] = useFhirQuery('Patient',query); 
   const [newPatient,createerror,createResource ]=useFhirCreate('Patient');
   const [ resolve]=useFhirResolver()
   const cols:GridColDef[]=[ 

@@ -43,6 +43,9 @@ export const useFhirQuery = (resourceType:string,params:any={}):[any,any,()=>voi
     useEffect(()=>{
         makeRequest();
     },[])
+    // useEffect(()=>{
+    //     makeRequest();
+    // },[params])
 
     return [results,error,makeRequest,deleteResource,createResource]
 }
