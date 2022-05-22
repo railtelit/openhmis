@@ -11,3 +11,5 @@ export * from './hooks/useFhirCreate';
 export * from './hooks/useFhirConverter'
 
 export * from './hooks/useFhirResolver';
+
+export * from './hooks/useFhirUpdate'

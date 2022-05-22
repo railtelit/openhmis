@@ -12,10 +12,6 @@ export function HealthPatients(props: HealthPatientsProps) {
    
   return (
     <div className={styles['container']}>
-       <Grid justifyContent='space-between'>
-          <h3>Patients</h3>
-
-       </Grid>
        <Box>
            <PatientsHome/>
        </Box>

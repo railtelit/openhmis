@@ -1,9 +1,10 @@
-import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver } from '@ha/appfhir';
-import { Box, Button, ButtonGroup, Grid, Icon, IconButton, MenuItem, TextField } from '@mui/material';
+import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate } from '@ha/appfhir';
+import { Box, Button, ButtonGroup, Grid, Icon, IconButton, MenuItem, Paper, Stack, TextField } from '@mui/material';
 import styles from './patients-edit.module.scss';
 import { useFieldArray, useForm } from 'react-hook-form'
 import { AddressForm } from './address';
 import { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 /* eslint-disable-next-line */
 export interface PatientsEditProps {
     onClose?:()=>void,
@@ -20,24 +21,34 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
   const {convertToResource, convertToForm, result} = useFhirConverter('Patient')
   const {register,handleSubmit, control, formState:{errors,}, setValue,  setFocus }=useForm({    }); 
   const { fields,append,prepend,move,insert,remove, }=useFieldArray({control,name:'address' }); 
+  const [update,updateError,updatePatient]=useFhirUpdate('Patient',record); 
+
   const defaultAddress ={line1:'',line2:'',city:null,state:null,pincode:'' } ;
   async function onSave(formValue:any){
               const newRecord= convertToResource(formValue)
               // makeRequest(newRecord)
-              await createPatient(newRecord)
+              if(mode==='edit') 
+                     updatePatient(newRecord).then(_=>{
+                              toast.success(`Record Updated SuccessFully `)
+                    }); 
+               else 
+                    await createPatient(newRecord);
+
+               
   }
   useEffect(()=>{
           console.log(`Pat Created : `); 
-          console.log(newPatient);
-          newPatient && newPatient.id && onClose()
+          console.log(newPatient);          
+          newPatient && newPatient.id && onCreate && onCreate(newPatient) && toast.success('Record Created ');
   },[newPatient])
   useEffect(()=>{
      //
      if(mode==='edit' && record){
-          const formValue = convertToForm(record);
-          console.log(`Converted`); 
-          console.log(formValue);
+          const formValue = convertToForm(record);                    
+          console.log(`Setting`); 
+          console.log(formValue)
           Object.keys(formValue).forEach(field=>{
+
                setValue(field,formValue[field])
           })
           
@@ -49,7 +60,13 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
   return (
          <form onSubmit={handleSubmit(onSave)}>          
     <div className={styles['container']}>
-
+     
+    <Stack  direction={'row'} spacing={1} m={1}  p={1}  justifyContent={'end'}>           
+               <Button  type='submit' variant='contained'  >{mode==='create'?'CREATE':'UPDATE'}</Button>          
+               <Button  variant='contained' color='error' onClick={ onClose!==undefined ? onClose: ()=>{
+                  //
+                } } >CLOSE</Button>                     
+      </Stack>           
       <Grid container spacing={4} >
            <Grid item md={6}>
                 <TextField InputLabelProps={{shrink:true}} required error={ errors['name']!==undefined } 
@@ -68,7 +85,7 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
                 <TextField type={'date'} {...register('birthDate')}  InputLabelProps={{shrink:true}} label='Date Of Birth'   fullWidth   />
            </Grid>
            <Grid item md={3}>
-                <TextField label='Gender' {...register('gender',)} defaultValue={''} select   fullWidth placeholder='Gender' >
+                <TextField label='Gender' {...register('gender',)}  select  defaultValue={record?.gender||''} fullWidth placeholder='Gender' >
                      <MenuItem value='male'>Male</MenuItem>
                      <MenuItem value='female'>Female</MenuItem>
                 </TextField>
@@ -83,14 +100,7 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
       </Grid>
           
       
-      <Grid container spacing={2} sx={{padding:4}}  justifyContent={'end'}>
-           
-               <Button  type='submit' variant='contained'  >SAVE</Button>          
-
-               <Button  variant='contained' color='error' onClick={ onClose!==undefined ? onClose: ()=>{
-                  //
-                } } >CANCEL</Button>                     
-      </Grid>
+     
     </div>
       </form>
   );

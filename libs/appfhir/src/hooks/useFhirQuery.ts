@@ -7,15 +7,15 @@ import  Axios from 'axios';
 
 
 
-export const useFhirQuery = (resourceType:string,params:any={}):[any,any,()=>void,
+export const useFhirQuery = (resourceType:string,params:any={}):[any,any,(params?:any)=>void,
             (id:string)=>void,(payload:any)=>Promise<void>]=>{
     const [resource,setResource]=useState(resourceType); 
     const [results,setResults]=useState<any[]>([]); 
     const [error,setError]=useState(null); 
 
-    const makeRequest=useCallback(()=>{
-            const query = FhirService.createQuery(params); 
-            console.log(`Making Query Request`)
+    const makeRequest=useCallback((searchParams:any={})=>{
+            console.log(`Calling Q`)
+            const query = FhirService.createQuery({ ...params, ...searchParams});            
             FhirClient.request(`${resourceType}?${query}`,).then(res=>{
                     const entries = (res?.entry||[]) as any[]
                     setResults( entries.map(r=> ({...r.resource,fullUrl:r.fullUrl}) ) )
@@ -40,9 +40,9 @@ export const useFhirQuery = (resourceType:string,params:any={}):[any,any,()=>voi
           return create; 
    },[resourceType])  
     
-    useEffect(()=>{
-        makeRequest();
-    },[])
+    // useEffect(()=>{
+    //     makeRequest();
+    // },[])
     // useEffect(()=>{
     //     makeRequest();
     // },[params])

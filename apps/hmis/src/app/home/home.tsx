@@ -1,7 +1,8 @@
 
-import { Box, AppBar, Toolbar, Typography, Drawer, IconButton, Icon, Divider, ListItem, ListItemButton, ListItemText, styled, List } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, Drawer, IconButton, Icon, Divider, ListItem, ListItemButton, ListItemText, styled, List, CssBaseline } from '@mui/material';
 import * as  React from 'react';
 import {  Outlet, Route, Routes, useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { HOME_ROUTES } from './routes';
 
@@ -38,6 +39,8 @@ const RouteItems=HOME_ROUTES.map(route=>
  
   return (
     <Box>
+      
+      
     <AppBar title="HMIS">
       <Toolbar>
         <Typography variant="h6">Open-HMIS</Typography>
@@ -82,7 +85,7 @@ const RouteItems=HOME_ROUTES.map(route=>
     </Routes>
 
        <Outlet/>    
-        
+         
     </Box>
   </Box>
   );
