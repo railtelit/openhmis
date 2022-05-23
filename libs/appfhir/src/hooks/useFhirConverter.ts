@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react"
+import { AppointmentConverter } from "../converters/AppointmentConverter"
 import { DEFAULT_SYSTEM } from "../fhir.config"
 
 export interface FhirConverter{
@@ -42,7 +43,7 @@ export class PatientConverter implements FhirConverter{
 
 export const converters:Record<ResourceConvert,FhirConverter>={
     'Patient':new PatientConverter(),
-    'Appointment':new PatientConverter()
+    'Appointment':new AppointmentConverter()
 }
 
 export const useFhirConverter=(resourceType:ResourceConvert):{ 

@@ -12,4 +12,9 @@ export class FhirService{
                 return query;
         }
 
+        static resolve(path:string,otherResource:any){
+                return path.split('.').reduce(function(prev, curr) {
+                        return prev ? prev[curr] : null
+                    }, ( otherResource) || window.self)
+        }
 }
