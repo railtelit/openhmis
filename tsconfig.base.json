@@ -17,6 +17,8 @@
     "paths": {
       "@ha/appfhir": ["libs/appfhir/src/index.ts"],
       "@ha/health/appointments": ["libs/health/appointments/src/index.ts"],
+      "@ha/health/configurations": ["libs/health/configurations/src/index.ts"],
+      "@ha/health/organizations": ["libs/health/organizations/src/index.ts"],
       "@ha/health/patients": ["libs/health/patients/src/index.ts"]
     }
   },

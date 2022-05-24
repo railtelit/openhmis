@@ -3,6 +3,8 @@
   "projects": {
     "appfhir": "libs/appfhir",
     "health-appointments": "libs/health/appointments",
+    "health-configurations": "libs/health/configurations",
+    "health-organizations": "libs/health/organizations",
     "health-patients": "libs/health/patients",
     "hmis": "apps/hmis",
     "hmis-e2e": "apps/hmis-e2e"

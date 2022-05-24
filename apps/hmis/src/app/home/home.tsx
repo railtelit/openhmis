@@ -2,12 +2,13 @@
 import { Box, AppBar, Toolbar, Typography, Drawer, IconButton, Icon, Divider, ListItem, ListItemButton, ListItemText, styled, List, CssBaseline } from '@mui/material';
 import * as  React from 'react';
 import {  Outlet, Route, Routes, useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+
 
 import { HOME_ROUTES } from './routes';
 
 const HealthPatients = React.lazy( ()=> import('@ha/health/patients') ) ;
 const Appointments = React.lazy( ()=> import('@ha/health/appointments') ) ;
+const Organizations = React.lazy( ()=> import('@ha/health/organizations') ) ;
 /* eslint-disable-next-line */
 export interface HomeProps {}
 const drawerWidth = 240;
@@ -29,10 +30,10 @@ export function Home(props: HomeProps) {
 const navigate=useNavigate();
 
 const RouteItems=HOME_ROUTES.map(route=>
-  <ListItem key={route.path} onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >  
-  <ListItemButton sx={{ width: 100, flexGrow: 1 }} >
+  <ListItem key={route.path}  onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >  
+  <ListItemButton   alignItems='center'  sx={{ width: 100, flexGrow: 1 }} >
     <Icon>{route.icon}</Icon>  
-    <ListItemText>  {route.label}</ListItemText>
+    <ListItemText style={{marginLeft:5}}>  {route.label}</ListItemText>
   </ListItemButton>  
   </ListItem> 
  ); 
@@ -80,6 +81,11 @@ const RouteItems=HOME_ROUTES.map(route=>
            <Route path="/health/appointments" element={
                  <React.Suspense fallback={<div>Loading Appointment....</div>}>
                       <Appointments/>  
+                 </React.Suspense>} 
+              />     
+           <Route path="/health/organizations" element={
+                 <React.Suspense fallback={<div>Loading Organizations....</div>}>
+                      <Organizations />  
                  </React.Suspense>} 
               />     
     </Routes>

@@ -7,8 +7,8 @@ import  Axios from 'axios';
 
 
 
-export const useFhirQuery = (resourceType:string,params:any={}):[any,any,(params?:any)=>void,
-            (id:string)=>void,(payload:any)=>Promise<void>]=>{
+export const useFhirQuery = (resourceType:string,params:any={}):[results:any,errors:any,doQuery:(params?:any)=>void,
+                deleteResource:(id:string)=>void, createResource:(payload:any)=>Promise<void>]=>{
     const [resource,setResource]=useState(resourceType); 
     const [results,setResults]=useState<any[]>([]); 
     const [error,setError]=useState(null); 

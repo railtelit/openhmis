@@ -6,4 +6,5 @@ export interface HomeRoute{
 export const HOME_ROUTES:HomeRoute[]=[
     {label:'Appointments',icon:'list',path:'health/appointments'},
     {label:'Patients',icon:'person',path:'health/patients'},
+    {label:'Organizations',icon:'corporate_fare',path:'health/organizations'},
 ]
