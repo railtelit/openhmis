@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import PatientsEdit from '../../components/patients-edit/patients-edit';
 import PatientsList from '../../components/patients-list/patients-list';
 import styles from './patients-home.module.scss';
-import {BehaviorSubject, Subject} from 'rxjs'
+import { Subject} from 'rxjs'
 import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
 import { useFhirQuery } from '@ha/appfhir';
 /* eslint-disable-next-line */
