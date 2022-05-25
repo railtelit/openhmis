@@ -9,6 +9,7 @@ import { HOME_ROUTES } from './routes';
 const HealthPatients = React.lazy( ()=> import('@ha/health/patients') ) ;
 const Appointments = React.lazy( ()=> import('@ha/health/appointments') ) ;
 const Organizations = React.lazy( ()=> import('@ha/health/organizations') ) ;
+const Configurations = React.lazy( ()=> import('@ha/health/configurations') ) ;
 /* eslint-disable-next-line */
 export interface HomeProps {}
 const drawerWidth = 240;
@@ -22,20 +23,22 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-const WelcomeHome = ()=>
-     <div>Welcome </div>
+const WelcomeHome = ()=><div>Welcome </div>
 
 
+//{/* {route?.divider ? <Divider  key={`hr${route.path}`} /> :null } */}
 export function Home(props: HomeProps) {
 const navigate=useNavigate();
 
 const RouteItems=HOME_ROUTES.map(route=>
   <ListItem key={route.path}  onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >  
-  <ListItemButton   alignItems='center'  sx={{ width: 100, flexGrow: 1 }} >
+  
+  <ListItemButton  key={`option${route.path}`} alignItems='center'  sx={{ width: 100, flexGrow: 1 }} >
     <Icon>{route.icon}</Icon>  
     <ListItemText style={{marginLeft:5}}>  {route.label}</ListItemText>
   </ListItemButton>  
   </ListItem> 
+  
  ); 
  
   return (
@@ -85,7 +88,16 @@ const RouteItems=HOME_ROUTES.map(route=>
               />     
            <Route path="/health/organizations" element={
                  <React.Suspense fallback={<div>Loading Organizations....</div>}>
+                       
                       <Organizations />  
+                 </React.Suspense>} 
+              />     
+           <Route path="/configure/*" element={
+                 <React.Suspense fallback={<div>Loading Settings....</div>}>
+                   <Routes>
+                          <Route path="/*" element={<Configurations/>}/>                          
+                   </Routes>
+                      {/* <Configurations /> */}
                  </React.Suspense>} 
               />     
     </Routes>

@@ -1,12 +1,14 @@
 import { useCallback, useState } from "react"
 import { AppointmentConverter } from "../converters/AppointmentConverter"
+import { LocationConverter } from "../converters/LocationConverter"
+import { OrganizationConverter } from "../converters/OrganizationConverter"
 import { DEFAULT_SYSTEM } from "../fhir.config"
 
 export interface FhirConverter{
         toResource:(form:any)=>any
         toForm:(resource:any)=>any
 }
-type ResourceConvert = 'Patient'|'Appointment'
+type ResourceConvert = 'Patient'|'Appointment'|'Organization'|'Location'
 
 export class PatientConverter implements FhirConverter{
      toResource(form: any){
@@ -43,7 +45,9 @@ export class PatientConverter implements FhirConverter{
 
 export const converters:Record<ResourceConvert,FhirConverter>={
     'Patient':new PatientConverter(),
-    'Appointment':new AppointmentConverter()
+    'Appointment':new AppointmentConverter(),
+    'Organization':new OrganizationConverter(),
+    'Location':new LocationConverter(),
 }
 
 export const useFhirConverter=(resourceType:ResourceConvert):{ 

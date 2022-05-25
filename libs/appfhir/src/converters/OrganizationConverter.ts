@@ -4,13 +4,16 @@ import {FhirConverter} from '../hooks/useFhirConverter'
 import {DEFAULT_SYSTEM, ORGANIZATION_SYSTEM} from '../fhir.config'
 import { FhirService } from '../fhir-service'
 export class OrganizationConverter  implements FhirConverter{
-        CONSTANT_FIELDS=['active','name']
+        CONSTANT_FIELDS=['active','name','alias']
         setConstants(source:any,target:any){
-                this.CONSTANT_FIELDS.forEach(f=>Object.assign(target,source[f]))
+                this.CONSTANT_FIELDS.forEach(f=> {
+                        target[f]=source[f]
+                } )
                 return target
         }
         toResource(form: any){
-                    const resource:any=this.setConstants(form,{}); 
+                const resource:any=form
+                console.log(`ConV Resource`,form,)
                  
                        form.type && (resource.type = {coding:[ { ...form.type, system:ORGANIZATION_SYSTEM,} ]})
                     
@@ -28,8 +31,9 @@ export class OrganizationConverter  implements FhirConverter{
                     return resource; 
         }
         toForm(resource:any={}){
-                const form = this.setConstants(resource,{})
-                return {...form,id:FhirService.resolve('identifier.0.type.coding',resource), 
+                const form = {...resource}
+                return {...form,
+                                /// id:FhirService.resolve('identifier.0.type.coding',resource), 
                         mobileno:FhirService.resolve('telecome.0.value',resource),
                         address:(FhirService.resolve('address',resource)||[] ).map( (a:any)=>({...a,line1:a?.line[0],line2:a.line[1] }))
                 }
