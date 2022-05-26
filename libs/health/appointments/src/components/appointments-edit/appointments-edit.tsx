@@ -1,87 +1,223 @@
-import { Button, ButtonGroup, Grid, MenuItem, TextField } from '@mui/material';
+import { Box, Button, ButtonGroup, Grid, Icon, IconButton, MenuItem, Paper, Stack, TextField } from '@mui/material';
 import styles from './appointments-edit.module.scss';
+import { useRef } from 'react';
+import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate } from '@ha/appfhir';
+import { toast } from 'react-toastify';
+import { useFieldArray, useForm } from 'react-hook-form'
+import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
+import {BehaviorSubject, Subject} from 'rxjs'
+import { useEffect, useState } from 'react';
+
 
 /* eslint-disable-next-line */
-export interface AppointmentsEditProps {}
+export interface AppointmentsEditProps {
 
-export function AppointmentsEdit(props: AppointmentsEditProps) {
+  onClose?:()=>void,
+  onCreate?:(newResource:any)=>void,
+  record?:any
+  mode:string
+
+  //patientName:string;
+
+}
+
+const searchSubject_p = new Subject<string>();
+
+
+export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,record}: AppointmentsEditProps) {
+
+  const nameRef=useRef<HTMLInputElement|null>();
+
+  const [newAppointment, error, createAppointment,  ]=useFhirCreate('Appointment');
+  const [results,queryerror,query,deletePatient,queryPatients]=useFhirQuery('Appointment')
+  const {convertToResource, convertToForm, result} = useFhirConverter('Appointment')
+  const {register,handleSubmit, control, formState:{errors,}, setValue,  setFocus }=useForm({    });
+  const { fields,append,prepend,move,insert,remove, }=useFieldArray({control,name:'address' });
+  const [update,updateError,updateAppointment]=useFhirUpdate('Appointment',record);
+  const [search,setSearch]=useState<any>('');
+  const [limit,setLimit]=useState<number>(10);
+  const [patients,errors_p,queryPatients_p] = useFhirQuery('Patient',{name:search,_count:limit});
+
+
+  const defaultAddress ={line1:'',line2:'',city:null,state:null,pincode:'' } ;
+  async function onSave(formValue:any){
+             //const newRecord= convertToResource(formValue)
+             const newRecord = formValue;
+              newRecord.start && ( newRecord.start += 'Z')
+              newRecord.end && ( newRecord.end += 'Z')
+              console.log(newRecord);
+              // makeRequest(newRecord)
+              if(mode==='edit')
+                     updateAppointment(newRecord).then(_=>{
+                              toast.success(`Record Updated SuccessFully `)
+                    });
+               else
+                    await createAppointment(newRecord);
+
+
+  }
+
+
+
+  // patient query
+
+      useEffect(()=>{
+            const  sub = searchSubject_p.asObservable().pipe(
+            distinctUntilChanged(),
+            debounceTime(900)
+      ).subscribe({next:(val)=>{
+            setSearch(val);
+            queryPatients_p({name:val})
+            //patientName = val;
+            //alert(val);
+      }});
+      queryPatients_p();
+      return ()=>
+      {
+            sub.unsubscribe();
+      }
+      },[])
+
+
+
+  useEffect(()=>{
+          console.log(`Pat Created : `);
+          console.log(newAppointment);
+          newAppointment && newAppointment.id && onCreate && onCreate(newAppointment) && toast.success('Record Created ');
+  },[newAppointment])
+  useEffect(()=>{
+     //
+     if(mode==='edit' && record){
+          //const formValue = convertToForm(record);
+          console.log(`Setting`);
+          console.log(record)
+          Object.keys(record).forEach(field=>{
+
+               setValue(field,record[field])
+          })
+
+     }
+     //append(defaultAddress);
+     //setFocus('name');
+
+  },[])
+
+
   return (
-    <div className={styles['container']}>
-      <Grid container spacing={2} >
-           <Grid item md={4}>
-                <TextField label='Appointment ID' fullWidth />
-           </Grid>
-           <Grid item md={4}>
-                <TextField label='Institution' fullWidth />
-           </Grid>
-           <Grid item md={4}>
-                <TextField label='Impatient Registration' fullWidth />
-           </Grid>
+
+    <form onSubmit={handleSubmit(onSave)}>
+
+      <div className={styles['container']}>
+
+        <Stack  direction={'row'} spacing={1} m={1}  p={1}  justifyContent={'end'}>
+                <Button  type='submit' variant='contained'  >{mode==='create'?'CREATE':'UPDATE'}</Button>
+                <Button  variant='contained' color='error' onClick={ onClose!==undefined ? onClose: ()=>{
+                  } } >CLOSE</Button>
+        </Stack>
+
+        <Grid container spacing={2} >
+            {/* <Grid item md={4}>
+                  <TextField {...register('note.text')}  label='Appointment ID' fullWidth />
+            </Grid> */}
+            {/* <Grid item md={4}>
+                  <TextField {...register('institution')}  label='Institution' fullWidth />
+            </Grid> */}
+            {/* <Grid item md={4}>
+                  <TextField {...register('impatient_registration')}  label='Impatient Registration' fullWidth />
+            </Grid> */}
+
+            <Grid item md={4}>
+
+                  <TextField {...register('name')} onChange={ (v)=>{
+                      //setSearch(v.target.value)
+                      searchSubject_p.next(v.target.value)
+                  } } fullWidth placeholder='Type to Search...' ></TextField>
+
+                  <div>
+                        <div></div>
+                  </div>
+
+            </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('start')}   type='datetime-local'  InputLabelProps={{shrink:true}} label='Date and Time' fullWidth   />
+            </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('end')}  type={'datetime-local'} InputLabelProps={{shrink:true}} label='End Date and Time' fullWidth   />
+            </Grid>
 
 
-           <Grid item md={4}>
-                <TextField label='Patient' fullWidth />
-           </Grid>
-           <Grid item md={4}>
-                <TextField type={'datetime-local'} InputLabelProps={{shrink:true}} label='Date and Time' fullWidth   />
-           </Grid>
-           <Grid item md={4}>
-                <TextField type={'datetime-local'} InputLabelProps={{shrink:true}} label='End Date and Time' fullWidth   />
-           </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('serviceCategory')}  label='Category' select fullWidth placeholder='Category' >
+                      <MenuItem value='Adoption'>Adoption</MenuItem>
+                      <MenuItem value='Aged Care'>Aged Care</MenuItem>
+                      <MenuItem value='Allied Health'>Allied Health</MenuItem>
+                      <MenuItem value='Alternative/Complementary Therapies'>Alternative/Complementary Therapies</MenuItem>
+                      <MenuItem value='Child Care /Kindergarten'>Child Care /Kindergarten</MenuItem>
+                      <MenuItem value='Child Development'>Child Development</MenuItem>
+                      <MenuItem value='Child Protection & Family Services'>Child Protection & Family Services</MenuItem>
+                      <MenuItem value='Community Health Care'>Community Health Care</MenuItem>
+                      <MenuItem value='Counselling'>Counselling</MenuItem>
+                      <MenuItem value='Crisis Line (GPAH use only)'>Crisis Line (GPAH use only)</MenuItem>
+
+                  </TextField>
+            </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('specialty')}  label='Specialty' select fullWidth placeholder='Specialty' >
+                      <MenuItem value='Anesthetics'>Anesthetics</MenuItem>
+                      <MenuItem value='Burns care'>Burns care</MenuItem>
+                      <MenuItem value='Cardiology'>Cardiology</MenuItem>
+                      <MenuItem value='Dermatology'>Dermatology</MenuItem>
+                      <MenuItem value='Diabetic medicine'>Diabetic medicine</MenuItem>
+                      <MenuItem value='Gynecology'>Gynecology</MenuItem>
+                      <MenuItem value='Neurology'>Neurology</MenuItem>
+                      <MenuItem value='Psychiatry'>Psychiatry</MenuItem>
+                      <MenuItem value='Psychotherapy'>Psychotherapy</MenuItem>
+                      <MenuItem value='Radiology'>Radiology</MenuItem>
+
+                  </TextField>
+            </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('appointmentType')}  label='Type' select fullWidth placeholder='Type' >
+                      <MenuItem value='CHECKUP'>CHECKUP</MenuItem>
+                      <MenuItem value='EMERGENCY'>EMERGENCY</MenuItem>
+                      <MenuItem value='FOLLOWUP'>FOLLOWUP</MenuItem>
+                      <MenuItem value='ROUTINE'>ROUTINE</MenuItem>
+                      <MenuItem value='WALKIN'>WALKIN</MenuItem>
+
+                  </TextField>
+            </Grid>
 
 
-           <Grid item md={4}>
-                <TextField label='Visit' select fullWidth placeholder='Visit' >
-                     <MenuItem value=''>New Health Conditon</MenuItem>
-                     <MenuItem value=''>Followup</MenuItem>
-                     <MenuItem value=''>Well Child visit</MenuItem>
-                     <MenuItem value=''>Well Woman visit</MenuItem>
-                     <MenuItem value=''>Well Man visit</MenuItem>
-                </TextField>
-           </Grid>
-           <Grid item md={4}>
-                <TextField label='Urgency' select fullWidth placeholder='Urgency' >
-                     <MenuItem value='Normal'>Normal</MenuItem>
-                     <MenuItem value='Urgent'>Urgent</MenuItem>
-                     <MenuItem value='Medical Urgency'>Medical Urgency</MenuItem>
-                </TextField>
-           </Grid>
-           <Grid item md={4}>
-                <TextField label='Type' select fullWidth placeholder='Type' >
-                     <MenuItem value='Outpatient'>Outpatient</MenuItem>
-                     <MenuItem value='Inpatient'>Inpatient</MenuItem>
-                </TextField>
-           </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('status')}  label='Status' select fullWidth placeholder='Status' >
+                      <MenuItem value='proposed'>Proposed</MenuItem>
+                      <MenuItem value='pending'>Pending </MenuItem>
+                      <MenuItem value='booked'>Booked </MenuItem>
+                      <MenuItem value='arrived'>Arrived </MenuItem>
+                      <MenuItem value='fulfilled'>Fulfilled </MenuItem>
+                      <MenuItem value='cancelled'>Cancelled </MenuItem>
+                      <MenuItem value='noshow'>No show </MenuItem>
+                      <MenuItem value='entered-in-error'>Entered-In-Error</MenuItem>
+                      <MenuItem value='checked-in'>Checked-In</MenuItem>
+                      <MenuItem value='waitlist'>Waitlist</MenuItem>
+                  </TextField>
+            </Grid>
+            <Grid item md={4}>
+                  <TextField {...register('healthprof')}  label='Health Prof' fullWidth placeholder='Health Prof' ></TextField>
+            </Grid>
 
 
-           <Grid item md={4}>
-                <TextField label='State' select fullWidth placeholder='State' >
-                     <MenuItem value='Confirmed'>Confirmed</MenuItem>
-                     <MenuItem value='Checked In'>Checked In</MenuItem>
-                     <MenuItem value='Done'>Done</MenuItem>
-                     <MenuItem value='Cancelled by patient'>Cancelled by patient</MenuItem>
-                     <MenuItem value='Cancelled by Health Center'>Cancelled by Health Center</MenuItem>
-                     <MenuItem value='No Show'>No Show</MenuItem>
-                </TextField>
-           </Grid>
-           <Grid item xs={8}></Grid>
-           <Grid item md={8}>
-                <TextField label='Health Prof' fullWidth placeholder='Health Prof' ></TextField>
-           </Grid>
-           <Grid item md={4}>
-                <TextField label='Specialty' fullWidth placeholder='Specialty' ></TextField>
-           </Grid>
-           <Grid item md={12}>
-                <TextField label='Information' multiline={true} rows={3} fullWidth />
-           </Grid>
+            {/* <Grid item md={4}>
+                  <TextField {...register('speciality')}  label='Specialty' fullWidth placeholder='Specialty' ></TextField>
+            </Grid> */}
+            <Grid item md={12}>
+                  <TextField label='Information' {...register('description')} multiline={true} rows={3} fullWidth />
+            </Grid>
 
-      </Grid>
-      <Grid container spacing={2} sx={{padding:4}}  justifyContent={'end'}>
-           <ButtonGroup >
-               <Button  variant='contained' >SAVE</Button>
-           </ButtonGroup>
-      </Grid>
-    </div>
+        </Grid>
+
+      </div>
+    </form>
   );
 }
 

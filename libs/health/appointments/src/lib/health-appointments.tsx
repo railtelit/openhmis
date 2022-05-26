@@ -10,10 +10,6 @@ export function HealthAppointments(props: HealthAppointmentsProps) {
 
   return (
     <div className={styles['container']}>
-       <Grid justifyContent='space-between'>
-          <h3>Appointments</h3>
-
-       </Grid>
        <Box>
            <AppointmentsHome/>
        </Box>
