@@ -1,6 +1,6 @@
 import { useFhirQuery } from '@ha/appfhir';
 
-import { Button, Grid, Icon, IconButton, List, ListItem, TextField, Typography } from '@mui/material';
+import { Button, Container, Grid, Icon, IconButton, List, ListItem, ListItemButton, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import EditLocation from './edit-location/edit-location';
 import styles from './locations.module.scss';
@@ -17,31 +17,40 @@ export function ConfigureLocations(props: LocationsProps) {
       queryLocations();
   },[])
   function startEdit(mode:Mode,res?:any){
-      setMode(mode);  
-      res && setRecord(res); 
+    res && setRecord(res); 
+    setMode(mode);  
   }
   return (
     <div className={styles['container']}>
-        
-          {mode==='list'? 
+      <Container>
+        {mode === 'list' ?
           <Grid container alignContent={'center'} spacing={2} alignItems={'center'} >
-                 <Grid xs={12} md item>
-                       <TextField placeholder='Type to Search...' fullWidth variant='filled'/>
-                 </Grid>
-                 <Grid  xs={12} md={2} alignContent={'stretch'} alignSelf={'center'} alignItems={'stretch'} justifyContent={'stretch'} item>
-                     <Button onClick={()=>startEdit('create')} fullWidth variant='outlined'  >CREATE</Button>
-                 </Grid>
-              <Grid alignItems={'center'}  item xs={12}>
-                    {locations.length===0?'No Records Yet..':null}
-                    <List>
-                          {locations.map(l=> <ListItem> <Typography>Location : {l?.name}</Typography>
-                              <IconButton onClick={()=>deleteLocation(l?.id)}><Icon>delete</Icon> </IconButton>
-                            </ListItem>)}
-                    </List>
-              </Grid>
-           </Grid>    
-          : <EditLocation onCancel={()=>setMode('list')} mode={mode}/>
+            <Grid xs={12} md item>
+              <TextField placeholder='Type to Search...' fullWidth variant='filled' />
+            </Grid>
+            <Grid xs={12} md={2} alignContent={'stretch'} alignSelf={'center'} alignItems={'stretch'} justifyContent={'stretch'} item>
+              <Button onClick={() => startEdit('create')} endIcon={<Icon>add</Icon>} fullWidth variant='outlined'  >CREATE</Button>
+            </Grid>
+            <Grid  item xs={12}>
+              {locations.length === 0 ? 'No Records Yet..' : null}
+              <List>
+                {locations.map(l => 
+                <ListItem key={l.id}>
+                  <ListItemButton>
+                    <Typography>Location : {l?.name}</Typography>
+                    <IconButton color={'error'} onClick={() => deleteLocation(l?.id)}><Icon>delete</Icon> </IconButton>
+                    <IconButton onClick={() => startEdit('edit', l)}><Icon>edit</Icon> </IconButton>
+                  </ListItemButton>
+                </ListItem>)}
+              </List>
+            </Grid>
+          </Grid>
+          : <EditLocation record={record} onCreate={(res: any) => {
+            startEdit('edit', res)
+          }} onCancel={() =>{ setMode('list') ; queryLocations(); }
+           } mode={mode} />
         }
+      </Container>
     </div>
 
   );

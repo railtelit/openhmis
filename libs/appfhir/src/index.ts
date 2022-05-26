@@ -13,3 +13,5 @@ export * from './hooks/useFhirConverter'
 export * from './hooks/useFhirResolver';
 
 export * from './hooks/useFhirUpdate'
+
+export * from './hooks/useSNOMEDQuery'

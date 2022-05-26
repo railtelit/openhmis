@@ -5,15 +5,23 @@ export class AppointmentConverter implements FhirConverter{
      CONSTANT_FIELDS:string[]=['start','end','status','description','priority','created','comment','patientInstruction']
     readonly resourceType='Appointment'
     toResource(form:any={}){
-            const resource  = {}; 
+            const resource:any  = {participant:[]}; 
             const {start,end,status,description,priority,created,comment,patientInstruction}=form
             this.SNOMED_FIELDS.forEach(f=>{
                 const value=form[f]; // Should be {code,system,display}
-                Object.assign(resource,[{ coding:[{
-                    code:value
-                }] }])
-            });
 
+                value && Object.assign(resource, {[f]:
+                    [{ coding:[{
+                            code:value
+                        }] }]
+                    }
+                )
+            });
+            if(form.patient)
+            resource.participant=[...resource.participant,{
+                    actor:{ reference: form.patient,display:form.patient },
+                    status:'accepted'
+            }]
             return { resourceType:this.resourceType,start,end,status,description,priority,created,comment,patientInstruction,
                      ...resource}; 
     }

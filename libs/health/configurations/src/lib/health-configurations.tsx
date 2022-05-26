@@ -1,4 +1,6 @@
-import { Breadcrumbs, Icon, Stack, Typography } from '@mui/material';
+import { useFhirConverter, useFhirCreate } from '@ha/appfhir';
+import { Breadcrumbs, Button, Icon, Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
 import { Link, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import ConfigureLocations from '../configure/locations/locations';
 import ConfigurationsHome from './configurations-home/configurations-home';
@@ -8,12 +10,21 @@ import styles from './health-configurations.module.scss';
 export interface HealthConfigurationsProps {}
 
 export function HealthConfigurations(props: HealthConfigurationsProps) {
-  const locations=useLocation()
+  const locations=useLocation(); 
+  const {convertToForm,convertToResource}=useFhirConverter('Appointment')
+  const [createappt,cerror,createAppt]=useFhirCreate('Appointment');
+  function test(){ 
+        // 
+        const appt= { status :'booked',priority:0,start:dayjs().toISOString(),description:'Test',end:dayjs().toISOString(),
+                    patient:'Patient/113' }; 
+        console.log(appt, convertToResource(appt));
+        ///createAppt(convertToResource(appt)).then(console.log)
+  }
   return (
     <div className={styles['container']}>      
       <Breadcrumbs sx={{alignItems:'center'}}>
           <Link    to={''}  style={{alignItems:'center',display:'flex',textDecoration:'none',color:'black',}}>
-              <Icon>settings</Icon> Configuration
+              <Icon>settings</Icon> Configure
           </Link>
           {locations.pathname!=='/configure' ? <Typography> {locations.pathname.split('/')[2].toUpperCase() } </Typography> : null }
       </Breadcrumbs>
@@ -25,6 +36,7 @@ export function HealthConfigurations(props: HealthConfigurationsProps) {
           <Route path='/locations' element={<ConfigureLocations/>} />
       </Routes>
        {/* <Outlet/> */}
+       {/* <Button  onClick={()=>test()} >Check Appointment</Button> */}
     </div>
   );
 }
