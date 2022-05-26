@@ -14,21 +14,21 @@ export interface PatientsListProps {
 }
 
 export function PatientsList({onEditRow,query,rows=[],onDeleteRow=()=>{const i = 1; } }: PatientsListProps) {
-  // const [patients,queryerror,makeRequest,deleteResource,createPatient] = useFhirQuery('Patient',query); 
-  
+  // const [patients,queryerror,makeRequest,deleteResource,createPatient] = useFhirQuery('Patient',query);
+
   const [ resolve]=useFhirResolver()
-  const cols:GridColDef[]=[ 
+  const cols:GridColDef[]=[
             {field:'id',headerName:'Id'},  {field:'name',headerName:'Patient Name',flex:1,
               valueGetter:(v)=> resolve('name.0.family',v.row)  },
               {field:'contact',headerName:'Contact',valueGetter:(v)=> resolve('telecom.0.value',v.row) },
-            {field:'gender',headerName:'Gender', valueGetter:(({row})=>row?.gender) },  
+            {field:'gender',headerName:'Gender', valueGetter:(({row})=>row?.gender) },
             {field:'status',headerName:'Status',valueGetter:(({row})=>resolve('status',row))},
             {field:'action', renderCell:(v)=>{
                 return <Button onClick={()=>{
-                         onDeleteRow(v.row?.id); 
+                         onDeleteRow(v.row?.id);
                 }} ><Icon color='error'>delete</Icon> </Button>
             } }
-      ]; 
+      ];
 
   return (
     <div className={styles['container']}>
@@ -37,7 +37,7 @@ export function PatientsList({onEditRow,query,rows=[],onDeleteRow=()=>{const i =
           <DataGrid rows={rows}  onRowDoubleClick={(r)=>{
             if(onEditRow)
               onEditRow(r.row)
-          }} columns={cols} pageSize={25}  showCellRightBorder={true}  />               
+          }} columns={cols} pageSize={25}  showCellRightBorder={true}  />
       </Box>
     </div>
   );
