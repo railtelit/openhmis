@@ -12,7 +12,7 @@ import { useFhirQuery } from '@ha/appfhir';
 /* eslint-disable-next-line */
 export interface AppointmentsHomeProps {}
 
- type MODE=('edit'|'list'|'create')
+ type MODE=('edit'|'list'|'create'|'calendar')
  const searchSubject = new Subject<string>();
 
 export function AppointmentsHome(props: AppointmentsHomeProps) {
@@ -27,6 +27,11 @@ export function AppointmentsHome(props: AppointmentsHomeProps) {
   function toggleMode(){
          setMode(mode==='list'?'edit':'list');
   }
+
+  function calToggleMode(){
+    setMode(mode==='list'?'calendar':'list');
+  }
+
   function startEdit(r:any){
     setRecord(r);
     setMode(m=>'edit');
@@ -34,6 +39,11 @@ export function AppointmentsHome(props: AppointmentsHomeProps) {
   function startCreate(){
       setRecord(null);
       setMode('create');
+  }
+
+  function openCalendar(){
+    setRecord(null);
+    setMode('calendar');
   }
 
   useEffect(()=>{
@@ -51,10 +61,20 @@ export function AppointmentsHome(props: AppointmentsHomeProps) {
       }
   },[])
   useEffect(()=>{
-    setHeading(mode==='list'?'Appointments':'Edit Appointment:#'+(record?.id));
+    //setHeading(mode==='list'?'Appointments':'Edit Appointment:#'+(record?.id));
+    //setHeading(mode==='calendar'?'Calendar':'Calendar');
+
     if(mode==='create'){
          setHeading('Create New Appointment');
+    }else if(mode==='calendar'){
+      setHeading('Calendar');
+    }else if(mode==='list'){
+      setHeading('Appointments');
     }
+    else{
+      setHeading('Edit Appointment:#'+(record?.id));
+    }
+
   },[mode])
 
   return (
@@ -80,25 +100,39 @@ export function AppointmentsHome(props: AppointmentsHomeProps) {
              }
             </Grid>
 
-            <Grid item margin={'auto'}>
+            {/* <Grid item margin={'auto'}>
               <Button variant='outlined'><Icon>event</Icon></Button>
+            </Grid> */}
+
+            <Grid item margin={'auto'}>
+             { mode==='list'? <Button variant='outlined' onClick={openCalendar} ><Icon>event</Icon></Button>
+                 : <IconButton onClick={calToggleMode} ><Icon>list</Icon></IconButton>
+             }
             </Grid>
 
         </Grid>
           : <Box/>
         }
+
         <Box component={Paper} sx={{padding:2}}>
           {mode==='list'?
-          <AppointmentsList rows={appointments}  onDeleteRow={(i)=> deleteAppointment(i) }
-            onEditRow={(row)=>{
-               startEdit(row);
-          }} query={{name:search}} />:<AppointmentsEdit mode={mode}
-
-            onCreate={(r)=>{
-                setMode('list');queryAppointments();
-            }}
-           record={record} onClose={()=> { setMode('list');queryAppointments(); }  }/>}
+            <AppointmentsList rows={appointments}  onDeleteRow={(i)=> deleteAppointment(i) }
+              onEditRow={(row)=>{
+                startEdit(row);
+            }} query={{name:search}} />
+            :
+            mode==='calendar'?
+              <HealthCalendar mode={mode}
+              onClose={()=> { setMode('list');queryAppointments(); }  }/>
+              :
+              <AppointmentsEdit mode={mode}
+                onCreate={(r)=>{
+                    setMode('list');queryAppointments();
+                }}
+                record={record} onClose={()=> { setMode('list');queryAppointments(); }  }/>
+           }
         </Box>
+
     </div>
   );
 }
