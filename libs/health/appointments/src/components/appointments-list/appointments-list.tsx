@@ -3,11 +3,7 @@ import { useFhirCreate, useFhirQuery, useFhirResolver } from '@ha/appfhir';
 import { Button, Icon } from '@mui/material';
 import { Box } from '@mui/system';
 import { DataGrid, GridColDef, GridColType, GridColumns } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from '@fullcalendar/interaction';
+
 
 /* eslint-disable-next-line */
 export interface AppointmentsListProps {

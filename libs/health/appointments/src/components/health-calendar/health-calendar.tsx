@@ -3,13 +3,25 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from '@fullcalendar/interaction';
+import {Stack, Button } from '@mui/material';
 
 /* eslint-disable-next-line */
-export interface HealthCalendarProps {}
+export interface HealthCalendarProps {
 
-export function HealthCalendar(props: HealthCalendarProps) {
+  onClose?:()=>void,
+  mode:string
+}
+
+export function HealthCalendar({onClose=()=>{const i = true },mode}: HealthCalendarProps) {
   return (
     <div className={styles['container']}>
+
+        <Stack  direction={'row'} spacing={1} m={1}  p={1}  justifyContent={'end'}>
+                {/* <Button  type='submit' variant='contained'  >{mode==='create'?'CREATE':'UPDATE'}</Button> */}
+                <Button  variant='contained' color='error' onClick={ onClose!==undefined ? onClose: ()=>{
+                  } } >CLOSE</Button>
+        </Stack>
+
       <FullCalendar
 
         plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
