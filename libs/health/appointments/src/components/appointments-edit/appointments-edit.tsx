@@ -7,7 +7,8 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
 import {BehaviorSubject, Subject} from 'rxjs'
 import { useEffect, useState } from 'react';
-
+import axios from 'axios';
+import Autocomplete from '@mui/material/Autocomplete';
 
 /* eslint-disable-next-line */
 export interface AppointmentsEditProps {
@@ -22,7 +23,7 @@ export interface AppointmentsEditProps {
 }
 
 const searchSubject_p = new Subject<string>();
-
+let newList:any = [];
 
 export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,record}: AppointmentsEditProps) {
 
@@ -37,6 +38,29 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
   const [search,setSearch]=useState<any>('');
   const [limit,setLimit]=useState<number>(10);
   const [patients,errors_p,queryPatients_p] = useFhirQuery('Patient',{name:search,_count:limit});
+
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      //const response = await axios.get('https://reqres.in/api/users');
+      const response = await axios.get('http://at.erpapps.in/fhir/Patient?_count=10&name=');
+      const posts = response.data.entry;
+
+      console.log(posts)
+      newList = [];
+      for (var i = 0; i < posts.length; i++){
+
+        newList.push(posts[i].resource.name[0].family)
+      }
+
+      console.log("newList- "+newList)
+
+    }
+    loadUsers()
+    }, [])
+
+
+
 
 
   const defaultAddress ={line1:'',line2:'',city:null,state:null,pincode:'' } ;
@@ -72,6 +96,7 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
             //alert(val);
       }});
       queryPatients_p();
+      //alert(sub)
       return ()=>
       {
             sub.unsubscribe();
@@ -88,7 +113,7 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
   useEffect(()=>{
      //
      if(mode==='edit' && record){
-          //const formValue = convertToForm(record);
+          const formValue = convertToForm(record);
           console.log(`Setting`);
           console.log(record)
           Object.keys(record).forEach(field=>{
@@ -102,6 +127,7 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
 
   },[])
 
+console.log(newList)
 
   return (
 
@@ -116,26 +142,21 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
         </Stack>
 
         <Grid container spacing={2} >
-            {/* <Grid item md={4}>
-                  <TextField {...register('note.text')}  label='Appointment ID' fullWidth />
-            </Grid> */}
-            {/* <Grid item md={4}>
-                  <TextField {...register('institution')}  label='Institution' fullWidth />
-            </Grid> */}
-            {/* <Grid item md={4}>
-                  <TextField {...register('impatient_registration')}  label='Impatient Registration' fullWidth />
-            </Grid> */}
 
             <Grid item md={4}>
 
-                  <TextField {...register('name')} onChange={ (v)=>{
+                  {/* <TextField {...register('name')} onChange={ (v)=>{
                       //setSearch(v.target.value)
                       searchSubject_p.next(v.target.value)
-                  } } fullWidth placeholder='Type to Search...' ></TextField>
+                  } } fullWidth placeholder='Type to Search...' ></TextField> */}
 
-                  <div>
-                        <div></div>
-                  </div>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={newList}
+                //sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label="Patient" />}
+              />
 
             </Grid>
             <Grid item md={4}>
