@@ -1,0 +1,44 @@
+@endpoint=http://at.erpapps.in/fhir
+
+## Check Patients
+# @name patient
+GET {{endpoint}}/Patient
+
+@id = {{patient.response.body.$.entry[0].resource.id}}
+
+###
+
+GET http://at.erpapps.in/fhir/Patient/{{id}}/$everything?_sort=name
+
+###
+
+GET {{endpoint}}/Practitioner/218/$meta
+
+###
+
+POST {{endpoint}}/Practitioner
+Content-Type: application/json
+Accept-Encoding: fhir+json
+
+{
+    "name":[
+        {"use":"official","text":"Pract 1","family":"Loggy"}
+    ]
+    ,"resourceType":"Practitioner"
+}
+###
+DELETE {{endpoint}}/Practitioner/217
+
+###
+GET {{endpoint}}/PractitionerRole?_fill=pracitioner
+###
+POST {{endpoint}}/PractitionerRole
+Content-Type: application/json
+
+{
+    "resourceType":"PractitionerRole",
+    "practitioner":{ 
+         "reference":   "Practitioner/218","display":"Prac 1"
+    },
+    "active":true
+}

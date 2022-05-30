@@ -19,7 +19,9 @@
       "@ha/health/appointments": ["libs/health/appointments/src/index.ts"],
       "@ha/health/configurations": ["libs/health/configurations/src/index.ts"],
       "@ha/health/organizations": ["libs/health/organizations/src/index.ts"],
-      "@ha/health/patients": ["libs/health/patients/src/index.ts"]
+      "@ha/health/patients": ["libs/health/patients/src/index.ts"],
+      "@ha/health/practitioners": ["libs/health/practitioners/src/index.ts"],
+      "@ha/shared-ui": ["libs/shared-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
