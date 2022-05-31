@@ -14,22 +14,22 @@ export interface PatientsHomeProps {}
  const searchSubject = new Subject<string>();
 
 export function PatientsHome(props: PatientsHomeProps) {
-  const [mode,setMode]=useState<MODE>('list'); 
+  const [mode,setMode]=useState<MODE>('list');
   const [limit,setLimit]=useState<number>(10);
   const [heading,setHeading]=useState('Patients')
-  const [record,setRecord]=useState<any>(); 
-  const [search,setSearch]=useState<any>(''); 
+  const [record,setRecord]=useState<any>();
+  const [search,setSearch]=useState<any>('');
   const [patients,errors,queryPatients,deletePatient] = useFhirQuery('Patient',{name:search,_count:limit});
-  
+
   function toggleMode(){
          setMode(mode==='list'?'edit':'list');
   }
   function startEdit(r:any){
-      setRecord(r); 
+      setRecord(r);
       setMode(m=>'edit');
   }
   function startCreate(){
-       setRecord(null); 
+       setRecord(null);
        setMode('create');
   }
 
@@ -37,55 +37,55 @@ export function PatientsHome(props: PatientsHomeProps) {
        const  sub = searchSubject.asObservable().pipe(
        distinctUntilChanged(),
        debounceTime(900)
-  ).subscribe({next:(val)=>{       
-       setSearch(val); 
+  ).subscribe({next:(val)=>{
+       setSearch(val);
        queryPatients({name:val})
-  }}); 
+  }});
   queryPatients();
      return ()=>
-       {          
-         sub.unsubscribe(); 
+       {
+         sub.unsubscribe();
        }
   },[])
   useEffect(()=>{
-       setHeading(mode==='list'?'Patients':'Edit Patient:#'+(record?.id)); 
+       setHeading(mode==='list'?'Patients':'Edit Patient:#'+(record?.id));
        if(mode==='create'){
             setHeading('Create New Patient');
        }
   },[mode])
- 
+
   return (
     <div className={styles['container']}>
-          
+
                <Stack alignContent={'center'} spacing={1} direction={'row'} flex={'1'} >
                   <Icon>people</Icon>
                   <h3>{heading}</h3>
                </Stack>
-           
-        {mode==='list' ? 
-        <Grid container spacing={{sm:2}} 
+
+        {mode==='list' ?
+        <Grid container spacing={{sm:2}}
           justifyContent='flex-start' border={0} sx={{padding:1}} >
             <Grid item md={8}>
               <TextField onChange={ (v)=>{
                       //setSearch(v.target.value)
                       searchSubject.next(v.target.value)
-                 } } fullWidth  placeholder='Type to Search...' ></TextField>             
+                 } } fullWidth  placeholder='Type to Search...' ></TextField>
             </Grid>
             <Grid item margin={'auto'}>
-             { mode==='list'? <Button variant='outlined' endIcon={<Icon>add</Icon>} onClick={startCreate} >New Patient</Button>  
+             { mode==='list'? <Button variant='outlined' endIcon={<Icon>add</Icon>} onClick={startCreate} >New Patient</Button>
                  : <IconButton onClick={toggleMode} ><Icon>list</Icon></IconButton>
              }
             </Grid>
         </Grid>
           : <Box/>
         }
-        <Box component={Paper} sx={{padding:2}}>          
+        <Box component={Paper} sx={{padding:2}}>
           {mode==='list'?
           <PatientsList   rows={patients}  onDeleteRow={(i)=> deletePatient(i) }
-            onEditRow={(row)=>{                
+            onEditRow={(row)=>{
                startEdit(row);
-          }} query={{name:search}} />:<PatientsEdit mode={mode}  
-            
+          }} query={{name:search}} />:<PatientsEdit mode={mode}
+
             onCreate={(r)=>{
                 setMode('list');queryPatients();
             }}

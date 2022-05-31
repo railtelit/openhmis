@@ -3,7 +3,9 @@ import { useFhirCreate, useFhirQuery, useFhirResolver } from '@ha/appfhir';
 import { Button, Icon } from '@mui/material';
 import { Box } from '@mui/system';
 import { DataGrid, GridColDef, GridColType, GridColumns } from '@mui/x-data-grid';
-
+import ButtonGroup from '@mui/material/ButtonGroup';
+import PatientEvaluation from 'libs/health/patients/src/components/patient-evaluation/patient-evaluation';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 /* eslint-disable-next-line */
 export interface AppointmentsListProps {
@@ -17,6 +19,8 @@ export interface AppointmentsListProps {
 export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const i = 1; } }: AppointmentsListProps) {
 
   const [ resolve]=useFhirResolver()
+
+  const navigate = useNavigate();
 
   const cols:GridColDef[]=[
 
@@ -57,13 +61,17 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'start',headerName:'Date and Time', flex: 1, valueGetter:(v)=> resolve('start',v.row)},
     {field:'end',headerName:'End Date and Time', flex: 1,valueGetter:(v)=>resolve('end',v.row)},
     {field:'action', renderCell:(v)=>{
-      return <Button onClick={()=>{
-                onDeleteRow(v.row?.id);
-                }} ><Icon color='error'>delete</Icon>
-              </Button>
+      return <ButtonGroup variant="text" aria-label="outlined transparent button group">
+        <Button onClick={()=> navigateEvaluation(v.row?.id) }  ><Icon color='primary'>open_in_new</Icon></Button><Button onClick={()=>{onDeleteRow(v.row?.id);}} style={{ width: 10 }}><Icon color='error'>delete</Icon></Button></ButtonGroup>
       }
     }
   ];
+
+  const navigateEvaluation = (id:number) => {
+    // 👇️ navigate to /
+    navigate('patient-evaluation/'+id);
+  };
+
 
 
 
