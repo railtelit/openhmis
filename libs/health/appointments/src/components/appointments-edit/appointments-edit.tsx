@@ -212,12 +212,12 @@ console.log(newList)
             <Grid item md={4}>
                   <TextField {...register('status')}  label='Status' select fullWidth placeholder='Status' >
                       <MenuItem value='proposed'>Proposed</MenuItem>
-                      <MenuItem value='pending'>Pending </MenuItem>
-                      <MenuItem value='booked'>Booked </MenuItem>
-                      <MenuItem value='arrived'>Arrived </MenuItem>
-                      <MenuItem value='fulfilled'>Fulfilled </MenuItem>
-                      <MenuItem value='cancelled'>Cancelled </MenuItem>
-                      <MenuItem value='noshow'>No show </MenuItem>
+                      <MenuItem value='pending'>Pending</MenuItem>
+                      <MenuItem value='booked'>Booked</MenuItem>
+                      <MenuItem value='arrived'>Arrived</MenuItem>
+                      <MenuItem value='fulfilled'>Fulfilled</MenuItem>
+                      <MenuItem value='cancelled'>Cancelled</MenuItem>
+                      <MenuItem value='noshow'>No show</MenuItem>
                       <MenuItem value='entered-in-error'>Entered-In-Error</MenuItem>
                       <MenuItem value='checked-in'>Checked-In</MenuItem>
                       <MenuItem value='waitlist'>Waitlist</MenuItem>

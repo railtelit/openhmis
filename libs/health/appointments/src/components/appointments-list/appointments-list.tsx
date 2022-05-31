@@ -27,15 +27,45 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'description',headerName:'Information', flex: 1,valueGetter:(v)=> resolve('description',v.row) },
     {field:'category',headerName:'Category', flex: 1,valueGetter:(v)=> resolve('serviceCategory.0.coding.0.display',v.row) },
     {field:'specialty',headerName:'Specialty', flex: 1,valueGetter:(v)=> resolve('specialty.0.coding.0.display',v.row) },
+    {field:'status',headerName:'Status', flex: 1,valueGetter:(v)=> resolve('status',v.row) },
+    {field:'Status Icon', renderCell:(v)=>{
+      let statusIcon = resolve('status',v.row);
+      if(statusIcon == "proposed"){
+        return <Icon color='primary'>edit_note</Icon>
+      }else if(statusIcon == "pending"){
+        return <Icon color='warning'>pending</Icon>
+      }else if(statusIcon == "booked"){
+        return <Icon color='primary'>bookmark_added</Icon>
+      }else if(statusIcon == "arrived"){
+        return <Icon color='warning'>bookmark_added</Icon>
+      }else if(statusIcon == "fulfilled"){
+        return <Icon color='success'>done_all</Icon>
+      }else if(statusIcon == "cancelled"){
+        return <Icon color='error'>cancel</Icon>
+      }else if(statusIcon == "noshow"){
+        return <Icon color='error'>event_busy</Icon>
+      }else if(statusIcon == "entered-in-error"){
+        return <Icon color='error'>error_outline</Icon>
+      }else if(statusIcon == "checked-in"){
+        return <Icon color='primary'>checklist</Icon>
+      }else{
+        return <Icon color='warning'>hourglass_bottom</Icon>
+      }
+      //return statusIcon
+      }
+    },
     {field:'start',headerName:'Date and Time', flex: 1, valueGetter:(v)=> resolve('start',v.row)},
-    {field:'end',headerName:'End Date and Time', flex: 1,valueGetter:(({row})=>resolve('end',row))},
+    {field:'end',headerName:'End Date and Time', flex: 1,valueGetter:(v)=>resolve('end',v.row)},
     {field:'action', renderCell:(v)=>{
       return <Button onClick={()=>{
-         onDeleteRow(v.row?.id);
-      }} ><Icon color='error'>delete</Icon> </Button>
+                onDeleteRow(v.row?.id);
+                }} ><Icon color='error'>delete</Icon>
+              </Button>
       }
     }
   ];
+
+
 
   return (
 
