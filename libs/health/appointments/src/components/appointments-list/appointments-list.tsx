@@ -4,7 +4,6 @@ import { Button, Icon } from '@mui/material';
 import { Box } from '@mui/system';
 import { DataGrid, GridColDef, GridColType, GridColumns } from '@mui/x-data-grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import PatientEvaluation from 'libs/health/patients/src/components/patient-evaluation/patient-evaluation';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
 /* eslint-disable-next-line */
@@ -26,7 +25,7 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
 
     {field:'id',headerName:'Id'},
     //{field:'appointment_id',headerName:'Appointment ID', flex: 1,valueGetter:(v)=> resolve('note.text',v.row)  },
-    {field:'patient',headerName:'Patient', flex: 1,valueGetter:(v)=> resolve('telecom.0.value',v.row) },
+    {field:'patient',headerName:'Patient', flex: 1,valueGetter:(v)=> resolve('participant.0.actor.display',v.row) },
     {field:'appointmentType',headerName:'Type', flex: 1,valueGetter:(v)=> resolve('appointmentType.coding.0.code',v.row) },
     {field:'description',headerName:'Information', flex: 1,valueGetter:(v)=> resolve('description',v.row) },
     {field:'category',headerName:'Category', flex: 1,valueGetter:(v)=> resolve('serviceCategory.0.coding.0.display',v.row) },
@@ -62,14 +61,17 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'end',headerName:'End Date and Time', flex: 1,valueGetter:(v)=>resolve('end',v.row)},
     {field:'action', renderCell:(v)=>{
       return <ButtonGroup variant="text" aria-label="outlined transparent button group">
-        <Button onClick={()=> navigateEvaluation(v.row?.id) }  ><Icon color='primary'>open_in_new</Icon></Button><Button onClick={()=>{onDeleteRow(v.row?.id);}} style={{ width: 10 }}><Icon color='error'>delete</Icon></Button></ButtonGroup>
+        <Button onClick={()=>{
+          let patientName = resolve('participant.0.actor.display',v.row);
+          navigateEvaluation(encodeURIComponent(patientName))
+        }} ><Icon color='primary'>open_in_new</Icon></Button><Button onClick={()=>{onDeleteRow(v.row?.id);}} style={{ width: 10 }}><Icon color='error'>delete</Icon></Button></ButtonGroup>
       }
     }
   ];
 
-  const navigateEvaluation = (id:number) => {
+  const navigateEvaluation = (patientName:string) => {
     // 👇️ navigate to /
-    navigate('patient-evaluation/'+id);
+    navigate('patient-evaluation/'+patientName);
   };
 
 

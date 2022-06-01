@@ -150,13 +150,7 @@ console.log(newList)
                       searchSubject_p.next(v.target.value)
                   } } fullWidth placeholder='Type to Search...' ></TextField> */}
 
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={newList}
-                //sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Patient" />}
-              />
+              <Autocomplete disablePortal id="combo-box-demo" options={newList} renderInput={(params) => <TextField {...register('participant.0.actor.display')} {...params} label="Patient" />}/>
 
             </Grid>
             <Grid item md={4}>
