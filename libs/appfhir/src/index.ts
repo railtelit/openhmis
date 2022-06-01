@@ -1,3 +1,4 @@
+export * from './components/resourceviews/resourceviews';
 export * from './components/table/resourcetable/resourcetable';
 
 export * from './fhir-service';

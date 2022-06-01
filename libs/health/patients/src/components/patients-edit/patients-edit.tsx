@@ -70,9 +70,17 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
                 } } >CLOSE</Button>
       </Stack>
       <Grid container spacing={4} >
-           <Grid item md={6}>
+           <Grid item md={2}>
                 <TextField InputLabelProps={{shrink:true}} required error={ errors['name']!==undefined }
-                    label='Name' {...register('name',{required:true,})}   fullWidth />
+                    label='First Name' {...register('name',{required:true,})}   fullWidth />
+           </Grid>
+           <Grid item md={2}>
+                <TextField InputLabelProps={{shrink:true}} required error={ errors['name']!==undefined }
+                    label='Middle Name' {...register('givenname',{required:true,})}   fullWidth />
+           </Grid>
+           <Grid item md={2}>
+                <TextField InputLabelProps={{shrink:true}} required error={ errors['name']!==undefined }
+                    label='Last Name' {...register('lastname',{required:true,})}   fullWidth />
            </Grid>
 
            <Grid item md={3}>
@@ -81,7 +89,13 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
                     {...register('mobileno',{minLength:10,} )}    fullWidth />
            </Grid>
            <Grid item md={3}>
-                <TextField label='PUID'  {...register('uid')} fullWidth placeholder='Unique Identifier Number' />
+                <TextField label='MRN'  {...register('uid')} fullWidth placeholder='Unique Identifier Number' />
+           </Grid>
+           <Grid item md={3}>
+                <TextField type={'abha'} {...register('abha')}  InputLabelProps={{shrink:true}} label='ABHA Number'   fullWidth   />
+           </Grid>
+           <Grid item md={3}>
+                <TextField type={'abha'} {...register('aadhaar')}  InputLabelProps={{shrink:true}} label='Aadhaar Number'   fullWidth   />
            </Grid>
            <Grid item md={3}>
                 <TextField type={'date'} {...register('birthDate')}  InputLabelProps={{shrink:true}} label='Date Of Birth'   fullWidth   />

@@ -2,7 +2,7 @@
 
 ## Check Patients
 # @name patient
-GET {{endpoint}}/Patient
+GET {{endpoint}}/Patient?_summary=true&name=P
 
 @id = {{patient.response.body.$.entry[0].resource.id}}
 
@@ -30,7 +30,7 @@ Accept-Encoding: fhir+json
 DELETE {{endpoint}}/Practitioner/217
 
 ###
-GET {{endpoint}}/PractitionerRole?_fill=pracitioner
+GET {{endpoint}}/PractitionerRole?_include=PractitionerRole:practitioner
 ###
 POST {{endpoint}}/PractitionerRole
 Content-Type: application/json
@@ -42,3 +42,6 @@ Content-Type: application/json
     },
     "active":true
 }
+
+###
+GET {{endpoint}}/Patient
