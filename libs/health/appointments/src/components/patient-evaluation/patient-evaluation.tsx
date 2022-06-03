@@ -14,10 +14,16 @@ import Clinical from '../clinical/clinical';
 import DxProcedures from '../dx-procedures/dx-procedures';
 import MainInfo from '../main-info/main-info';
 import Mental from '../mental/mental';
-
+import axios from 'axios';
 
 const pages = ['Main Info', 'Clinical', 'Mental', 'Dx and Procedures', 'Validation', 'Administrative'];
 //const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+let gender: any;
+let age: number;
+let visit: any;
+let health_prof: any;
+let code: any;
 
 export interface PatientEvaluationProps {
   onClose?:()=>void,
@@ -31,12 +37,53 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
     setValue(newValue);
   };
 
-  const {patientName}=useParams();
-  const [record,error,loaddata] = useFhirQuery('Patient',{_name:patientName})
-  useEffect(()=>{
-        if(loaddata)
-            loaddata();
-  },[])
+  const {patientName} =useParams();
+
+  useEffect(() => {
+
+    console.log("patientName "+patientName)
+
+    const loadUsers = async () => {
+
+      const response = await axios.get('http://at.erpapps.in/fhir/Patient?name='+patientName);
+      const posts = response.data.entry;
+
+      gender = posts[0].resource.gender;
+      age = getAge(posts[0].resource.birthDate);
+      visit = posts[0].resource.gender;
+      health_prof = posts[0].resource.gender;
+      code = posts[0].resource.gender;
+      console.log(gender)
+
+      // for (var i = 0; i < posts.length; i++){
+
+      //   console.log("newList- "+posts[i].resource.gender)
+      //   //newList.push(posts[i].resource.name[0].family)
+      // }
+    }
+    loadUsers()
+  }, [])
+
+  function getAge(dateString:any)
+{
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    //console.log(today.getFullYear() +" "+ birthDate.getFullYear())
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate()))
+    {
+        age--;
+    }
+    return age;
+}
+
+  // const [record,error,loaddata] = useFhirQuery('Patient',{name:patientName})
+  // useEffect(()=>{
+  //       if(loaddata)
+  //           loaddata();
+  //           console.log("Patient record"+ record);
+  // },[])
 
   return (
 
@@ -47,10 +94,10 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
           <TextField label='Patient' fullWidth value={patientName} disabled />
         </Grid>
         <Grid item md={4}>
-          <TextField label='Gender' fullWidth value="" disabled />
+        <TextField label='Gender' fullWidth value={gender} disabled />
         </Grid>
         <Grid item md={4}>
-          <TextField label='Age' fullWidth value="" disabled />
+          <TextField label='Age' fullWidth value={age} disabled />
         </Grid>
 
         <Grid item md={4}>
