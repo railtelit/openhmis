@@ -150,13 +150,7 @@ console.log(newList)
                       searchSubject_p.next(v.target.value)
                   } } fullWidth placeholder='Type to Search...' ></TextField> */}
 
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={newList}
-                //sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Patient" />}
-              />
+              <Autocomplete disablePortal id="combo-box-demo" options={newList} renderInput={(params) => <TextField {...register('participant.0.actor.display')} {...params} label="Patient" />}/>
 
             </Grid>
             <Grid item md={4}>
@@ -212,12 +206,12 @@ console.log(newList)
             <Grid item md={4}>
                   <TextField {...register('status')}  label='Status' select fullWidth placeholder='Status' >
                       <MenuItem value='proposed'>Proposed</MenuItem>
-                      <MenuItem value='pending'>Pending </MenuItem>
-                      <MenuItem value='booked'>Booked </MenuItem>
-                      <MenuItem value='arrived'>Arrived </MenuItem>
-                      <MenuItem value='fulfilled'>Fulfilled </MenuItem>
-                      <MenuItem value='cancelled'>Cancelled </MenuItem>
-                      <MenuItem value='noshow'>No show </MenuItem>
+                      <MenuItem value='pending'>Pending</MenuItem>
+                      <MenuItem value='booked'>Booked</MenuItem>
+                      <MenuItem value='arrived'>Arrived</MenuItem>
+                      <MenuItem value='fulfilled'>Fulfilled</MenuItem>
+                      <MenuItem value='cancelled'>Cancelled</MenuItem>
+                      <MenuItem value='noshow'>No show</MenuItem>
                       <MenuItem value='entered-in-error'>Entered-In-Error</MenuItem>
                       <MenuItem value='checked-in'>Checked-In</MenuItem>
                       <MenuItem value='waitlist'>Waitlist</MenuItem>

@@ -32,20 +32,20 @@ export function Home(props: HomeProps) {
 const navigate=useNavigate();
 
 const RouteItems=HOME_ROUTES.map(route=>
-  <ListItem key={route.path}  onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >  
-  
+  <ListItem key={route.path}  onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >
+
   <ListItemButton  key={`option${route.path}`} alignItems='center'  sx={{ width: 100, flexGrow: 1 }} >
-    <Icon>{route.icon}</Icon>  
+    <Icon>{route.icon}</Icon>
     <ListItemText style={{marginLeft:5}}>  {route.label}</ListItemText>
-  </ListItemButton>  
-  </ListItem> 
-  
- ); 
- 
+  </ListItemButton>
+  </ListItem>
+
+ );
+
   return (
     <Box>
-      
-      
+
+
     <AppBar title="HMIS">
       <Toolbar>
         <Typography variant="h6">Open-HMIS</Typography>
@@ -76,7 +76,7 @@ const RouteItems=HOME_ROUTES.map(route=>
     </Drawer>
     <Box sx={{marginLeft:30,marginTop:10 }}>
     <Routes>
-           <Route path="/" element={ <WelcomeHome/> }  /> 
+           <Route path="/" element={ <WelcomeHome/> }  />
            <Route path="/health/patients" element={
                  <React.Suspense fallback={<div>Loading Patient....</div>}>
                       <HealthPatients/>  
@@ -89,27 +89,32 @@ const RouteItems=HOME_ROUTES.map(route=>
               />     
            <Route path="/health/appointments" element={
                  <React.Suspense fallback={<div>Loading Appointment....</div>}>
-                      <Appointments/>  
-                 </React.Suspense>} 
-              />     
+                      <Routes>
+
+                        <Route path="/*" element={<Appointments/> } >
+
+                        </Route>
+                      </Routes>
+                 </React.Suspense>}
+              />
            <Route path="/health/organizations" element={
                  <React.Suspense fallback={<div>Loading Organizations....</div>}>
-                       
-                      <Organizations />  
-                 </React.Suspense>} 
-              />     
+
+                      <Organizations />
+                 </React.Suspense>}
+              />
            <Route path="/configure/*" element={
                  <React.Suspense fallback={<div>Loading Settings....</div>}>
                    <Routes>
-                          <Route path="/*" element={<Configurations/>}/>                          
+                          <Route path="/*" element={<Configurations/>}/>
                    </Routes>
                       {/* <Configurations /> */}
-                 </React.Suspense>} 
-              />     
+                 </React.Suspense>}
+              />
     </Routes>
 
-       <Outlet/>    
-         
+       <Outlet/>
+
     </Box>
   </Box>
   );

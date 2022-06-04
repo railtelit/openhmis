@@ -8,6 +8,8 @@ import {BehaviorSubject, Subject} from 'rxjs'
 import { useEffect, useState } from 'react';
 import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
 import { useFhirQuery } from '@ha/appfhir';
+import { Route, Routes } from 'react-router-dom';
+import PatientEvaluation from '../../components/patient-evaluation/patient-evaluation';
 
 /* eslint-disable-next-line */
 export interface AppointmentsHomeProps {}
@@ -132,6 +134,7 @@ export function AppointmentsHome(props: AppointmentsHomeProps) {
                 record={record} onClose={()=> { setMode('list');queryAppointments(); }  }/>
            }
         </Box>
+           
 
     </div>
   );

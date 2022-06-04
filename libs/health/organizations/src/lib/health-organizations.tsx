@@ -20,14 +20,14 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
   },[])
   function startEdit(mode:string,res:any){
       setRecord(res);
-      setMode(mode); 
+      setMode(mode);
       setShowEdit(true)
   }
   return (
-    <div className={styles['container']}  >      
-           <Grid container alignItems={'center'} > 
-             <Grid item  xs > 
-              <Stack direction={'row'}  alignItems={'center'}  >                                         
+    <div className={styles['container']}  >
+           <Grid container alignItems={'center'} >
+             <Grid item  xs >
+              <Stack direction={'row'}  alignItems={'center'}  >
                      <Icon>corporate_fare</Icon>
                      <Typography marginLeft={1} alignItems={'center'} variant={'h5'}> Health Organizations</Typography>
               </Stack>
@@ -37,8 +37,8 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                       <Button variant='outlined' onClick={()=>startEdit('create',null)} startIcon={<Icon>create</Icon>}>CREATE NEW</Button>
                   </ButtonGroup>
               </Grid>
-           </Grid>  
-            
+           </Grid>
+
             { orgs.length==0?
                     <div><Alert title='Alert' icon={<Icon>info</Icon>} severity='info'  >No Definitions Yet..</Alert>
                     <Grid container  sx={{height:200,}}  alignItems={'center'} justifyContent={'center'}>
@@ -48,9 +48,9 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
             }
             <Container fixed sx={{padding:10}}>
 
-           
+
             <Grid container spacing={2}>
-            {(orgs as any[]).map( (o,i)=> 
+            {(orgs as any[]).map( (o,i)=>
                         <Grid key={i} item md={3} xs={12} justifyContent={'center'}>
                         <Card key={i} elevation={3} sx={{maxWidth:250}} >
 
@@ -58,28 +58,28 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                           <CardContent  >
                                   <Typography variant='body1'> {o.status} </Typography>
                                  {resolve('telecom.0.value',o)}
-                                
+
                           </CardContent>
                           <Divider/>
                           <CardActions>
                               <IconButton color='primary' onClick={()=>startEdit('edit',o)} > <Icon>edit</Icon> </IconButton>
                               <IconButton color='error' onClick={()=>deleteorg(o?.id)} > <Icon>delete</Icon> </IconButton>
                           </CardActions>
-                  </Card> 
+                  </Card>
                   </Grid>
             )}
-            </Grid> 
+            </Grid>
           </Container>
       <Dialog open={showedit} fullWidth  >
-       {/* <DialogTitle>       
-          <Toolbar>ORG</Toolbar>       
+       {/* <DialogTitle>
+          <Toolbar>ORG</Toolbar>
        </DialogTitle> */}
        <DialogContent>
           <EditOrganization record={record} mode={mode} onUpdate={(updated)=>queryOrgs()} onCreate={(res)=>{
-              setShowEdit(false);queryOrgs(); 
+              setShowEdit(false);queryOrgs();
           }} onClose={()=>setShowEdit(false)} start={showedit}/>
        </DialogContent>
-                
+
       </Dialog>
     </div>
   );

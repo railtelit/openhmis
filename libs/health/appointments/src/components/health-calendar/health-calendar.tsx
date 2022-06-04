@@ -40,8 +40,8 @@ export function HealthCalendar({onClose=()=>{const i = true },mode}: HealthCalen
         }}
 
         contentHeight={"auto"}
-
         events={events}
+        //showNonCurrentDates = {false}
         />
     </div>
   );
