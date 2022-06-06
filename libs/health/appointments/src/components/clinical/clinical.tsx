@@ -8,6 +8,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 /* eslint-disable-next-line */
 export interface ClinicalProps {}
@@ -101,13 +104,32 @@ export function Clinical(props: ClinicalProps) {
       <Grid container spacing={2} >
           <Grid item md={6}>
               <FormGroup>
-                  <FormControlLabel control={<Checkbox defaultChecked />} label="Malnutrition" />
+                  <FormControlLabel control={<Checkbox />} label="Malnutrition" />
               </FormGroup>
           </Grid>
           <Grid item md={6}>
               <FormGroup>
-                  <FormControlLabel control={<Checkbox defaultChecked />} label="Dehydration" />
+                  <FormControlLabel control={<Checkbox />} label="Dehydration" />
               </FormGroup>
+          </Grid>
+      </Grid>
+
+      <br/>
+      <Divider/>
+
+      <p>Signs and Symptoms</p>
+
+      <Grid container spacing={2} >
+          <Grid item md={12}>
+              <TextField {...register('psy_assessment')} label='Sign or Symptom' placeholder='Sign or Symptom' multiline={true} rows={2} fullWidth ></TextField>
+          </Grid>
+          <Grid item md={12}>
+              <TextField {...register('subjective')}  type='number' label='Subjective / Objective' select fullWidth placeholder='Subjective / Objective' >
+                  {/* <MenuItem value='Does not Open Eyes'>Does not Open Eyes</MenuItem> */}
+              </TextField>
+          </Grid>
+          <Grid item md={12}>
+              <TextField {...register('comments')} label='Comments' placeholder='Comments' multiline={true} rows={2} fullWidth ></TextField>
           </Grid>
       </Grid>
 

@@ -15,6 +15,7 @@ import DxProcedures from '../dx-procedures/dx-procedures';
 import MainInfo from '../main-info/main-info';
 import Mental from '../mental/mental';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 const pages = ['Main Info', 'Clinical', 'Mental', 'Dx and Procedures', 'Validation', 'Administrative'];
 //const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -32,7 +33,7 @@ export interface PatientEvaluationProps {
 export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvaluationProps) {
 
   const [value, setValue] = React.useState('1');
-
+  const [allpatients,qerror,loadpatients]= useFhirQuery('Patient',{_id:value})
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -61,7 +62,8 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
       //   //newList.push(posts[i].resource.name[0].family)
       // }
     }
-    loadUsers()
+    loadUsers();
+    loadpatients({name:''});
   }, [])
 
   function getAge(dateString:any)

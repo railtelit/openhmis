@@ -134,7 +134,7 @@ export function AppointmentsHome(props: AppointmentsHomeProps) {
                 record={record} onClose={()=> { setMode('list');queryAppointments(); }  }/>
            }
         </Box>
-           
+
 
     </div>
   );
