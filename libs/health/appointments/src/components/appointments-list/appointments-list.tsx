@@ -62,11 +62,11 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'action', renderCell:(v)=>{
       return <ButtonGroup variant="text" aria-label="outlined transparent button group">
                 <Button onClick={()=>{
-                      let patientName = resolve('participant.0.actor.display',v.row);
-                      navigateEvaluation(encodeURIComponent(patientName))
+                      navigate('patient-evaluation/'+v.row?.id);
                     }} >
                     <Icon color='primary'>open_in_new</Icon>
                 </Button>
+
                 <Button onClick={()=>{onDeleteRow(v.row?.id);}} style={{ width: 10 }}>
                     <Icon color='error'>delete</Icon>
                 </Button>
@@ -75,9 +75,9 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     }
   ];
 
-  const navigateEvaluation = (patientName:string) => {
+  const navigateEvaluation = (patientId:string) => {
     // 👇️ navigate to /
-    navigate('patient-evaluation/'+patientName);
+    navigate('patient-evaluation/'+patientId);
   };
 
 
