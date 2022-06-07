@@ -51,6 +51,7 @@ Content-Type: application/json
 GET {{endpoint}}/Location
 
 ###
-GET {{endpoint}}/PractitionerRole
+GET {{endpoint}}/Practitioner
 
 ###
+DELETE {{endpoint}}/Practitioner/236

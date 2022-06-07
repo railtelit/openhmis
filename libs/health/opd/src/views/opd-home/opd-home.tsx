@@ -1,4 +1,4 @@
-import { NameField, ResourceTable } from '@ha/appfhir';
+import { NameField, ResourceTable, SimpleActionField  } from '@ha/appfhir';
 import { Pagetitle } from '@ha/shared-ui';
 import { Button, Grid, Table, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -11,7 +11,13 @@ export interface OpdHomeProps {}
 
 
 export function OpdHome(props: OpdHomeProps) {
-  const columns:GridColDef[]=[ NameField({width:100}) ,{headerName:'Entry Date',field:'end'} , { field:'vitalaction', headerName:'Vital'},{ field:'rx', headerName:'Rx'} ]
+
+
+
+  const columns:GridColDef[]=[ NameField({flex:1 }),{headerName:'Age',field:'age'},{headerName:'Contact',field:'contact'}
+              ,{headerName:'Entry Date',field:'end'} ,  SimpleActionField( {label:'Vital',actionName:'vitalentry',} ) ,
+                 SimpleActionField({label:'Rx',actionName:'rx',navigateTo:'rx'})  
+            ]
   return (
     <div className={styles['container']}>
         <Grid container justifyContent={'space-between'}>

@@ -83,9 +83,11 @@ const RouteItems=HOME_ROUTES.map(route=>
                       <HealthPatients/>  
                  </React.Suspense>} 
               />     
-           <Route path="/health/opd" element={
+           <Route path="/health/opd/*" element={
                  <React.Suspense fallback={<div>Loading OPD....</div>}>
-                      <HealthOPD/>  
+                     <Routes>
+                        <Route   path='/*' element={<HealthOPD/>} />
+                     </Routes>
                  </React.Suspense>} 
               />     
            <Route path="/health/practitioners" element={
@@ -93,7 +95,7 @@ const RouteItems=HOME_ROUTES.map(route=>
                       <Practitioners/>
                  </React.Suspense>} 
               />     
-           <Route path="/health/appointments" element={
+           <Route path="/health/appointments/*" element={
                  <React.Suspense fallback={<div>Loading Appointment....</div>}>
                       <Routes>
 
