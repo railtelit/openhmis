@@ -7,6 +7,7 @@ import {  Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import { HOME_ROUTES } from './routes';
 
 const HealthPatients = React.lazy( ()=> import('@ha/health/patients') ) ;
+const HealthOPD = React.lazy( ()=> import('@ha/health/opd') ) ;
 const Practitioners = React.lazy( ()=> import('@ha/health/practitioners') ) ;
 const Appointments = React.lazy( ()=> import('@ha/health/appointments') ) ;
 const Organizations = React.lazy( ()=> import('@ha/health/organizations') ) ;
@@ -80,6 +81,11 @@ const RouteItems=HOME_ROUTES.map(route=>
            <Route path="/health/patients" element={
                  <React.Suspense fallback={<div>Loading Patient....</div>}>
                       <HealthPatients/>  
+                 </React.Suspense>} 
+              />     
+           <Route path="/health/opd" element={
+                 <React.Suspense fallback={<div>Loading OPD....</div>}>
+                      <HealthOPD/>  
                  </React.Suspense>} 
               />     
            <Route path="/health/practitioners" element={

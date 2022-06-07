@@ -4,6 +4,7 @@
     "appfhir": "libs/appfhir",
     "health-appointments": "libs/health/appointments",
     "health-configurations": "libs/health/configurations",
+    "health-opd": "libs/health/opd",
     "health-organizations": "libs/health/organizations",
     "health-patients": "libs/health/patients",
     "health-practitioners": "libs/health/practitioners",

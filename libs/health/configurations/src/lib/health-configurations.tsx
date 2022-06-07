@@ -49,10 +49,10 @@ export function HealthConfigurations(props: HealthConfigurationsProps) {
        {/* <TextField  label='Search' onChange={(t=>searchDescriptions({term:t.target.value}))} />
        : 
     <br/>*/}
-       <Autocomplete options={snomedresults}   onInputChange={(t,value)=>searchDescriptions({term:value as string,semanticTag:'occupation',active:true,conceptActive:true}) } itemID={ 'id' } 
+       {/* <Autocomplete options={snomedresults}   onInputChange={(t,value)=>searchDescriptions({term:value as string,semanticTag:'occupation',active:true,conceptActive:true}) } itemID={ 'id' } 
         getOptionLabel={(o:any)=> (o?.concept.pt?.term) } 
         renderInput={(field)=> <TextField  {...field} /> }  />       
-       
+        */}
     </div>
   );
 }
