@@ -22,9 +22,13 @@ Accept-Encoding: fhir+json
 
 {
     "name":[
-        {"use":"official","text":"Pract 1","family":"Loggy"}
+        {"use":"official","text":"Pract 3","family":"Loggy"}
     ]
-    ,"resourceType":"Practitioner"
+    ,"resourceType":"Practitioner","active":true,
+    "telecom":[ 
+        {"system":"phone","value":"9797979797","use":"work"} ,
+        {"system":"email","value":"abc@abc.com","use":"work"} 
+    ]
 }
 ###
 DELETE {{endpoint}}/Practitioner/217
@@ -44,4 +48,9 @@ Content-Type: application/json
 }
 
 ###
-GET {{endpoint}}/Patient
+GET {{endpoint}}/Location
+
+###
+GET {{endpoint}}/PractitionerRole
+
+###
