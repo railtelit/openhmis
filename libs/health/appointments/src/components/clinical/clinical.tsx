@@ -62,56 +62,50 @@ export function Clinical(props: ClinicalProps) {
           </Grid>
 
       </Grid>
-      <br/>
 
       <Grid container spacing={2} >
-          <Grid item md={4}>
+          <Grid item md={12}>
               <p>BP(mmHg)</p>
-              <Divider/>
-              <Grid container spacing={2} >
-                  <Grid item md={6}>
-
-                      <br/>
-                      <TextField {...register('heart_rate')} type='text'  label='Systolic' fullWidth placeholder='Systolic' ></TextField>
-                  </Grid>
-                  <Grid item md={6}>
-
-                      <br/>
-                      <TextField {...register('heart_rate')} type='text'  label='Systolic' fullWidth placeholder='Systolic' ></TextField>
-                  </Grid>
-              </Grid>
-          </Grid>
-          <Grid item md={8}>
-              <p>Blood Sugar Levels(mg/dl)</p>
-              <Divider/>
               <Grid container spacing={2} >
                   <Grid item md={4}>
-                      <br/>
-                      <TextField {...register('heart_rate')} type='text'  label='Fasting' fullWidth placeholder='Fasting' ></TextField>
+                      <TextField {...register('heart_rate')} type='text'  label='Systolic' fullWidth placeholder='Systolic' ></TextField>
                   </Grid>
                   <Grid item md={4}>
-                      <br/>
-                      <TextField {...register('heart_rate')} type='text'  label='Postprandial' fullWidth placeholder='Postprandial' ></TextField>
-                  </Grid>
-                  <Grid item md={4}>
-                      <br/>
-                      <TextField {...register('heart_rate')} type='text'  label='HBA1C' fullWidth placeholder='HBA1C' ></TextField>
+                      <TextField {...register('heart_rate')} type='text'  label='Diastolic' fullWidth placeholder='Diastolic' ></TextField>
                   </Grid>
               </Grid>
           </Grid>
       </Grid>
-
-      <br />
+      <br/>
+      <Divider/>
+      <br/>
       <Grid container spacing={2} >
-
-          <Grid item md={3}>
+          <Grid item md={4}>
               <TextField {...register('temperature')} type='number'  label='Weight (Kg)' fullWidth placeholder='Weight (Kg)' ></TextField>
           </Grid>
-          <Grid item md={3}>
+          <Grid item md={4}>
               <TextField {...register('systolic_pressure')} type='number'  label='Height(cms)' fullWidth placeholder='Height(cms)' ></TextField>
           </Grid>
-          <Grid item md={3}>
+          <Grid item md={4}>
               <TextField {...register('diastolic_pressure')}  type='number' label='BMI' fullWidth placeholder='BMI' ></TextField>
+          </Grid>
+      </Grid>
+      <br/>
+      <Divider/>
+      <Grid container spacing={2} >
+          <Grid item md={12}>
+              <p>Blood Sugar Levels(mg/dl)</p>
+              <Grid container spacing={2} >
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='Fasting' fullWidth placeholder='Fasting' ></TextField>
+                  </Grid>
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='Postprandial' fullWidth placeholder='Postprandial' ></TextField>
+                  </Grid>
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='HBA1C' fullWidth placeholder='HBA1C' ></TextField>
+                  </Grid>
+              </Grid>
           </Grid>
       </Grid>
 
