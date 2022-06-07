@@ -61,10 +61,16 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'end',headerName:'End Date and Time', flex: 1,valueGetter:(v)=>resolve('end',v.row)},
     {field:'action', renderCell:(v)=>{
       return <ButtonGroup variant="text" aria-label="outlined transparent button group">
-        <Button onClick={()=>{
-          let patientName = resolve('participant.0.actor.display',v.row);
-          navigateEvaluation(encodeURIComponent(patientName))
-        }} ><Icon color='primary'>open_in_new</Icon></Button><Button onClick={()=>{onDeleteRow(v.row?.id);}} style={{ width: 10 }}><Icon color='error'>delete</Icon></Button></ButtonGroup>
+                <Button onClick={()=>{
+                      let patientName = resolve('participant.0.actor.display',v.row);
+                      navigateEvaluation(encodeURIComponent(patientName))
+                    }} >
+                    <Icon color='primary'>open_in_new</Icon>
+                </Button>
+                <Button onClick={()=>{onDeleteRow(v.row?.id);}} style={{ width: 10 }}>
+                    <Icon color='error'>delete</Icon>
+                </Button>
+              </ButtonGroup>
       }
     }
   ];

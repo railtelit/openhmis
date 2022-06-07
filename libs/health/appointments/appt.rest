@@ -1,0 +1,25 @@
+@endpoint=http://at.erpapps.in/fhir
+
+GET {{endpoint}}/Appointment/239
+
+###
+
+POST {{endpoint}}/Appointment
+Accept-Encoding: application/json
+Content-Type: application/json
+
+{
+  "resourceType":"Appointment",
+  "status":"pending",
+  "participant":[
+    {
+    "actor":{
+      "display":"Patient 1",
+      "reference":"Patient/113"
+    }
+    }
+  ]
+}
+
+###
+GET {{endpoint}}/Patient

@@ -8,6 +8,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 /* eslint-disable-next-line */
 export interface ClinicalProps {}
@@ -45,102 +48,74 @@ export function Clinical(props: ClinicalProps) {
 
       <Grid container spacing={2} >
 
-          <Grid item md={2}>
-              <TextField {...register('temperature')} type='number'  label='Temperature' fullWidth placeholder='Temperature' ></TextField>
+          <Grid item md={3}>
+              <TextField {...register('temperature')} type='number'  label='Body Temp.(F)' fullWidth placeholder='Body Temp.(F)' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('systolic_pressure')} type='number'  label='Systolic Pressure' fullWidth placeholder='Systolic Pressure' ></TextField>
+          <Grid item md={3}>
+              <TextField {...register('systolic_pressure')} type='number'  label='Resp. Rate' fullWidth placeholder='Resp. Rate' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('diastolic_pressure')}  type='number' label='Diastolic Pressure' fullWidth placeholder='Diastolic Pressure' ></TextField>
+          <Grid item md={3}>
+              <TextField {...register('diastolic_pressure')}  type='number' label='Pulse Rate' fullWidth placeholder='Pulse Rate' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('heart_rate')} type='number'  label='Heart Rate' fullWidth placeholder='Heart Rate' ></TextField>
+          <Grid item md={3}>
+              <TextField {...register('heart_rate')} type='number'  label='SPO2' fullWidth placeholder='SPO2' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('respiratory_rate')}  type='number' label='Respiratory Rate' fullWidth placeholder='Respiratory Rate' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('oxygen_saturation')}  type='number' label='Oxygen Saturation' fullWidth placeholder='Oxygen Saturation' ></TextField>
+
+      </Grid>
+
+      <Grid container spacing={2} >
+          <Grid item md={12}>
+              <p>BP(mmHg)</p>
+              <Grid container spacing={2} >
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='Systolic' fullWidth placeholder='Systolic' ></TextField>
+                  </Grid>
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='Diastolic' fullWidth placeholder='Diastolic' ></TextField>
+                  </Grid>
+              </Grid>
           </Grid>
       </Grid>
       <br/>
       <Divider/>
-
-      <p>Anthropometry</p>
-
+      <br/>
       <Grid container spacing={2} >
-
-          <Grid item md={2}>
-              <TextField {...register('weight')} type='number'  label='Weight' fullWidth placeholder='Weight' ></TextField>
+          <Grid item md={4}>
+              <TextField {...register('temperature')} type='number'  label='Weight (Kg)' fullWidth placeholder='Weight (Kg)' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('geight')} type='number'  label='Height' fullWidth placeholder='Height' ></TextField>
+          <Grid item md={4}>
+              <TextField {...register('systolic_pressure')} type='number'  label='Height(cms)' fullWidth placeholder='Height(cms)' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('bmi')}  type='number' label='BMI' fullWidth placeholder='BMI' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('waist')} type='number'  label='Waist' fullWidth placeholder='Waist' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('hip')}  type='number' label='Hip' fullWidth placeholder='Hip' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('whr')}  type='number' label='WHR' fullWidth placeholder='WHR' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('head')}  type='number' label='Head' fullWidth placeholder='Head' ></TextField>
+          <Grid item md={4}>
+              <TextField {...register('diastolic_pressure')}  type='number' label='BMI' fullWidth placeholder='BMI' ></TextField>
           </Grid>
       </Grid>
       <br/>
       <Divider/>
-
-      <p>Nutrition</p>
-
       <Grid container spacing={2} >
-          <Grid item md={6}>
-              <FormGroup>
-                  <FormControlLabel control={<Checkbox defaultChecked />} label="Malnutrition" />
-              </FormGroup>
-          </Grid>
-          <Grid item md={6}>
-              <FormGroup>
-                  <FormControlLabel control={<Checkbox defaultChecked />} label="Dehydration" />
-              </FormGroup>
+          <Grid item md={12}>
+              <p>Blood Sugar Levels(mg/dl)</p>
+              <Grid container spacing={2} >
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='Fasting' fullWidth placeholder='Fasting' ></TextField>
+                  </Grid>
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='Postprandial' fullWidth placeholder='Postprandial' ></TextField>
+                  </Grid>
+                  <Grid item md={4}>
+                      <TextField {...register('heart_rate')} type='text'  label='HBA1C' fullWidth placeholder='HBA1C' ></TextField>
+                  </Grid>
+              </Grid>
           </Grid>
       </Grid>
 
-      <br/>
-      <Divider/>
-
-      <p>Glucose and Lipids Profile</p>
-
+      <br />
       <Grid container spacing={2} >
-
-          <Grid item md={2}>
-              <TextField {...register('glycemia')} type='number'  label='Glycemia' fullWidth placeholder='Glycemia' ></TextField>
+          <Grid item md={12}>
+              <TextField {...register('temperature')} type='text'  label='Remarks' fullWidth placeholder='Remarks' ></TextField>
           </Grid>
-          <Grid item md={2}>
-              <TextField {...register('hbA1c')} type='number'  label='HbA1c' fullWidth placeholder='HbA1c' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('last_cholesterol')}  type='number' label='Last Cholesterol' fullWidth placeholder='Last Cholesterol' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('hdl')} type='number'  label='HDL' fullWidth placeholder='HDL' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('ldl')}  type='number' label='Hip' fullWidth placeholder='LDL' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('tags')}  type='number' label='TAGs' fullWidth placeholder='TAGs' ></TextField>
-          </Grid>
-          <Grid item md={2}>
-              <TextField {...register('head')}  type='number' label='Head' fullWidth placeholder='Head' ></TextField>
-          </Grid>
-
       </Grid>
+
       <br/>
       <Grid container spacing={2} >
           <Grid item md={3}>
@@ -159,6 +134,8 @@ export function Clinical(props: ClinicalProps) {
                 <Button type='submit' variant='outlined' style={{marginTop:10}} fullWidth >Discharge</Button>
             </Grid>
       </Grid>
+
+
 
 
     </div>
