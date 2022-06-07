@@ -38,15 +38,15 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
     setValue(newValue);
   };
 
-  const {patientId} =useParams();
+  const {appointmentId} =useParams();
 
   useEffect(() => {
 
-    console.log("patientId "+patientId)
+    console.log("appointmentId "+appointmentId)
 
     const loadUsers = async () => {
 
-      const response = await axios.get('http://at.erpapps.in/fhir/Patient?name='+patientId);
+      const response = await axios.get('http://at.erpapps.in/fhir/Patient?name='+appointmentId);
       const posts = response.data.entry;
 
       // gender = posts[0].resource.gender;
@@ -80,7 +80,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
     return age;
 }
 
-  // const [record,error,loaddata] = useFhirQuery('Patient',{name:patientId})
+  // const [record,error,loaddata] = useFhirQuery('Patient',{name:appointmentId})
   // useEffect(()=>{
   //       if(loaddata)
   //           loaddata();
@@ -93,7 +93,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
 
       <Grid container spacing={2} >
         <Grid item md={4}>
-          <TextField label='Patient' fullWidth value={patientId} disabled />
+          <TextField label='Patient' fullWidth value={appointmentId} disabled />
         </Grid>
         <Grid item md={4}>
         <TextField label='Gender' fullWidth value={gender} disabled />

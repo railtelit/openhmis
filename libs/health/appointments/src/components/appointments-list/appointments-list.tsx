@@ -75,9 +75,9 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     }
   ];
 
-  const navigateEvaluation = (patientId:string) => {
+  const navigateEvaluation = (appointmentId:string) => {
     // 👇️ navigate to /
-    navigate('patient-evaluation/'+patientId);
+    navigate('patient-evaluation/'+appointmentId);
   };
 
 
