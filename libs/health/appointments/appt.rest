@@ -1,6 +1,6 @@
 @endpoint=http://at.erpapps.in/fhir
 
-GET {{endpoint}}/Appointment/239
+GET {{endpoint}}/Appointment/254
 
 ###
 

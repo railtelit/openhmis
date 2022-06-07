@@ -13,7 +13,7 @@ export function AppointmentsMain () {
   return <>
     <Routes>
       <Route path='/' element={<AppointmentsHome/>} />
-      <Route path='patient-evaluation/:patientName' element={<PatientEvaluation/>} />
+      <Route path='patient-evaluation/:appointmentId' element={<PatientEvaluation/>} />
       <Route path='main-info' element={<MainInfo/>} />
       <Route path='clinical' element={<Clinical/>} />
       <Route path='mental' element={<Mental/>} />

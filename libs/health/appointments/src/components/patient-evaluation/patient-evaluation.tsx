@@ -38,23 +38,23 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
     setValue(newValue);
   };
 
-  const {patientName} =useParams();
+  const {appointmentId} =useParams();
 
   useEffect(() => {
 
-    console.log("patientName "+patientName)
+    console.log("appointmentId "+appointmentId)
 
     const loadUsers = async () => {
 
-      const response = await axios.get('http://at.erpapps.in/fhir/Patient?name='+patientName);
+      const response = await axios.get('http://at.erpapps.in/fhir/Patient?name='+appointmentId);
       const posts = response.data.entry;
 
-      gender = posts[0].resource.gender;
-      age = getAge(posts[0].resource.birthDate);
-      visit = posts[0].resource.gender;
-      health_prof = posts[0].resource.gender;
-      code = posts[0].resource.gender;
-      console.log(gender)
+      // gender = posts[0].resource.gender;
+      // age = getAge(posts[0].resource.birthDate);
+      // visit = posts[0].resource.gender;
+      // health_prof = posts[0].resource.gender;
+      // code = posts[0].resource.gender;
+      // console.log(gender)
 
       // for (var i = 0; i < posts.length; i++){
 
@@ -66,8 +66,8 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
     loadpatients({name:''});
   }, [])
 
-  function getAge(dateString:any)
-{
+  function getAge(dateString:any){
+
     var today = new Date();
     var birthDate = new Date(dateString);
     var age = today.getFullYear() - birthDate.getFullYear();
@@ -80,7 +80,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
     return age;
 }
 
-  // const [record,error,loaddata] = useFhirQuery('Patient',{name:patientName})
+  // const [record,error,loaddata] = useFhirQuery('Patient',{name:appointmentId})
   // useEffect(()=>{
   //       if(loaddata)
   //           loaddata();
@@ -93,7 +93,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
 
       <Grid container spacing={2} >
         <Grid item md={4}>
-          <TextField label='Patient' fullWidth value={patientName} disabled />
+          <TextField label='Patient' fullWidth value={appointmentId} disabled />
         </Grid>
         <Grid item md={4}>
         <TextField label='Gender' fullWidth value={gender} disabled />
