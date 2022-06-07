@@ -1,7 +1,6 @@
 @endpoint=http://at.erpapps.in/fhir
 
-GET {{endpoint}}/Appointment?_include=Appointment:patient
-
+GET {{endpoint}}/Appointment/239
 
 ###
 
@@ -15,7 +14,7 @@ Content-Type: application/json
   "participant":[
     {
     "actor":{
-      "display":"TestPatient",
+      "display":"Patient 1",
       "reference":"Patient/113"
     }
     }
