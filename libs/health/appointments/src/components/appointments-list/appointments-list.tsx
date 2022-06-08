@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 import { DataGrid, GridColDef, GridColType, GridColumns } from '@mui/x-data-grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import VitalSign from '../../views/vital-sign/vital-sign';
 
 /* eslint-disable-next-line */
 export interface AppointmentsListProps {
@@ -86,6 +87,7 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
   return (
 
     <div className={styles['container']}>
+
       {/* <Button onClick={()=>handleCreate()}> <Icon>add</Icon> </Button> */}
       <Box sx={{minHeight:300,alignSelf:'stretch',height:500}}>
           <DataGrid rows={rows}  onRowDoubleClick={(r)=>{

@@ -78,7 +78,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
         age--;
     }
     return age;
-}
+  }
 
   // const [record,error,loaddata] = useFhirQuery('Patient',{name:appointmentId})
   // useEffect(()=>{
