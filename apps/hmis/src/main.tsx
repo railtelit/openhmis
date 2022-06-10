@@ -3,6 +3,9 @@ import * as ReactDOMClient from 'react-dom/client';
 import App from './app/app';
 
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+import { AppTheme } from './app/config/theme';
+import { CssBaseline } from '@mui/material';
 
 const root = ReactDOMClient.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,7 +13,10 @@ const root = ReactDOMClient.createRoot(
 
 root.render(
   <BrowserRouter>
-      <App />
+      <CssBaseline />
+      <ThemeProvider theme={AppTheme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
 );
 // <StrictMode>

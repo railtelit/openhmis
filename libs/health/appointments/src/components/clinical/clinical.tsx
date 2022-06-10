@@ -135,7 +135,7 @@ export function Clinical(props: ClinicalProps) {
             </Grid>
       </Grid> */}
 
-      
+
 
 
     </div>

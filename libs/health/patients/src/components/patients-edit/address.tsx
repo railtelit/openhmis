@@ -18,7 +18,7 @@ export const AddressForm = ({id,index,control,register,errors={},onRemove=()=>{ 
         <Box marginY={0}  >
             <Box sx={{display:'flex'}} justifyContent={'space-between'} >
                  <div>
-                         <Typography style={{display:'flex'}} margin={1} variant='h6'>{'Address '+(index+1)}</Typography>  
+                         <Typography style={{display:'flex'}} margin={1} variant='h6'>{'Permanent Address '  }</Typography>  
                  </div>
                  <div>
                     {index>0?<IconButton color="error" onClick={()=> onRemove(index) }> <Icon>delete</Icon> </IconButton>:null} 

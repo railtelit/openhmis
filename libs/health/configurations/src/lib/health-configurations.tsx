@@ -1,6 +1,7 @@
 import { useFhirConverter, useFhirCreate, useSNOMEDQuery } from '@ha/appfhir';
-import { Breadcrumbs, Button, Icon, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Breadcrumbs, Button, Icon, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { Link, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import ConfigureLocations from '../configure/locations/locations';
 import ConfigurationsHome from './configurations-home/configurations-home';
@@ -13,7 +14,9 @@ export function HealthConfigurations(props: HealthConfigurationsProps) {
   const locations=useLocation(); 
   const {convertToForm,convertToResource}=useFhirConverter('Appointment')
   const [createappt,cerror,createAppt]=useFhirCreate('Appointment');
-  const {snomedresults,searchDescriptions}=useSNOMEDQuery()
+  const {snomedresults,searchDescriptions}=useSNOMEDQuery(); 
+  const [options,setOptions]=useState<any[]>([])
+ 
   function test(){ 
         // 
         const appt= { status :'booked',priority:0,start:dayjs().toISOString(),description:'Test',end:dayjs().toISOString(),
@@ -23,7 +26,8 @@ export function HealthConfigurations(props: HealthConfigurationsProps) {
   }
   function searchtest(term:string){
         //
-         searchDescriptions({term})
+        //  searchDescriptions({term})
+        console.log('Test Search '); 
   }
   return (
     <div className={styles['container']}>      
@@ -42,9 +46,13 @@ export function HealthConfigurations(props: HealthConfigurationsProps) {
       </Routes>
        {/* <Outlet/> */}
        {/* <Button  onClick={()=>test()} >Check Appointment</Button> */}
-       <TextField fullWidth onChange={(t)=>searchtest(t.target.value)}/>
-       <hr />
-       {JSON.stringify(snomedresults)}
+       {/* <TextField  label='Search' onChange={(t=>searchDescriptions({term:t.target.value}))} />
+       : 
+    <br/>*/}
+       {/* <Autocomplete options={snomedresults}   onInputChange={(t,value)=>searchDescriptions({term:value as string,semanticTag:'occupation',active:true,conceptActive:true}) } itemID={ 'id' } 
+        getOptionLabel={(o:any)=> (o?.concept.pt?.term) } 
+        renderInput={(field)=> <TextField  {...field} /> }  />       
+        */}
     </div>
   );
 }

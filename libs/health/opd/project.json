@@ -1,0 +1,23 @@
+{
+  "root": "libs/health/opd",
+  "sourceRoot": "libs/health/opd/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/health/opd/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/health/opd"],
+      "options": {
+        "jestConfig": "libs/health/opd/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

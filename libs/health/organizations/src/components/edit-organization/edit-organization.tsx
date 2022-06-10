@@ -73,7 +73,7 @@ export function EditOrganization({start=false,onClose=Empty,onCreate=Empty,mode=
            
             <form onSubmit={handleSubmit(doSave)}>
               <Grid container   justifyContent={'space-between'}>
-                  <Typography> <Icon>{mode==='create'?'add':'edit'}</Icon> {mode.toLocaleUpperCase()}  </Typography>
+                  <Typography> <Icon>{mode==='create'?'add':'edit'}</Icon> {mode.toLocaleUpperCase()} HEALTH INSTITUTION  </Typography>
                   <Stack direction={'row'}  spacing={1}>
                     <Button type='submit' variant='contained'>{mode==='create'?'SAVE':'UPDATE'}</Button>
                     <Button variant='outlined' onClick={()=>onClose()} color={'error'} >CANCEL</Button>

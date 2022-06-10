@@ -1,0 +1,57 @@
+@endpoint=http://at.erpapps.in/fhir
+
+## Check Patients
+# @name patient
+GET {{endpoint}}/Patient?_summary=true&name=P
+
+@id = {{patient.response.body.$.entry[0].resource.id}}
+
+###
+
+GET http://at.erpapps.in/fhir/Patient/{{id}}/$everything?_sort=name
+
+###
+
+GET {{endpoint}}/Practitioner/218/$meta
+
+###
+
+POST {{endpoint}}/Practitioner
+Content-Type: application/json
+Accept-Encoding: fhir+json
+
+{
+    "name":[
+        {"use":"official","text":"Pract 3","family":"Loggy"}
+    ]
+    ,"resourceType":"Practitioner","active":true,
+    "telecom":[ 
+        {"system":"phone","value":"9797979797","use":"work"} ,
+        {"system":"email","value":"abc@abc.com","use":"work"} 
+    ]
+}
+###
+DELETE {{endpoint}}/Practitioner/217
+
+###
+GET {{endpoint}}/PractitionerRole?_include=PractitionerRole:practitioner
+###
+POST {{endpoint}}/PractitionerRole
+Content-Type: application/json
+
+{
+    "resourceType":"PractitionerRole",
+    "practitioner":{ 
+         "reference":   "Practitioner/218","display":"Prac 1"
+    },
+    "active":true
+}
+
+###
+GET {{endpoint}}/Location
+
+###
+GET {{endpoint}}/Practitioner
+
+###
+DELETE {{endpoint}}/Practitioner/236

@@ -1,7 +1,8 @@
-import { useFhirQuery, useFhirResolver } from '@ha/appfhir';
+import { ResourceName, useFhirQuery, useFhirResolver } from '@ha/appfhir';
 import { Button, Icon } from '@mui/material';
 import { Box } from '@mui/system';
 import { DataGrid, GridColDef, GridColType, GridColumns } from '@mui/x-data-grid';
+
 import { useEffect, useState } from 'react';
 import styles from './patients-list.module.scss';
 
@@ -19,7 +20,7 @@ export function PatientsList({onEditRow,query,rows=[],onDeleteRow=()=>{const i =
   const [ resolve]=useFhirResolver()
   const cols:GridColDef[]=[
             {field:'id',headerName:'Id'},  {field:'name',headerName:'Patient Name',flex:1,
-              valueGetter:(v)=> resolve('name.0.family',v.row)  },
+               renderCell:(p)=><ResourceName { ...p.row?.name[0]  }  defaultText=''    />  },
               {field:'contact',headerName:'Contact',valueGetter:(v)=> resolve('telecom.0.value',v.row) },
             {field:'gender',headerName:'Gender', valueGetter:(({row})=>row?.gender) },
             {field:'status',headerName:'Status',valueGetter:(({row})=>resolve('status',row))},

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Autocomplete from '@mui/material/Autocomplete';
 
+
 /* eslint-disable-next-line */
 export interface AppointmentsEditProps {
 
@@ -24,6 +25,8 @@ export interface AppointmentsEditProps {
 
 const searchSubject_p = new Subject<string>();
 let newList:any = [];
+let patientId:string;
+
 
 export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,record}: AppointmentsEditProps) {
 
@@ -50,7 +53,7 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
       newList = [];
       for (var i = 0; i < posts.length; i++){
 
-        newList.push(posts[i].resource.name[0].family)
+        newList.push( { id : posts[i].resource.id , label :  posts[i].resource.name[0].family })
       }
 
       console.log("newList- "+newList)
@@ -65,10 +68,11 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
 
   const defaultAddress ={line1:'',line2:'',city:null,state:null,pincode:'' } ;
   async function onSave(formValue:any){
-             //const newRecord= convertToResource(formValue)
-             const newRecord = formValue;
+            ///  let newRecord= convertToResource(formValue)
+              let newRecord = formValue;
               newRecord.start && ( newRecord.start += 'Z')
               newRecord.end && ( newRecord.end += 'Z')
+              newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference += patientId)
               console.log(newRecord);
               // makeRequest(newRecord)
               if(mode==='edit')
@@ -127,6 +131,14 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
 
   },[])
 
+  function setPatientId(data:any){
+
+    let patientData = JSON.stringify(data);
+    var obj = JSON.parse(patientData);
+    patientId = obj.id
+    console.log(obj.id)
+  }
+
 console.log(newList)
 
   return (
@@ -139,6 +151,7 @@ console.log(newList)
                 <Button  type='submit' variant='contained'  >{mode==='create'?'CREATE':'UPDATE'}</Button>
                 <Button  variant='contained' color='error' onClick={ onClose!==undefined ? onClose: ()=>{
                   } } >CLOSE</Button>
+
         </Stack>
 
         <Grid container spacing={2} >
@@ -150,8 +163,17 @@ console.log(newList)
                       searchSubject_p.next(v.target.value)
                   } } fullWidth placeholder='Type to Search...' ></TextField> */}
 
-              <Autocomplete disablePortal id="combo-box-demo" options={newList} renderInput={(params) => <TextField {...register('participant.0.actor.display')} {...params} label="Patient" />}/>
+                <Autocomplete disablePortal id="combo-box-demo"
+                    options={newList}
+                    //getOptionLabel={(option:any) => option.label ? option.label : ""}
+                    onChange={(event:any, value:any) =>{
 
+                      setPatientId(value);
+                    }}
+                    renderInput={(params:any) => <TextField {...register('participant.0.actor.display')} {...params} label="Patient" />}/>
+
+
+                    <TextField {...register('participant.0.actor.reference')} value={"Patient/"} label='Health Prof' style={{display:'none' }}></TextField>
             </Grid>
             <Grid item md={4}>
                   <TextField {...register('start')}   type='datetime-local'  InputLabelProps={{shrink:true}} label='Date and Time' fullWidth   />
