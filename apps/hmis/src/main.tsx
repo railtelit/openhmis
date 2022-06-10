@@ -1,23 +1,30 @@
-import { StrictMode } from 'react';
+import {  Suspense } from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import App from './app/app';
 
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@emotion/react';
-import { AppTheme } from './app/config/theme';
-import { CssBaseline } from '@mui/material';
+
+import { Provider } from 'react-redux';
+import { configureStore } from './redux/Store';
+import Spinner from './views/spinner/Spinner';
+
 
 const root = ReactDOMClient.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-root.render(
-  <BrowserRouter>
-      <CssBaseline />
-      <ThemeProvider theme={AppTheme}>
+root.render(  
+    
+      <Provider store={configureStore()}>
+        <Suspense fallback={<Spinner/>}>
+
+      <BrowserRouter>
         <App />
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+        </Suspense>
+   
+      </Provider>
+    
 );
 // <StrictMode>
 // </StrictMode>

@@ -6,7 +6,8 @@ import { Control, Controller } from 'react-hook-form';
 export interface SnomedSearchProps  {
      semanticTag?:string,
      control:Control,
-     name:string
+     name:string,
+     onChange?:(value:any)=>void
 }
 
 export function SnomedAutoComplete(props: SnomedSearchProps) {
@@ -19,12 +20,11 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
          render={
            ({field:{value,onChange}})=> 
            <Autocomplete options={snomedresults} fullWidth
-            autoHighlight            
+            autoHighlight                        
              freeSolo={true} 
-             onChange={(e,v,reason,details)=>{
-                  // 
-                 // console.log(e,v,reason,details); 
-                  onChange(v)
+             onChange={(e,v,reason,details)=>{                  
+                  onChange(v); 
+                  props.onChange && props.onChange(v);
              }}
              onInputChange={(t,value)=> {
                    if(t.type==='change')
