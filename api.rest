@@ -54,4 +54,8 @@ GET {{endpoint}}/Location
 GET {{endpoint}}/Practitioner
 
 ###
-DELETE {{endpoint}}/Practitioner/236
+DELETE {{endpoint}}/Practitioner/237
+
+###
+## @name snomed
+GET https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/descriptions?skipTo=0&limit=50&returnLimit=10&offset=0&term=para+1&semanticTag=clinical+drug&active=true&conceptActive=true

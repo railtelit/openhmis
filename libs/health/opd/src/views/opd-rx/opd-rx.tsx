@@ -1,7 +1,9 @@
 
-import { Pagetitle } from '@ha/shared-ui';
+import { Clinical } from '@ha/health/appointments';
+import { Pagetitle, VitalSign } from '@ha/shared-ui';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Avatar, Box, Grid, Input, Tab, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Container, Grid, Input, Stack, Tab, TextField, Typography } from '@mui/material';
+
 import { Component, useState } from 'react';
 import OpdAllergicForm from '../../components/opd-allergic-form/opd-allergic-form';
 import OpdChronicForm from '../../components/opd-chronic-form/opd-chronic-form';
@@ -33,9 +35,19 @@ export function OpdRx(props: OpdRxProps) {
         <Grid item alignItems={'center'} >
           <Avatar />
         </Grid>
-        <Grid item>
+        <Grid item md={6}>
           <Pagetitle title='Patient 1' />
           <Typography variant={'subtitle2'}>Age:31</Typography>
+        </Grid>
+        <Grid item flexGrow={1} flex={1}  justifyContent={'end'} alignContent={'center'} >
+           <Stack direction={'row'} flexGrow={1}  flex={1} spacing={2}>
+                  <VitalSign icon='favorite'  text='80' />
+                  <VitalSign icon='thermostat' text='35dg' />
+                  <VitalSign icon='bloodtype' text='AB+' />
+                  <VitalSign icon='height' text='170cm' />
+                  <VitalSign icon='monitor_weight' text='72Kg' />
+                  <VitalSign icon='monitor_heart'  text='170/80' />
+           </Stack>
         </Grid>
       </Grid>
       <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -50,10 +62,12 @@ export function OpdRx(props: OpdRxProps) {
               <Tab label="Diagnosis" value="6" />
               <Tab label="Investigations" value="7" />
               <Tab label="Procededures" value="7.1" />
-              <Tab label="Medication/Treatment" value="8" />
+              <Tab label="Medication" value="8" />
             </TabList>
             <TabPanel value="0">
-
+                 <Container>
+                   <Clinical/>
+                 </Container>
             </TabPanel>
             <TabPanel value="1" sx={{flexGrow:1}}>
               <OpdComplaintForm />

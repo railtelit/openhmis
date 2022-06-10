@@ -5,13 +5,14 @@ import { Button } from '@mui/material';
 export interface ActionbuttonProps {
     label:string, 
     navigateTo?:string, 
-    onClick?:()=>void
+    onClick?:()=>void,
+    type?:string
 }
 
 export function ActionButton(props: ActionbuttonProps) {
   const navigate = useNavigate()
   return (
-      <Button onClick={()=>{
+      <Button type='submit' onClick={()=>{
             props.onClick && props.onClick();
             props.navigateTo && navigate(props.navigateTo);
        }} >{props.label} </Button>
