@@ -117,7 +117,7 @@ export function Clinical(props: ClinicalProps) {
       </Grid>
 
       <br/>
-      <Grid container spacing={2} >
+      {/* <Grid container spacing={2} >
           <Grid item md={3}>
               <TextField {...register('state')}  label='State' select fullWidth placeholder='State' >
                   <MenuItem value='In progress'>In progress</MenuItem>
@@ -133,9 +133,9 @@ export function Clinical(props: ClinicalProps) {
             <Grid item md={3}>
                 <Button type='submit' variant='outlined' style={{marginTop:10}} fullWidth >Discharge</Button>
             </Grid>
-      </Grid>
+      </Grid> */}
 
-
+      
 
 
     </div>
