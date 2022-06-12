@@ -21,7 +21,7 @@ export function OpdHome(props: OpdHomeProps) {
   return (
     <div className={styles['container']}>
         <Grid container justifyContent={'space-between'}>
-              <Grid item slot={'start'}  > <Pagetitle title='OPD Desk'/> </Grid>
+              <Grid item slot={'start'}  > <Pagetitle icon='medical_services' title='OPD Desk'/> </Grid>
               <Grid item slot={'end'}  > <Button variant={'contained'}>NEW REGISTRATION</Button>  </Grid>
         </Grid>
         <Typography variant='caption'>Queue List</Typography>

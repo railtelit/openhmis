@@ -16,7 +16,7 @@ export interface SearchParams{
 
 const default_params={skipTo:0,limit:20,returnLimit:20,offset:0}
 export const useSNOMEDQuery=()=>{
-    const [snomedresults,setResults]=useState<any>([])
+    const [snomedresults,setResults]=useState<any[]>([])
     const [isWorking,setIsWorking]=useState(false)
     const searchDescriptions=(params:SearchParams={})=>{
             if(isWorking){

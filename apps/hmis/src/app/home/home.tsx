@@ -4,8 +4,9 @@ import * as  React from 'react';
 import {  Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import { Earnings } from '../../views/dashboards/dashboard1-components';
 
-
 import { HOME_ROUTES } from './routes';
+import { TestReport } from './TestReport';
+
 
 const HealthPatients = React.lazy( ()=> import('@ha/health/patients') ) ;
 const HealthOPD = React.lazy( ()=> import('@ha/health/opd') ) ;
@@ -32,7 +33,7 @@ const WelcomeHome = ()=><div>
         <Earnings/> 
     </Grid>
     <Grid item md={3}>
-         
+          <TestReport />
     </Grid>
     </Grid>
   </div>
@@ -42,6 +43,7 @@ const WelcomeHome = ()=><div>
 export function Home(props: HomeProps) {
 const navigate=useNavigate();
 
+ 
 const RouteItems=HOME_ROUTES.map(route=>
   <ListItem key={route.path}  onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >
 
@@ -54,8 +56,7 @@ const RouteItems=HOME_ROUTES.map(route=>
  );
 
   return (
-    <Box>
-
+    <Box>      
 {/* 
     <AppBar title="HMIS">
       <Toolbar>
@@ -88,7 +89,7 @@ const RouteItems=HOME_ROUTES.map(route=>
           {RouteItems}
       </List>
     </Drawer>
-    <Box sx={{marginLeft:30,marginTop:10 }}> */}
+    <Box sx={{marginLeft:30,marginTop:10 }}> */}    
     <Routes>
            <Route path="/" element={ <WelcomeHome/> }  />
            <Route path="/dashboard" element={ <WelcomeHome/> }  />

@@ -61,7 +61,7 @@ export function OpdRx(props: OpdRxProps) {
               <Tab label="Allergies" value="3.1" />
               <Tab label="Diagnosis" value="6" />
               <Tab label="Investigations" value="7" />
-              <Tab label="Procededures" value="7.1" />
+              <Tab label="Procedures" value="7.1" />
               <Tab label="Medication" value="8" />
             </TabList>
             <TabPanel value="0">

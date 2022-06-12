@@ -18,8 +18,7 @@ export function OpdMedicationForm(props: OpdMedicationFormProps) {
   return (
     <div className={styles['container']}>
       
-      <Container>
-      
+      <Container>      
         <Pagetitle  title='Medications'/>
         <form onSubmit={handleSubmit(onSubmit)} >
               <Grid container spacing={2} alignItems={'center'}>

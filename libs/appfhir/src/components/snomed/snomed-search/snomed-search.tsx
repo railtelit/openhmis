@@ -1,12 +1,14 @@
 import styles from './snomed-search.module.scss';
 import {SearchParams, useSNOMEDQuery} from '../../../hooks/useSNOMEDQuery'
-import {Autocomplete,TextField} from '@mui/material'
+import {Autocomplete,AutocompleteProps,TextField} from '@mui/material'
 import { Control, Controller } from 'react-hook-form';
+import { ElementType } from 'react';
 /* eslint-disable-next-line */
 export interface SnomedSearchProps  {
      semanticTag?:string,
      control:Control,
      name:string,
+     disabled?:boolean, placeholder?:string, 
      onChange?:(value:any)=>void
 }
 
@@ -19,9 +21,10 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
          rules={{required:true}}
          render={
            ({field:{value,onChange}})=> 
-           <Autocomplete options={snomedresults} fullWidth
+           <Autocomplete options={snomedresults} fullWidth 
+          
             autoHighlight                        
-             freeSolo={true} 
+             freeSolo={true}   disabled={props.disabled||false}
              onChange={(e,v,reason,details)=>{                  
                   onChange(v); 
                   props.onChange && props.onChange(v);
@@ -35,7 +38,7 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
                  } 
             isOptionEqualToValue={ (o,v)=> o.id ? o.id===v.id : true }
            getOptionLabel={(o:any)=> ( o.pt? o?.pt?.term : o ) } 
-           renderInput={(field)=> <TextField  {...field} /> }  /> 
+           renderInput={(field)=> <TextField   placeholder={props.placeholder} {...field} /> }  /> 
          }
       />
     
