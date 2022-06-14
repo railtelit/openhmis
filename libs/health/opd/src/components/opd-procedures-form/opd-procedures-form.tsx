@@ -24,7 +24,7 @@ export function OpdProceduresForm(props: OpdProceduresFormProps) {
                       <SnomedAutoComplete control={control} name='body_part' placeholder='Body Part' />
                   </Grid>                  
                   <Grid item md={8}>
-                      <TextField  name='instruction' placeholder='Patient Instruction' />
+                      <TextField  name='instruction' fullWidth placeholder='Patient Instruction' />
                   </Grid>
                   <Grid item md={4}>
                          <Button>Add Procedure Order</Button>

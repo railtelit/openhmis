@@ -69,14 +69,15 @@ POST  {{endpoint}}/Organization
 Content-Type: application/json
 
 {
-    "name":"" ,"resourceType":"Organization",
+    "name":"Metro Road Clinic" ,"resourceType":"Organization",
     "type":[
         { 
-            "text":"Hospital","coding":[
-                {"code":"prov","display":"Hospital"}
+            "text":"Dental Dept","coding":[
+                {"code":"dept","display":"Clinic"}
             ]
          }
-    ]   
+    ]  ,
+    "partOf":{"reference":"Organization/7","display":"Smile Clinic"} 
 }
 ###
-DELETE  {{endpoint}}/Organization/4
+DELETE  {{endpoint}}/Organization/8

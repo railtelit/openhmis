@@ -5,23 +5,34 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import EditOrganization from '../components/edit-organization/edit-organization';
 import styles from './health-organizations.module.scss';
-
+import {arrayToTree} from 'performant-array-to-tree'
+import { RenderTree, RichObjectTree } from '@ha/shared-ui';
 /* eslint-disable-next-line */
 export interface HealthOrganizationsProps {}
 
 export function HealthOrganizations(props: HealthOrganizationsProps) {
   const [showedit,setShowEdit]=useState<boolean>(false)
-  const [orgs,fetcherror,queryOrgs,deleteorg,createOrg ]=useFhirQuery('Organization')
+  const [orgs,fetcherror,queryOrgs,deleteorg,createOrg ]=useFhirQuery('Organization'); 
+  
+  const [treedata,setTreedata]=useState<any[]>([])
   const [resolve]=useFhirResolver('Organization')
   const [mode,setMode]=useState<string>('create')
-  const [record,setRecord]=useState<any>(null)
+  const [record,setRecord]=useState<any>(null); 
+  const [currentOrg,setcurrentOrg]=useState(null)
   useEffect(()=>{
       queryOrgs();
-  },[])
+  },[]); 
+  useEffect(()=>{
+       const  treelist =  (orgs.map(o=> ({...o,parentId:(o.partOf? o.partOf?.reference.split('/')[1] : null ) }) )); 
+       setTreedata( arrayToTree(treelist,{dataField:null, }) ); 
+  },[orgs]);
   function startEdit(mode:string,res:any){
       setRecord(res);
       setMode(mode);
-      setShowEdit(true)
+      setShowEdit(true);
+  }
+  function selectOrg(id:string){
+       setcurrentOrg(orgs.find(i=>i.id===id));
   }
   return (
     <div className={styles['container']}  >
@@ -32,10 +43,11 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                      <Typography marginLeft={1} alignItems={'center'} variant={'h5'}> Health Organizations</Typography>
               </Stack>
              </Grid>
-              <Grid item xs={2}>
-                  <ButtonGroup>
-                      <Button variant='outlined' onClick={()=>startEdit('create',null)} startIcon={<Icon>create</Icon>}>CREATE NEW</Button>
-                  </ButtonGroup>
+              <Grid item xs={12} md justifyContent={'end'} alignContent={'end'} >
+                      
+                      {resolve('type.0.coding.0.code',currentOrg)!=='dept'? <Button>ADD DEPARTMENT</Button> :null }
+                      <Button variant='outlined' onClick={()=>startEdit('create',null)} startIcon={<Icon>add</Icon>}>CREATE NEW</Button>
+                  
               </Grid>
            </Grid>
 
@@ -50,7 +62,7 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
 
 
             <Grid container spacing={2}>
-            {(orgs as any[]).map( (o,i)=>
+            {/* {(orgs as any[]).map( (o,i)=>
                         <Grid key={i} item md={3} xs={12} justifyContent={'center'}>
                         <Card key={i} elevation={3} sx={{maxWidth:250}} >
 
@@ -67,8 +79,13 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                           </CardActions>
                   </Card>
                   </Grid>
-            )}
+            )} */}
+              <RichObjectTree onNodeSelect={(id)=>selectOrg(id) } displayLabel={(row)=> 
+                  <Typography sx={{fontWeight:row?.parentId?'':'bolder',p:1}} > 
+                      {row.name} </Typography> } data={treedata} />                      
             </Grid>
+            {/* { JSON.stringify(treedata) } */}
+            Current Org : {JSON.stringify(currentOrg)}
           </Container>
       <Dialog open={showedit} fullWidth  >
        {/* <DialogTitle>

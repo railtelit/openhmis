@@ -40,8 +40,7 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
            getOptionLabel={(o:any)=> ( o.pt? o?.pt?.term : o ) } 
            renderInput={(field)=> <TextField   placeholder={props.placeholder} {...field} /> }  /> 
          }
-      />
-    
+      />    
   );
 }
 
