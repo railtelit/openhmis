@@ -9,9 +9,9 @@ export interface PagetitleProps {
 
 export function Pagetitle(props: PagetitleProps) {
   return (
-    <Stack direction={'row'} alignItems={'center'}>
+    <Stack direction={'row'} alignContent='center' alignItems={'center'} spacing={1}>
        {props.icon?<Icon>{props.icon}</Icon>:null}
-       <Typography variant='h5'> {props.title} </Typography>
+       <Typography fontWeight={'bolder'} variant='h4'> {props.title} </Typography>
     </Stack>
   );
 }

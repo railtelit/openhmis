@@ -1,10 +1,12 @@
 
-import { Box, AppBar, Toolbar, Typography, Drawer, IconButton, Icon, Divider, ListItem, ListItemButton, ListItemText, styled, List, CssBaseline } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, Drawer, IconButton, Icon, Divider, ListItem, ListItemButton, ListItemText, styled, List, CssBaseline, Grid } from '@mui/material';
 import * as  React from 'react';
 import {  Outlet, Route, Routes, useNavigate } from 'react-router-dom';
-
+import { Earnings } from '../../views/dashboards/dashboard1-components';
 
 import { HOME_ROUTES } from './routes';
+import { TestReport } from './TestReport';
+
 
 const HealthPatients = React.lazy( ()=> import('@ha/health/patients') ) ;
 const HealthOPD = React.lazy( ()=> import('@ha/health/opd') ) ;
@@ -25,13 +27,23 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-const WelcomeHome = ()=><div>Welcome </div>
+const WelcomeHome = ()=><div> 
+    <Grid container>
+    <Grid item md={3}>
+        <Earnings/> 
+    </Grid>
+    <Grid item md={3}>
+          <TestReport />
+    </Grid>
+    </Grid>
+  </div>
 
 
 //{/* {route?.divider ? <Divider  key={`hr${route.path}`} /> :null } */}
 export function Home(props: HomeProps) {
 const navigate=useNavigate();
 
+ 
 const RouteItems=HOME_ROUTES.map(route=>
   <ListItem key={route.path}  onClick={()=>navigate(route.path??'') }  color="primary" sx={{ padding: 0, margin: 0, className: 'active' ,  }} >
 
@@ -44,11 +56,13 @@ const RouteItems=HOME_ROUTES.map(route=>
  );
 
   return (
-    <Box>
-
-
+    <Box>      
+{/* 
     <AppBar title="HMIS">
       <Toolbar>
+        <IconButton>
+          <Icon>local_hospital</Icon>
+        </IconButton>
         <Typography variant="h6">Open-HMIS</Typography>
       </Toolbar>
     </AppBar>
@@ -75,9 +89,10 @@ const RouteItems=HOME_ROUTES.map(route=>
           {RouteItems}
       </List>
     </Drawer>
-    <Box sx={{marginLeft:30,marginTop:10 }}>
+    <Box sx={{marginLeft:30,marginTop:10 }}> */}    
     <Routes>
            <Route path="/" element={ <WelcomeHome/> }  />
+           <Route path="/dashboard" element={ <WelcomeHome/> }  />
            <Route path="/health/patients" element={
                  <React.Suspense fallback={<div>Loading Patient....</div>}>
                       <HealthPatients/>  
@@ -124,7 +139,7 @@ const RouteItems=HOME_ROUTES.map(route=>
        <Outlet/>
 
     </Box>
-  </Box>
+  
   );
 }
 

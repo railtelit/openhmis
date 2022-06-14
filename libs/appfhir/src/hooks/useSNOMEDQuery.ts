@@ -14,17 +14,26 @@ export interface SearchParams{
         conceptActive?:boolean,
 }
 
-const default_params={skipTo:0,limit:50,returnLimit:50,offset:0}
+const default_params={skipTo:0,limit:20,returnLimit:20,offset:0}
 export const useSNOMEDQuery=()=>{
-    const [snomedresults,setResults]=useState<any>([])
+    const [snomedresults,setResults]=useState<any[]>([])
+    const [isWorking,setIsWorking]=useState(false)
     const searchDescriptions=(params:SearchParams={})=>{
-            console.log(`Searchfing `,params); 
-            if((params.term?.length||0) >3)
-             Axios.get(`${SNOMED_API}/descriptions`,{params:{...default_params,...params}}).then(res=>{
-                
-                    setResults(res.data?.items )
-                    console.log(res.data?.items)
+            if(isWorking){
+                    console.log('working Still..wait');
+            }
+            
+            if((params.term?.length||0) >3 ){
+                console.log(`Searchfing `,params); 
+                setIsWorking(true);
+             Axios.get(`${SNOMED_API}/descriptions`,{params:{...default_params,...params}})                
+                .then(res=>{
+                    const conceptMapping = (res.data?.items as any[]).map( item=>item.concept );
+                    setResults( conceptMapping )
+                    //console.log(res.data?.items); 
+                    setIsWorking(false)
              })
+        }
     }
     
     return  {snomedresults,searchDescriptions}
