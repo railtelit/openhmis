@@ -1,0 +1,23 @@
+{
+  "root": "libs/health/dashboard",
+  "sourceRoot": "libs/health/dashboard/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/health/dashboard/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/health/dashboard"],
+      "options": {
+        "jestConfig": "libs/health/dashboard/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

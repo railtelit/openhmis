@@ -9,7 +9,8 @@ export interface SnomedSearchProps  {
      control:Control,
      name:string,
      disabled?:boolean, placeholder?:string, 
-     onChange?:(value:any)=>void
+     onChange?:(value:any)=>void,
+     multiple?:boolean
 }
 
 export function SnomedAutoComplete(props: SnomedSearchProps) {
@@ -21,8 +22,7 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
          rules={{required:true}}
          render={
            ({field:{value,onChange}})=> 
-           <Autocomplete options={snomedresults} fullWidth 
-          
+           <Autocomplete options={snomedresults} fullWidth           
             autoHighlight                        
              freeSolo={true}   disabled={props.disabled||false}
              onChange={(e,v,reason,details)=>{                  

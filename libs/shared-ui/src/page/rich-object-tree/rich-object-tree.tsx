@@ -34,11 +34,10 @@ export function RichObjectTree({data,displayLabel,onNodeSelect}: RichObjectTreeP
       defaultCollapseIcon={<Icon>expand_more</Icon> }
       aria-label="rich object"
       // defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={ (data).map( i=>i.id) }
+      expanded={ (data).map( i=>i.id) }
       // defaultExpandIcon={<ChevronRightIcon />}
       sx={{  flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-    >
-      {data.map(ri=> renderTree(ri) )}
+    > {data.map(ri=> renderTree(ri) )}
     </TreeView>
   );
 }

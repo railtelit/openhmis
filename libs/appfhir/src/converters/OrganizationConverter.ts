@@ -15,11 +15,17 @@ export class OrganizationConverter  implements FhirConverter{
                 const resource:any=form
                 console.log(`ConV Resource`,form,)
                  
-                       form.type && (resource.type = {coding:[ { ...form.type, system:ORGANIZATION_SYSTEM,} ]})
+                       form.type && (resource.type = [{                                
+                                        coding:[{
+                                                code:form.type, system:ORGANIZATION_SYSTEM
+                                        }]  
+                                 }
+                                 ]
+                                )
                     
                         form.id && (
                             resource.identifier=[{type:[
-                                    {coding:[{system:DEFAULT_SYSTEM,...form.id}]}
+                                    {coding:[{system:DEFAULT_SYSTEM,...form.id }]}
                             ]}]
                         ); 
                         form.mobileno && (
@@ -27,6 +33,9 @@ export class OrganizationConverter  implements FhirConverter{
                         )
                         form.address && (
                                 resource.address = (form.address as any[]).map(a=>({...a,line:[a.line1,a.line2]}))
+                        )
+                        form.partOf && (
+                                resource.partOf =  form.partOf
                         )
                     return resource; 
         }
