@@ -38,6 +38,7 @@
     "react-apexcharts": "^1.4.0",
     "react-autocomplete": "^1.8.1",
     "react-dom": "18.0.0",
+    "react-feather": "^2.0.10",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.31.1",
     "react-perfect-scrollbar": "^1.5.8",

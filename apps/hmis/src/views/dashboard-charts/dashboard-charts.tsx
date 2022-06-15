@@ -39,7 +39,6 @@ export function DashboardCharts(props: DashboardChartsProps) {
       'rgb(38, 198, 218)',
       'rgb(236, 239, 241)',
       'rgb(116, 90, 242)',
-      '#ef5350',
     ],
     tooltip: {
       fillSeriesColor: false,
