@@ -9,7 +9,7 @@ const FullLayout = Loadable(lazy(() => import('../layouts/full-layout/FullLayout
 
 const Router = [
   {
-    path: '/',
+    path: '/',  
     element: <FullLayout />,
     children:[
         {path:'/*',element: <Home/> }

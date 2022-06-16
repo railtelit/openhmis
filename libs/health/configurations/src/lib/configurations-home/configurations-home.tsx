@@ -5,13 +5,13 @@ interface NavigateOption{
     label:string,
     location:string,
     icon:string
-
 }
 /* eslint-disable-next-line */
 export interface ConfigurationsHomeProps {}
 
 const configure_options:NavigateOption[]=[
-    {label:'Locations',location:'locations',icon:'location_city'}
+    {label:'Locations',location:'locations',icon:'location_city'},
+    {label:'Drugs',location:'drugs',icon:'medication'}
 ]
 export function ConfigurationsHome(props: ConfigurationsHomeProps) {
   const navigate = useNavigate()
@@ -22,12 +22,12 @@ export function ConfigurationsHome(props: ConfigurationsHomeProps) {
         <Grid item md={6} xs={12}>
       <List >
           { configure_options.map(option=> 
-            <ListItem key={option.location} onClick={()=>navigate('locations')}>
+            <ListItem key={option.location} onClick={()=>navigate(option.location)}>
               <ListItemButton>
                 <ListItemAvatar>
-                    <Icon>location_city</Icon>
+                    <Icon> {option.icon} </Icon>
                 </ListItemAvatar>
-                <ListItemText primary="Locations"  ></ListItemText>
+                <ListItemText primary={option.label}  ></ListItemText>
                 <IconButton><Icon>arrow_right</Icon> </IconButton>
               </ListItemButton>
             </ListItem> )
