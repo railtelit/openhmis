@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+import { Navigate } from 'react-router-dom';
 import Home from '../app/home/home';
 
 import Loadable from '../layouts/full-layout/loadable/Loadable';
@@ -12,6 +13,8 @@ const Router = [
     path: '/',  
     element: <FullLayout />,
     children:[
+        
+        {path:'/',element: <Navigate  to='/dashboard'/> },
         {path:'/*',element: <Home/> }
     ]
     // children: [
