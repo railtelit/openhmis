@@ -28,7 +28,7 @@ const FormLayouts = () => (
     {/* breadcrumb */}
     <Breadcrumb title="Form Layouts" items={BCrumb} />
     {/* end breadcrumb */}
-    <Grid container spacing={0}>
+    <Grid container spacing={0}>  
       <Grid item lg={12} md={12} xs={12}>
         <FbOrdinaryForm />
       </Grid>

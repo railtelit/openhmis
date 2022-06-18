@@ -14,6 +14,7 @@ import Clinical from '../clinical/clinical';
 import DxProcedures from '../dx-procedures/dx-procedures';
 import MainInfo from '../main-info/main-info';
 import Mental from '../mental/mental';
+import FileUpload from '../file-upload/file-upload';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
@@ -125,6 +126,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
             <Tab label="Dx and Procedures" value="4" />
             <Tab label="Validation" value="5" />
             <Tab label="Administrative" value="6" />
+            <Tab label="File Upload" value="7" />
           </TabList>
         </Box>
         <TabPanel value="1"><MainInfo/></TabPanel>
@@ -133,6 +135,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
         <TabPanel value="4"><DxProcedures/></TabPanel>
         <TabPanel value="5"><Validation/></TabPanel>
         <TabPanel value="6"><Administrative/></TabPanel>
+        <TabPanel value="7"><FileUpload/></TabPanel>
       </TabContext>
     </Box>
     </div>
