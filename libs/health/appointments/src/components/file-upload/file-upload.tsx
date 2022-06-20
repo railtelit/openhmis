@@ -4,6 +4,7 @@ import { useFhirCreate, useFhirQuery } from '@ha/appfhir';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const FileBase64 = require('react-file-base64');
 
@@ -13,6 +14,7 @@ export interface FileUploadProps {
 
 let base64:any;
 let mimeType:any;
+let encodedBase64:string;
 
 
 export function FileUpload({onCreate}: FileUploadProps) {
@@ -60,10 +62,30 @@ export function FileUpload({onCreate}: FileUploadProps) {
     newData && newData.id && onCreate && toast.success('Record Created ');
   },[newData])
 
+  useEffect(() => {
+
+    const loadUsers = async () => {
+
+      const response = await axios.get('http://at.erpapps.in/fhir//Binary/28');
+
+      encodedBase64 = response.data.data;
+
+    }
+    loadUsers();
+  }, [])
+
 
   return (
+
       <form onSubmit={handleSubmit(onSave)}>
           <div className={styles['container']}>
+
+          <Grid container spacing={2} >
+              <Grid item md={6}>
+                  <img height={100} src={encodedBase64}/>
+              </Grid>
+          </Grid>
+
               <h1>React File Upload</h1>
               <Grid container spacing={2} >
                   <Grid item md={6}>

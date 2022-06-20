@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Grid, Icon, IconButton, MenuItem, Paper, Stack, TextField } from '@mui/material';
 import styles from './appointments-edit.module.scss';
 import { useRef } from 'react';
-import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate } from '@ha/appfhir';
+import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate, AppointmentConverter } from '@ha/appfhir';
 import { toast } from 'react-toastify';
 import { useFieldArray, useForm } from 'react-hook-form'
 import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
@@ -67,13 +67,14 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
 
 
   const defaultAddress ={line1:'',line2:'',city:null,state:null,pincode:'' } ;
+
   async function onSave(formValue:any){
-            ///  let newRecord= convertToResource(formValue)
-              let newRecord = formValue;
+              let newRecord= convertToResource(formValue)
+              //let newRecord = formValue;
               newRecord.start && ( newRecord.start += 'Z')
               newRecord.end && ( newRecord.end += 'Z')
-              newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference += patientId)
-              console.log(newRecord);
+              //newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference += ""+patientId)
+              //console.log("Record "+newRecord);
               // makeRequest(newRecord)
               if(mode==='edit')
                      updateAppointment(newRecord).then(_=>{
@@ -112,17 +113,18 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
   useEffect(()=>{
           console.log(`Pat Created : `);
           console.log(newAppointment);
-          newAppointment && newAppointment.id && onCreate && onCreate(newAppointment) && toast.success('Record Created ');
+          newAppointment && newAppointment.id && onCreate && toast.success('Record Created ');
   },[newAppointment])
   useEffect(()=>{
      //
      if(mode==='edit' && record){
           const formValue = convertToForm(record);
           console.log(`Setting`);
-          console.log(record)
-          Object.keys(record).forEach(field=>{
+          console.log(formValue)
+          Object.keys(formValue).forEach(field=>{
 
-               setValue(field,record[field])
+               setValue(field,formValue[field])
+               //console.log("field- "+field+ ", formValue[field]- "+formValue[field] )
           })
 
      }
@@ -170,10 +172,10 @@ console.log(newList)
 
                       setPatientId(value);
                     }}
-                    renderInput={(params:any) => <TextField {...register('participant.0.actor.display')} {...params} label="Patient" />}/>
+                    renderInput={(params:any) => <TextField {...register('participant')} {...params} label="Patient" />}/>
 
 
-                    <TextField {...register('participant.0.actor.reference')} value={"Patient/"} label='Health Prof' style={{display:'none' }}></TextField>
+                    <TextField {...register('participantReference')} value={"Patient/"} label='Health Prof' style={{display:'none' }}></TextField>
             </Grid>
             <Grid item md={4}>
                   <TextField {...register('start')}   type='datetime-local'  InputLabelProps={{shrink:true}} label='Date and Time' fullWidth   />
@@ -184,7 +186,7 @@ console.log(newList)
 
 
             <Grid item md={4}>
-                  <TextField {...register('serviceCategory')}  label='Category' select fullWidth placeholder='Category' >
+                  <TextField {...register('category')}  label='Category' select fullWidth placeholder='Category' >
                       <MenuItem value='Adoption'>Adoption</MenuItem>
                       <MenuItem value='Aged Care'>Aged Care</MenuItem>
                       <MenuItem value='Allied Health'>Allied Health</MenuItem>
@@ -248,7 +250,7 @@ console.log(newList)
                   <TextField {...register('speciality')}  label='Specialty' fullWidth placeholder='Specialty' ></TextField>
             </Grid> */}
             <Grid item md={12}>
-                  <TextField label='Information' {...register('description')} multiline={true} rows={3} fullWidth />
+                  <TextField label='comment' {...register('description')} multiline={true} rows={3} fullWidth />
             </Grid>
 
         </Grid>

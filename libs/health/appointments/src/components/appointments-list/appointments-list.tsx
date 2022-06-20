@@ -27,7 +27,7 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'id',headerName:'Id'},
     //{field:'appointment_id',headerName:'Appointment ID', flex: 1,valueGetter:(v)=> resolve('note.text',v.row)  },
     {field:'patient',headerName:'Patient', flex: 1,valueGetter:(v)=> resolve('participant.0.actor.display',v.row) },
-    {field:'appointmentType',headerName:'Type', flex: 1,valueGetter:(v)=> resolve('appointmentType.coding.0.code',v.row) },
+    {field:'appointmentType',headerName:'Type', flex: 1,valueGetter:(v)=> resolve('appointmentType.coding.0.display',v.row) },
     {field:'description',headerName:'Information', flex: 1,valueGetter:(v)=> resolve('description',v.row) },
     {field:'category',headerName:'Category', flex: 1,valueGetter:(v)=> resolve('serviceCategory.0.coding.0.display',v.row) },
     {field:'specialty',headerName:'Specialty', flex: 1,valueGetter:(v)=> resolve('specialty.0.coding.0.display',v.row) },
