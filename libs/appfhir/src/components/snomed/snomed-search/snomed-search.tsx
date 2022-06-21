@@ -1,8 +1,9 @@
 import styles from './snomed-search.module.scss';
-import {SearchParams, useSNOMEDQuery} from '../../../hooks/useSNOMEDQuery'
+import {SearchConceptType, SearchParams, SNOMEDQueryType, useSNOMEDQuery} from '../../../hooks/useSNOMEDQuery'
 import {Autocomplete,AutocompleteProps,TextField} from '@mui/material'
 import { Control, Controller } from 'react-hook-form';
-import { ElementType } from 'react';
+
+
 /* eslint-disable-next-line */
 export interface SnomedSearchProps  {
      semanticTag?:string,
@@ -10,11 +11,15 @@ export interface SnomedSearchProps  {
      name:string,
      disabled?:boolean, placeholder?:string, 
      onChange?:(value:any)=>void,
-     multiple?:boolean
+     ecl?:string,
+     module?:string,      
+     multiple?:boolean,
+     searchMode?:string,
+     queryConfig?:SNOMEDQueryType
 }
 
 export function SnomedAutoComplete(props: SnomedSearchProps) {
-  const {snomedresults,searchDescriptions}=useSNOMEDQuery(); 
+  const {snomedresults,searchDescriptions}=useSNOMEDQuery(props.queryConfig); 
   
   return (
     <Controller name={props.name}
@@ -23,7 +28,7 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
          render={
            ({field:{value,onChange}})=> 
            <Autocomplete options={snomedresults} fullWidth           
-            autoHighlight                        
+            autoHighlight               multiple={props.multiple||false}         
              freeSolo={true}   disabled={props.disabled||false}
              onChange={(e,v,reason,details)=>{                  
                   onChange(v); 
@@ -32,7 +37,7 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
              onInputChange={(t,value)=> {
                    if(t.type==='change')
                       searchDescriptions({term:value as string,semanticTag:props.semanticTag,
-                      active:true,conceptActive:true                   
+                         active:true,conceptActive:true,ecl:props.ecl,module:props.module
                       });
                   }
                  } 

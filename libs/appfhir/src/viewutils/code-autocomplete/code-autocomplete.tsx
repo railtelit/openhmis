@@ -15,6 +15,7 @@ export interface CodeAutocompleteProps {
       control:Control,
       multiple?:boolean,
       defaultValue?:any,
+     
       onValueChange?:(v:any)=>void
 }
 
@@ -30,6 +31,8 @@ export function CodeAutocomplete({system,resourceId,multiple=false,control,name,
           console.log(valueMapping);
           setOptions(valueMapping||[]);
           setInit(true)
+      }).catch(err=>{
+         //         
       })
   },[])
   return (
@@ -37,8 +40,7 @@ export function CodeAutocomplete({system,resourceId,multiple=false,control,name,
        
       <Controller control={control} name={name}    defaultValue={defaultValue} 
                render={ ( {field :{onChange,ref,value,} } )=>
-                  <Autocomplete multiple={multiple}  value={value}  options={options} getOptionLabel={(o)=>o?.text || '-' } 
-                     
+                  <Autocomplete multiple={multiple}  value={value}  options={options} getOptionLabel={(o)=>o?.text || '-' }                      
                     isOptionEqualToValue={ (option,value)=> option?.coding?.[0]?.code === value?.coding?.[0]?.code  }
                     onChange={(e,value)=> { 
                       onChange(value); 

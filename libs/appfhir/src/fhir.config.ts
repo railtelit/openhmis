@@ -14,5 +14,6 @@ export const SERVER_URL =  DEFAULT_FHIR_SERVER;
 export const CODESYSTEM_URL='https://hapi.fhir.org/baseR4/';
 
 export const SNOMED_TEST='http://browser.ihtsdotools.org/api/v2/'
-export const SNOMED_API='https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN'
+export const SNOMED_API='https://browser.ihtsdotools.org/snowstorm/snomed-ct/MAIN'
+export const SNOMEDBROWSER_API='https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN'
 //https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/descriptions?term=dentis&active=true&module=900000000000207008&semanticTags=occupation&semanticTags=envi&conceptActive=true&groupByConcept=false&searchMode=STANDARD&offset=0&limit=50
