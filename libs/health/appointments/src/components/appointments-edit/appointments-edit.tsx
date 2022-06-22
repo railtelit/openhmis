@@ -73,7 +73,7 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
               //let newRecord = formValue;
               newRecord.start && ( newRecord.start += 'Z')
               newRecord.end && ( newRecord.end += 'Z')
-              //newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference += ""+patientId)
+              newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference += ""+patientId)
               //console.log("Record "+newRecord);
               // makeRequest(newRecord)
               if(mode==='edit')
@@ -123,8 +123,17 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
           console.log(formValue)
           Object.keys(formValue).forEach(field=>{
 
-               setValue(field,formValue[field])
-               //console.log("field- "+field+ ", formValue[field]- "+formValue[field] )
+            if(field == "start"){
+              setValue(field,formValue[field].substring(0, 16));
+              //console.log("start- " + formValue[field].substring(0, 16));
+
+            }else if(field == "end"){
+              setValue(field,formValue[field].substring(0, 16));
+              //console.log("end- " + formValue[field].substring(0, 16));
+            }else{
+
+              setValue(field,formValue[field]);
+            }
           })
 
      }
@@ -174,14 +183,13 @@ console.log(newList)
                     }}
                     renderInput={(params:any) => <TextField {...register('participant')} {...params} label="Patient" />}/>
 
-
                     <TextField {...register('participantReference')} value={"Patient/"} label='Health Prof' style={{display:'none' }}></TextField>
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('start')}   type='datetime-local'  InputLabelProps={{shrink:true}} label='Date and Time' fullWidth   />
+                  <TextField {...register('start')} type='datetime-local'  InputLabelProps={{shrink:true}} label='Start Date and Time' required fullWidth   />
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('end')}  type={'datetime-local'} InputLabelProps={{shrink:true}} label='End Date and Time' fullWidth   />
+                  <TextField {...register('end')} type={'datetime-local'} InputLabelProps={{shrink:true}} label='End Date and Time' required fullWidth   />
             </Grid>
 
 

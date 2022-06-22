@@ -12,7 +12,8 @@ export class AppointmentConverter implements FhirConverter{
             participant:[
               {
                 actor:{
-                  display: form['participant']
+                  display: form['participant'],
+                  //reference: form['participantReference']
                 }
               }
             ],
@@ -42,14 +43,7 @@ export class AppointmentConverter implements FhirConverter{
                   }
                 ]
               },
-            description,
-            participantReference:[
-              {
-                actor:{
-                  reference: form['participantReference']
-                }
-              }
-            ],
+            description
          }
   }
   toForm(resource: any){
@@ -60,7 +54,8 @@ export class AppointmentConverter implements FhirConverter{
           category:resource['serviceCategory'][0]?.coding[0]?.display,
           specialty:resource['specialty'][0]?.coding[0]?.display,
           appointmentType:resource['appointmentType'].coding[0]?.display,
-          description,participantReference:resource['participant'][0]?.actor.reference
+          description,
+          participantReference:resource['participant'][0]?.actor.reference
          }
      }
      return {}

@@ -33,34 +33,41 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     {field:'specialty',headerName:'Specialty', flex: 1,valueGetter:(v)=> resolve('specialty.0.coding.0.display',v.row) },
     {field:'status',headerName:'Status', flex: 1,valueGetter:(v)=> resolve('status',v.row) },
     {field:'Status Icon', renderCell:(v)=>{
-      let statusIcon = resolve('status',v.row);
-      if(statusIcon == "proposed"){
-        return <Icon color='primary'>edit_note</Icon>
-      }else if(statusIcon == "pending"){
-        return <Icon color='warning'>pending</Icon>
-      }else if(statusIcon == "booked"){
-        return <Icon color='primary'>bookmark_added</Icon>
-      }else if(statusIcon == "arrived"){
-        return <Icon color='warning'>bookmark_added</Icon>
-      }else if(statusIcon == "fulfilled"){
-        return <Icon color='success'>done_all</Icon>
-      }else if(statusIcon == "cancelled"){
-        return <Icon color='error'>cancel</Icon>
-      }else if(statusIcon == "noshow"){
-        return <Icon color='error'>event_busy</Icon>
-      }else if(statusIcon == "entered-in-error"){
-        return <Icon color='error'>error_outline</Icon>
-      }else if(statusIcon == "checked-in"){
-        return <Icon color='primary'>checklist</Icon>
-      }else{
-        return <Icon color='warning'>hourglass_bottom</Icon>
-      }
-      //return statusIcon
+        let statusIcon = resolve('status',v.row);
+        if(statusIcon == "proposed"){
+          return <Icon color='primary'>edit_note</Icon>
+        }else if(statusIcon == "pending"){
+          return <Icon color='warning'>pending</Icon>
+        }else if(statusIcon == "booked"){
+          return <Icon color='primary'>bookmark_added</Icon>
+        }else if(statusIcon == "arrived"){
+          return <Icon color='warning'>bookmark_added</Icon>
+        }else if(statusIcon == "fulfilled"){
+          return <Icon color='success'>done_all</Icon>
+        }else if(statusIcon == "cancelled"){
+          return <Icon color='error'>cancel</Icon>
+        }else if(statusIcon == "noshow"){
+          return <Icon color='error'>event_busy</Icon>
+        }else if(statusIcon == "entered-in-error"){
+          return <Icon color='error'>error_outline</Icon>
+        }else if(statusIcon == "checked-in"){
+          return <Icon color='primary'>checklist</Icon>
+        }else{
+          return <Icon color='warning'>hourglass_bottom</Icon>
+        }
       }
     },
-    {field:'start',headerName:'Date and Time', flex: 1, valueGetter:(v)=> resolve('start',v.row)},
-    {field:'end',headerName:'End Date and Time', flex: 1,valueGetter:(v)=>resolve('end',v.row)},
-    {field:'action', renderCell:(v)=>{
+    {field:'start',headerName:'Start Date & Time', flex: 1,  renderCell:(v)=>{
+        var start = resolve('start',v.row);
+        return start.substring(0, 16)
+      }
+    },
+    {field:'end',headerName:'Start Date & Time', flex: 1,  renderCell:(v)=>{
+        var end = resolve('end',v.row);
+        return end.substring(0, 16)
+      }
+    },
+    {field:'Action', renderCell:(v)=>{
       return <ButtonGroup variant="text" aria-label="outlined transparent button group">
                 <Button onClick={()=>{
                       navigate('patient-evaluation/'+v.row?.id);
@@ -76,12 +83,6 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
     }
   ];
 
-  const navigateEvaluation = (appointmentId:string) => {
-    // 👇️ navigate to /
-    navigate('patient-evaluation/'+appointmentId);
-  };
-
-
 
 
   return (
@@ -93,7 +94,7 @@ export function AppointmentsList({onEditRow,query,rows=[],onDeleteRow=()=>{const
           <DataGrid rows={rows}  onRowDoubleClick={(r)=>{
             if(onEditRow)
               onEditRow(r.row)
-          }} columns={cols} pageSize={25}  showCellRightBorder={true}  />
+          }} columns={cols} pageSize={25} showCellRightBorder={true}  />
       </Box>
 
     </div>

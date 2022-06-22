@@ -49,7 +49,7 @@ export function PatientEvaluation({onClose=()=>{const i = true }}: PatientEvalua
 
       const response = await axios.get('http://at.erpapps.in/fhir/Patient?name='+appointmentId);
       const posts = response.data.entry;
-
+      console.log(posts)
       // gender = posts[0].resource.gender;
       // age = getAge(posts[0].resource.birthDate);
       // visit = posts[0].resource.gender;
