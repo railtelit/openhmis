@@ -1,0 +1,23 @@
+{
+  "root": "libs/health/organizations",
+  "sourceRoot": "libs/health/organizations/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/health/organizations/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/health/organizations"],
+      "options": {
+        "jestConfig": "libs/health/organizations/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "root": "libs/health/patients",
+  "sourceRoot": "libs/health/patients/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/health/patients/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/health/patients"],
+      "options": {
+        "jestConfig": "libs/health/patients/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

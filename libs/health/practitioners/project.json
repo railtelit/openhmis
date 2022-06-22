@@ -1,0 +1,23 @@
+{
+  "root": "libs/health/practitioners",
+  "sourceRoot": "libs/health/practitioners/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/health/practitioners/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/health/practitioners"],
+      "options": {
+        "jestConfig": "libs/health/practitioners/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
