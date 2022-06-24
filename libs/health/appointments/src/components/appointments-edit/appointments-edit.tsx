@@ -125,7 +125,7 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
     //let newRecord = formValue;
     newRecord.start && ( newRecord.start += 'Z')
     newRecord.end && ( newRecord.end += 'Z')
-    newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference = patientId)
+    //newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference = patientId)
     //console.log("Record "+newRecord.end);
     // makeRequest(newRecord)
     if(mode==='edit')
@@ -165,7 +165,6 @@ console.log(newList)
                     }}
                     renderInput={(params:any) => <TextField {...register('participant')} {...params} label="Patient" />}/>
 
-                    <TextField inputRef={input => input && input.focus()} {...register('participantReference')} value={patientId} autoFocus />
             </Grid>
             <Grid item md={4}>
                   <TextField {...register('start')} type='datetime-local'  InputLabelProps={{shrink:true}} label='Start Date and Time' required fullWidth   />
@@ -235,6 +234,9 @@ console.log(newList)
                   <TextField {...register('healthprof')}  label='Health Prof' fullWidth placeholder='Health Prof' ></TextField>
             </Grid>
 
+            <Grid item md={4}>
+              <TextField inputRef={input => input && input.focus()} {...register('participantReference')} value={patientId} style={{opacity: '0'}} autoFocus />
+            </Grid>
 
             {/* <Grid item md={4}>
                   <TextField {...register('speciality')}  label='Specialty' fullWidth placeholder='Specialty' ></TextField>
