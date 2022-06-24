@@ -3,6 +3,7 @@ import { Autocomplete, Breadcrumbs, Button, Icon, Stack, TextField, Typography }
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Link, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import ConfigureDrugs from '../configure/drugs/drugs';
 import ConfigureLocations from '../configure/locations/locations';
 import ConfigurationsHome from './configurations-home/configurations-home';
 import styles from './health-configurations.module.scss';
@@ -43,6 +44,7 @@ export function HealthConfigurations(props: HealthConfigurationsProps) {
       <Routes>
           <Route path='' element={<ConfigurationsHome/>} />
           <Route path='/locations' element={<ConfigureLocations/>} />
+          <Route path='/drugs' element={<ConfigureDrugs/>} />
       </Routes>
        {/* <Outlet/> */}
        {/* <Button  onClick={()=>test()} >Check Appointment</Button> */}

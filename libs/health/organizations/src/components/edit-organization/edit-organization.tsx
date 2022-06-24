@@ -17,10 +17,12 @@ export interface EditOrganizationProps {
     onCreate?:(org:any)=>void,
     onUpdate?:(org:any)=>void,
      mode?:string,
-     record?:any
+     record?:any,
+     orgtype?:string,
+     partOf?:any
 }
 
-export function EditOrganization({start=false,onClose=Empty,onCreate=Empty,mode='create',record=null,onUpdate=Empty  }: EditOrganizationProps) {
+export function EditOrganization({start=false,onClose=Empty,onCreate=Empty,mode='create',record=null,onUpdate=Empty ,orgtype='prov',partOf }: EditOrganizationProps) {
   const [startcreate,setStartcreate]=useState<boolean>(start); 
   const [editmode,setEditMode]=useState(mode)
   const [neworg,errors,createOrg]=useFhirCreate('Organization');
@@ -56,10 +58,12 @@ export function EditOrganization({start=false,onClose=Empty,onCreate=Empty,mode=
       }
   },[mode])
   function doSave(org:any){
-         
-         const res=convertToResource(org); 
+        console.log(orgtype,partOf);
+        const res=convertToResource({...org,type:orgtype}); 
+        console.log(res); 
+        
          if(mode==='create'){
-         createOrg(convertToResource(org)).then(o=>{          
+         createOrg( {...res,partOf}).then(o=>{          
             onCreate(o); 
             toast.success('Organization Created..!')
          })
@@ -76,9 +80,9 @@ export function EditOrganization({start=false,onClose=Empty,onCreate=Empty,mode=
     <div className={styles['container']}>
            
             <form onSubmit={handleSubmit(doSave)}>
-              <Grid container   justifyContent={'space-between'}>
-                  <Typography> <Icon>{mode==='create'?'add':'edit'}</Icon> {mode.toLocaleUpperCase()} HEALTH INSTITUTION  </Typography>
-                  <Stack direction={'row'}  spacing={1}>
+              <Grid container alignItems={'center'} alignContent={'center'}  justifyContent={'space-between'}>
+                  <Typography> <Icon>{mode==='create'?'add':'edit'}</Icon> {mode.toLocaleUpperCase()} HEALTH { orgtype==='dept'?'DEPARTMENT':'INSTITUTION'}  </Typography>
+                  <Stack direction={'row'} alignContent={'center'}  spacing={1}>
                     <Button type='submit' variant='contained'>{mode==='create'?'SAVE':'UPDATE'}</Button>
                     <Button variant='outlined' onClick={()=>onClose()} color={'error'} >CANCEL</Button>
                   </Stack>
@@ -89,8 +93,7 @@ export function EditOrganization({start=false,onClose=Empty,onCreate=Empty,mode=
                       <FormControl  >
                             {/* <FormLabel>Active</FormLabel> */}
                              <Controller control={control} name='active' 
-                              render={ ({field:{value,onChange} })=><RadioGroup   value={value||'false'} onChange={onChange} row >
-                                  
+                              render={ ({field:{value,onChange} })=><RadioGroup   value={value||'false'} onChange={onChange} row >                                  
                                    <FormControlLabel value={true} label='Active'  control={<Radio/>}></FormControlLabel>
                                    <FormControlLabel value={'false'} label='In-Active'  control={<Radio/>}></FormControlLabel>
                               </RadioGroup> }

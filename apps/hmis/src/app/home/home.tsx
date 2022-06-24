@@ -1,7 +1,7 @@
 
 import { Box, AppBar, Toolbar, Typography, Drawer, IconButton, Icon, Divider, ListItem, ListItemButton, ListItemText, styled, List, CssBaseline, Grid } from '@mui/material';
 import * as  React from 'react';
-import {  Outlet, Route, Routes, useNavigate } from 'react-router-dom';
+import {  Navigate, Outlet, Route, Routes, useNavigate,   } from 'react-router-dom';
 import { Earnings } from '../../views/dashboards/dashboard1-components';
 import HMISDashboard from '../../views/hmis-dashboard/hmis-dashboard';
 import { HOME_ROUTES } from './routes';
@@ -91,7 +91,8 @@ const RouteItems=HOME_ROUTES.map(route=>
     </Drawer>
     <Box sx={{marginLeft:30,marginTop:10 }}> */}
     <Routes>
-           <Route path="/" element={ <WelcomeHome/> }  />
+           <Route path="/"  element={<Navigate  to={'dashboard'} />}   />
+         
            <Route path="/dashboard" element={ <WelcomeHome/> }  />
            <Route path="/health/patients" element={
                  <React.Suspense fallback={<div>Loading Patient....</div>}>

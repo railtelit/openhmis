@@ -15,7 +15,7 @@
         "main": "apps/hmis/src/main.tsx",
         "polyfills": "apps/hmis/src/polyfills.ts",
         "tsConfig": "apps/hmis/tsconfig.app.json",
-        "assets": ["apps/hmis/src/favicon.ico", "apps/hmis/src/assets"],
+        "assets": ["apps/hmis/src/favicon.ico", "apps/hmis/src/assets"],        
         "styles": ["apps/hmis/src/styles.scss"],
         "scripts": [],
         "webpackConfig": "@nrwl/react/plugins/webpack"

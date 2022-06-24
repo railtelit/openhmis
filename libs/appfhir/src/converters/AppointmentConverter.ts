@@ -8,12 +8,12 @@ export class AppointmentConverter implements FhirConverter{
          console.log("form "+form)
          const {id,status,start,end,participant,category,specialty,appointmentType,description,participantReference}= form||{}
          return {
-          id,status,start,end,
+          id,status,start,end,participantReference,
             participant:[
               {
                 actor:{
-                  display: form['participant'],
-                  //reference: form['participantReference']
+                  reference: participantReference,
+                  display: participant
                 }
               }
             ],
@@ -21,7 +21,7 @@ export class AppointmentConverter implements FhirConverter{
               {
                 coding:[
                   {
-                    display: form['category']
+                    display: category
                   }
                 ]
               }
@@ -30,7 +30,7 @@ export class AppointmentConverter implements FhirConverter{
               {
                 coding:[
                   {
-                    display: form['specialty']
+                    display: specialty
                   }
                 ]
               }
@@ -39,7 +39,7 @@ export class AppointmentConverter implements FhirConverter{
               {
                 coding:[
                   {
-                    display: form['appointmentType']
+                    display: appointmentType
                   }
                 ]
               },
@@ -62,45 +62,3 @@ export class AppointmentConverter implements FhirConverter{
   }
 };
 
-// export class AppointmentConverter implements FhirConverter{
-//      SNOMED_FIELDS:string[]=['serviceCategory','serviceType','speciality','appointmentType','reasonCode','note'];
-//     //  CONSTANT_FIELDS:string[]=['start','end','status','description','priority','created','comment','patientInstruction']
-//     CONSTANT_FIELDS:string[]=['note','patientInstruction','institution','impatientRegistration','patient','start','end','visit','urgency','type','status','healthProf','speciality','information']
-
-//     readonly resourceType='Appointment'
-//     toResource(form:any={}){
-//             const resource:any  = {participant:[]};
-//             const {start,end,status,description,priority,created,comment,patientInstruction}=form
-//             this.SNOMED_FIELDS.forEach(f=>{
-//                 const value=form[f]; // Should be {code,system,display}
-
-//                 value && Object.assign(resource, {[f]:
-//                     [{ coding:[{
-//                             code:value
-//                         }] }]
-//                     }
-//                 )
-//             });
-//             if(form.patient)
-//             resource.participant=[...resource.participant,{
-//                     actor:{ reference: form.patient,display:form.patient },
-//                     status:'accepted'
-//             }]
-//             return { resourceType:this.resourceType,start,end,status,description,priority,created,comment,patientInstruction,
-//                      ...resource};
-//     }
-
-//     toForm(resource:any={}){
-//            //
-//           const formValue={};
-//            this.CONSTANT_FIELDS.forEach(f=>Object.assign(formValue,resource[f]));
-//            this.SNOMED_FIELDS.forEach(f=>{
-//                if(resource[f]?.codes?.length>0){
-//                     const coding = resource[f].code[0];
-//                     Object.assign(formValue,coding )
-//                }
-//            })
-//           return formValue;
-//     }
-
-// }

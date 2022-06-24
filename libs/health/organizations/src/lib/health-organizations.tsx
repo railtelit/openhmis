@@ -7,18 +7,21 @@ import EditOrganization from '../components/edit-organization/edit-organization'
 import styles from './health-organizations.module.scss';
 import {arrayToTree} from 'performant-array-to-tree'
 import { RenderTree, RichObjectTree } from '@ha/shared-ui';
+import { ConfigureHealthservices } from '@ha/health/configurations';
 /* eslint-disable-next-line */
 export interface HealthOrganizationsProps {}
 
 export function HealthOrganizations(props: HealthOrganizationsProps) {
   const [showedit,setShowEdit]=useState<boolean>(false)
   const [orgs,fetcherror,queryOrgs,deleteorg,createOrg ]=useFhirQuery('Organization'); 
-  
+  const [orgtype,setOrgtype]=useState('prov');
+  const [partOf,setPartof]=useState<any|null>(null);
+
   const [treedata,setTreedata]=useState<any[]>([])
   const [resolve]=useFhirResolver('Organization')
   const [mode,setMode]=useState<string>('create')
   const [record,setRecord]=useState<any>(null); 
-  const [currentOrg,setcurrentOrg]=useState(null)
+  const [currentOrg,setcurrentOrg]=useState<any|null>(null)
   useEffect(()=>{
       queryOrgs();
   },[]); 
@@ -26,9 +29,16 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
        const  treelist =  (orgs.map(o=> ({...o,parentId:(o.partOf? o.partOf?.reference.split('/')[1] : null ) }) )); 
        setTreedata( arrayToTree(treelist,{dataField:null, }) ); 
   },[orgs]);
-  function startEdit(mode:string,res:any){
+  function startEdit(mode:string,res:any,orgtype='prov'){
       setRecord(res);
       setMode(mode);
+      if(orgtype==='dept' && mode==='create'){
+        setPartof({reference:`Organization/${currentOrg?.id}`}); 
+      }
+      if(orgtype==='prov'){
+          setPartof(null);
+      }
+      setOrgtype(orgtype);
       setShowEdit(true);
   }
   function selectOrg(id:string){
@@ -36,18 +46,18 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
   }
   return (
     <div className={styles['container']}  >
-           <Grid container alignItems={'center'} >
-             <Grid item  xs >
+           <Grid container alignItems={'center'} justifyContent='space-between' >
+             <Grid item  xs md >
               <Stack direction={'row'}  alignItems={'center'}  >
                      <Icon>corporate_fare</Icon>
                      <Typography marginLeft={1} alignItems={'center'} variant={'h5'}> Health Organizations</Typography>
               </Stack>
              </Grid>
-              <Grid item xs={12} md justifyContent={'end'} alignContent={'end'} >
-                      
-                      {resolve('type.0.coding.0.code',currentOrg)!=='dept'? <Button>ADD DEPARTMENT</Button> :null }
-                      <Button variant='outlined' onClick={()=>startEdit('create',null)} startIcon={<Icon>add</Icon>}>CREATE NEW</Button>
-                  
+              <Grid item xs={12} md justifyContent={'flex-end'} alignItems={'end'}    >                      
+                      {resolve('type.0.coding.0.code',currentOrg)!=='dept'? <Button onClick={()=>startEdit('create',null,'dept' )}>ADD DEPARTMENT</Button> :null }
+                      <IconButton color={'info'} onClick={()=>startEdit('create',null)} ><Icon>add</Icon></IconButton>
+                      {currentOrg? <IconButton onClick={()=>startEdit('edit',currentOrg,resolve('type.0.coding.0.code',currentOrg) )}><Icon>edit</Icon> </IconButton>:null }
+                      {currentOrg  ? <IconButton color='error' onClick={()=>deleteorg(currentOrg.id)}><Icon>delete</Icon></IconButton>:null }
               </Grid>
            </Grid>
 
@@ -80,19 +90,26 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                   </Card>
                   </Grid>
             )} */}
-              <RichObjectTree onNodeSelect={(id)=>selectOrg(id) } displayLabel={(row)=> 
-                  <Typography sx={{fontWeight:row?.parentId?'':'bolder',p:1}} > 
-                      {row.name} </Typography> } data={treedata} />                      
+            <Grid item md={6}>
+              
+                <RichObjectTree onNodeSelect={(id)=>selectOrg(id) }
+                    displayLabel={(row)=>
+                    <Typography sx={{fontWeight:row?.parentId?'':'bolder',p:0}} >
+                        {row.name} ({resolve('type.0.coding.0.code',row)||'prov' }) </Typography> } data={treedata} />
             </Grid>
-            {/* { JSON.stringify(treedata) } */}
-            Current Org : {JSON.stringify(currentOrg)}
+            <Grid item md>
+                      <ConfigureHealthservices/>
+            </Grid>               
+            </Grid>
+          
           </Container>
       <Dialog open={showedit} fullWidth  >
        {/* <DialogTitle>
           <Toolbar>ORG</Toolbar>
        </DialogTitle> */}
        <DialogContent>
-          <EditOrganization record={record} mode={mode} onUpdate={(updated)=>queryOrgs()} onCreate={(res)=>{
+          <EditOrganization record={record} mode={mode} orgtype={orgtype} partOf={partOf} 
+              onUpdate={(updated)=>queryOrgs()} onCreate={(res)=>{
               setShowEdit(false);queryOrgs();
           }} onClose={()=>setShowEdit(false)} start={showedit}/>
        </DialogContent>

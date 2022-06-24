@@ -62,7 +62,7 @@ GET https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/description
 
 ###
 
-GET {{endpoint}}/Organization
+GET {{endpoint}}/Organization?type=dept
 
 ###
 POST  {{endpoint}}/Organization
@@ -80,7 +80,11 @@ Content-Type: application/json
     "partOf":{"reference":"Organization/7","display":"Smile Clinic"}
 }
 ###
+<<<<<<< HEAD
 DELETE  {{endpoint}}/Organization/8
 
 ###
 GET {{endpoint}}/Binary/28
+=======
+DELETE  {{endpoint}}/Organization/13
+>>>>>>> R01
