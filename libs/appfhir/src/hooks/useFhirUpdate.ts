@@ -4,7 +4,7 @@ import { FhirClient } from "../fhir-service";
 import { DEFAULT_FHIR_SERVER, DEFAULT_SYSTEM } from "../fhir.config";
 
 
-export const useFhirUpdate=(resourceType:string,resource:any):[any,any,(post:any)=>Promise<void>]=>{
+export const useFhirUpdate=(resourceType:string,resource:any):[any,any,(post:any)=>Promise<any>]=>{
          const [response,setResponse]=useState<any>(null); 
          const [error,setError]=useState(null); 
 
@@ -14,7 +14,8 @@ export const useFhirUpdate=(resourceType:string,resource:any):[any,any,(post:any
        //       ]}
              const id = resource?.id ; 
              const create = Axios.put(`${DEFAULT_FHIR_SERVER}/${resourceType}/${id}`,{ resourceType,...resource, ...payload}).then(res=>{
-                     setResponse(res.data)     
+                     setResponse(res.data); 
+                     return res.data;      
               }); 
    
             return create; 

@@ -1,6 +1,7 @@
 import { useFhirQuery } from '@ha/appfhir';
 
 import { Button, Container, Grid, Icon, IconButton, List, ListItem, ListItemButton, TextField, Typography } from '@mui/material';
+import { Location } from 'fhir/r4';
 import { useEffect, useState } from 'react';
 import EditLocation from './edit-location/edit-location';
 import styles from './locations.module.scss';
@@ -10,7 +11,7 @@ export interface LocationsProps {}
 type Mode = 'create'|'edit'|'list'; 
 
 export function ConfigureLocations(props: LocationsProps) {
-  const [locations,locerrors,queryLocations,deleteLocation]=useFhirQuery('Location'); 
+  const [locations,locerrors,queryLocations,deleteLocation]=useFhirQuery<Location>('Location'); 
   const [mode,setMode]=useState<Mode>('list'); 
   const [record,setRecord]=useState<any>(null)
   useEffect(()=>{

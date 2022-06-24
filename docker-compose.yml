@@ -19,7 +19,6 @@ services:
       hapi.fhir.subscription.resthook_enabled: 'false'
       hapi.fhir.subscription.websocket_enabled: 'false'
       hapi.mdm_enabled: 'false'
-      # - "tester.server_address=http://localhost:8080/fhir"
       hapi.fhir.reuse_cached_search_results_millis: -1
       hapi.fhir.retain_cached_searches_mins : -1
       reuse_cached_search_results_millis: -1

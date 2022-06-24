@@ -81,3 +81,7 @@ Content-Type: application/json
 }
 ###
 DELETE  {{endpoint}}/Organization/13
+
+###
+
+GET {{endpoint}}/HealthcareService?organization=23

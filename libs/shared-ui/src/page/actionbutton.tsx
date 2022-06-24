@@ -1,18 +1,18 @@
 import styles from './actionbutton.module.scss';
 import {useNavigate} from 'react-router-dom'
-import { Button } from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 /* eslint-disable-next-line */
-export interface ActionbuttonProps {
-    label:string, 
+export interface ActionbuttonProps  extends ButtonProps{
+    label:any, 
     navigateTo?:string, 
     onClick?:()=>void,
-    type?:string
+    //type?:string,    
 }
 
 export function ActionButton(props: ActionbuttonProps) {
   const navigate = useNavigate()
   return (
-      <Button type='submit' onClick={()=>{
+      <Button {...props}     type={props.type||'submit'} onClick={()=>{
             props.onClick && props.onClick();
             props.navigateTo && navigate(props.navigateTo);
        }} >{props.label} </Button>

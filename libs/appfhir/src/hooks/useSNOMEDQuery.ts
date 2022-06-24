@@ -1,6 +1,7 @@
 import  Axios  from "axios"
+import { CodeableConcept } from "fhir/r4";
 import { useCallback, useEffect, useState } from "react"
-import { SNOMEDBROWSER_API, SNOMED_API } from "../fhir.config"
+import { SNOMEDBROWSER_API, SNOMED_API, SNOMED_SYSTEM } from "../fhir.config"
 
 export type SearchConceptType = 'descriptions' | 'concepts';  
 export interface  SNOMEDQueryType{
@@ -22,7 +23,7 @@ export interface SearchParams{
 
 const default_params={skipTo:0,limit:20,returnLimit:20,offset:0}
 export const useSNOMEDQuery=(queryType:SNOMEDQueryType = {searchContext:'descriptions',loadOnInit:false})=>{
-    const [snomedresults,setResults]=useState<any[]>([])
+    const [snomedresults,setResults]=useState<CodeableConcept[]>([])
     const [isWorking,setIsWorking]=useState(false); 
   
     const searchDescriptions=(params:SearchParams={})=>{
@@ -37,7 +38,9 @@ export const useSNOMEDQuery=(queryType:SNOMEDQueryType = {searchContext:'descrip
              Axios.get(`${SNOMED_ENDPOINT}/${queryType.searchContext}`,{params:{...default_params,termActive:true,...params}})                
                 .then(res=>{
                     const conceptMapping = (res.data?.items as any[]).map( item=> queryType.searchContext==='concepts' ? item : item.concept );
-                    setResults( conceptMapping )
+                    // {conceptId->code , pt.term -> display }
+                    const codeableMapping:CodeableConcept[] = conceptMapping.map( item => ({ text:item?.pt?.term , coding:[ {system:SNOMED_SYSTEM,code:item.conceptId,display:item?.pt?.term } ]  })  )
+                    setResults( codeableMapping )
                     //console.log(res.data?.items); 
                     setIsWorking(false)
              })

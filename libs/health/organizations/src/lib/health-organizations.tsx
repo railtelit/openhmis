@@ -8,12 +8,13 @@ import styles from './health-organizations.module.scss';
 import {arrayToTree} from 'performant-array-to-tree'
 import { RenderTree, RichObjectTree } from '@ha/shared-ui';
 import { ConfigureHealthservices } from '@ha/health/configurations';
+import { Organization } from 'fhir/r4';
 /* eslint-disable-next-line */
 export interface HealthOrganizationsProps {}
 
 export function HealthOrganizations(props: HealthOrganizationsProps) {
   const [showedit,setShowEdit]=useState<boolean>(false)
-  const [orgs,fetcherror,queryOrgs,deleteorg,createOrg ]=useFhirQuery('Organization'); 
+  const [orgs,fetcherror,queryOrgs,deleteorg,createOrg ]=useFhirQuery<Organization>('Organization'); 
   const [orgtype,setOrgtype]=useState('prov');
   const [partOf,setPartof]=useState<any|null>(null);
 
@@ -26,7 +27,7 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
       queryOrgs();
   },[]); 
   useEffect(()=>{
-       const  treelist =  (orgs.map(o=> ({...o,parentId:(o.partOf? o.partOf?.reference.split('/')[1] : null ) }) )); 
+       const  treelist =  (orgs.map(o=> ({...o,parentId:(o.partOf? o.partOf?.reference?.split('/')[1] : null ) }) )); 
        setTreedata( arrayToTree(treelist,{dataField:null, }) ); 
   },[orgs]);
   function startEdit(mode:string,res:any,orgtype='prov'){
@@ -51,13 +52,13 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
               <Stack direction={'row'}  alignItems={'center'}  >
                      <Icon>corporate_fare</Icon>
                      <Typography marginLeft={1} alignItems={'center'} variant={'h5'}> Health Organizations</Typography>
+                      <IconButton title='Create New Health Provider Org' color={'info'} onClick={()=>startEdit('create',null)} ><Icon>add</Icon></IconButton>
               </Stack>
              </Grid>
               <Grid item xs={12} md justifyContent={'flex-end'} alignItems={'end'}    >                      
-                      {resolve('type.0.coding.0.code',currentOrg)!=='dept'? <Button onClick={()=>startEdit('create',null,'dept' )}>ADD DEPARTMENT</Button> :null }
-                      <IconButton color={'info'} onClick={()=>startEdit('create',null)} ><Icon>add</Icon></IconButton>
                       {currentOrg? <IconButton onClick={()=>startEdit('edit',currentOrg,resolve('type.0.coding.0.code',currentOrg) )}><Icon>edit</Icon> </IconButton>:null }
                       {currentOrg  ? <IconButton color='error' onClick={()=>deleteorg(currentOrg.id)}><Icon>delete</Icon></IconButton>:null }
+                      {resolve('type.0.coding.0.code',currentOrg)!=='dept'? <Button variant='contained' onClick={()=>startEdit('create',null,'dept' )}>ADD DEPARTMENT</Button> :null }
               </Grid>
            </Grid>
 
@@ -68,7 +69,7 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                     </Grid></div>
             : null
             }
-            <Container fixed sx={{padding:10}}>
+            <Container fixed sx={{padding:1}}>
 
 
             <Grid container spacing={2}>
@@ -91,14 +92,17 @@ export function HealthOrganizations(props: HealthOrganizationsProps) {
                   </Grid>
             )} */}
             <Grid item md={6}>
-              
+                <Typography variant={'caption'}>Click for More Info</Typography>
                 <RichObjectTree onNodeSelect={(id)=>selectOrg(id) }
                     displayLabel={(row)=>
                     <Typography sx={{fontWeight:row?.parentId?'':'bolder',p:0}} >
                         {row.name} ({resolve('type.0.coding.0.code',row)||'prov' }) </Typography> } data={treedata} />
             </Grid>
             <Grid item md>
-                      <ConfigureHealthservices/>
+                      {currentOrg? 
+                        <ConfigureHealthservices  managingOrg={currentOrg} />
+                        :null
+                      }
             </Grid>               
             </Grid>
           

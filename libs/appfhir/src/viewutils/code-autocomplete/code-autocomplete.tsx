@@ -27,7 +27,7 @@ export function CodeAutocomplete({system,resourceId,multiple=false,control,name,
       Axios.get(CODESYSTEM_URL+`CodeSystem/${resourceId}`).then(result=>{
           // Convert To CodeableConcept Type 
           const codeSystem  = result.data as CodeSystem; 
-          const valueMapping = codeSystem?.concept?.map(item=>  ({ text:item.display, coding:[ {...item}  ] } as CodeableConcept)  ); 
+          const valueMapping = codeSystem?.concept?.map(item=>  ({    text:item.display, coding:[ {...item}  ] } as CodeableConcept)  ); 
           console.log(valueMapping);
           setOptions(valueMapping||[]);
           setInit(true)
@@ -40,14 +40,15 @@ export function CodeAutocomplete({system,resourceId,multiple=false,control,name,
        
       <Controller control={control} name={name}    defaultValue={defaultValue} 
                render={ ( {field :{onChange,ref,value,} } )=>
-                  <Autocomplete multiple={multiple}  value={value}  options={options} getOptionLabel={(o)=>o?.text || '-' }                      
+                  <Autocomplete autoHighlight={true} autoSelect={true}  multiple={multiple}  value={value}  options={options} getOptionLabel={(o:CodeableConcept)=> `${o?.coding?.[0].code} - ${o.text} ` || '' }                      
                     isOptionEqualToValue={ (option,value)=> option?.coding?.[0]?.code === value?.coding?.[0]?.code  }
+                    itemID='coding'   
                     onChange={(e,value)=> { 
                       onChange(value); 
                       onValueChange && onValueChange(value);
                      }  } 
                     renderInput={(params)=> <TextField label={label} 
-                                onClick={()=> onValueChange && onValueChange(null)  } {...params} /> } />
+                               {...params} /> } />
                }
        />
  

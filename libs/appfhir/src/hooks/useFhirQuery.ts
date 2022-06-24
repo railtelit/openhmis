@@ -4,11 +4,12 @@ import { DEFAULT_FHIR_SERVER, DEFAULT_SYSTEM } from "../fhir.config";
 
 
 import  Axios from 'axios'; 
+import { DomainResource, Resource } from "fhir/r4";
 
 
 
-export const useFhirQuery = (resourceType:string,params:any={}):[results:any[],errors:any,doQuery:(params?:any)=>void,
-                deleteResource:(id:string)=>void, createResource:(payload:any)=>Promise<void>]=>{
+export const useFhirQuery = <T extends DomainResource|Resource>(resourceType:string,params:any={}):[results:T[],errors:any,doQuery:(params?:any)=>void,
+                deleteResource:(id?:string)=>void, createResource:(payload:any)=>Promise<void>]=>{
     const [resource,setResource]=useState(resourceType); 
     const [results,setResults]=useState<any[]>([]); 
     const [error,setError]=useState(null); 
@@ -22,7 +23,8 @@ export const useFhirQuery = (resourceType:string,params:any={}):[results:any[],e
             }).catch(setError)
     },[resourceType,params]);  
 
-    const deleteResource = useCallback(async (id:string)=>{
+    const deleteResource = useCallback(async (id?:string)=>{
+        if(id)
         FhirClient.delete(`${resourceType}/${id}`).then(res=>{
                 setResults((r)=> r.filter(ri=> ri.id!==id ) )
         }).catch(setError)
@@ -38,7 +40,9 @@ export const useFhirQuery = (resourceType:string,params:any={}):[results:any[],e
         }); 
  
           return create; 
-   },[resourceType])  
+   },[resourceType]) ;
+   
+  
     
     // useEffect(()=>{
     //     makeRequest();

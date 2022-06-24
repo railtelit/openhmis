@@ -1,3 +1,4 @@
+import { DomainResource, Reference, Resource } from 'fhir/r4';
 import  * as SMART  from 'fhirclient'; 
 import { SERVER_URL } from './fhir.config';
 
@@ -16,5 +17,9 @@ export class FhirService{
                 return path.split('.').reduce(function(prev, curr) {
                         return prev ? prev[curr] : null
                     }, ( otherResource) || window.self)
+        }
+
+        static toReference(resource:Resource|DomainResource):Reference{
+                         return {reference:`${resource.resourceType}/${resource.id}`};
         }
 }

@@ -1,8 +1,9 @@
 import styles from './snomed-search.module.scss';
-import {SearchConceptType, SearchParams, SNOMEDQueryType, useSNOMEDQuery} from '../../../hooks/useSNOMEDQuery'
-import {Autocomplete,AutocompleteProps,TextField} from '@mui/material'
+import {  SNOMEDQueryType, useSNOMEDQuery} from '../../../hooks/useSNOMEDQuery'
+import {Autocomplete,TextField} from '@mui/material'
 import { Control, Controller } from 'react-hook-form';
-
+import { CodeableConcept } from 'fhir/r4';
+ 
 
 /* eslint-disable-next-line */
 export interface SnomedSearchProps  {
@@ -15,21 +16,23 @@ export interface SnomedSearchProps  {
      module?:string,      
      multiple?:boolean,
      searchMode?:string,
-     queryConfig?:SNOMEDQueryType
+     queryConfig?:SNOMEDQueryType,
+     required?:boolean,
+     label?:string
 }
 
 export function SnomedAutoComplete(props: SnomedSearchProps) {
   const {snomedresults,searchDescriptions}=useSNOMEDQuery(props.queryConfig); 
-  
+ 
   return (
     <Controller name={props.name}
          control={props.control} 
-         rules={{required:true}}
+         rules={{required:props.required || false }}
          render={
            ({field:{value,onChange}})=> 
-           <Autocomplete options={snomedresults} fullWidth           
-            autoHighlight               multiple={props.multiple||false}         
-             freeSolo={true}   disabled={props.disabled||false}
+           <Autocomplete options={snomedresults} fullWidth      value={value}     
+            autoHighlight    autoSelect  freeSolo={true}         multiple={props.multiple||false}         
+              disabled={props.disabled||false}
              onChange={(e,v,reason,details)=>{                  
                   onChange(v); 
                   props.onChange && props.onChange(v);
@@ -41,9 +44,9 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
                       });
                   }
                  } 
-            isOptionEqualToValue={ (o,v)=> o.id ? o.id===v.id : true }
-           getOptionLabel={(o:any)=> ( o.pt? o?.pt?.term : o ) } 
-           renderInput={(field)=> <TextField   placeholder={props.placeholder} {...field} /> }  /> 
+            isOptionEqualToValue={ (o:CodeableConcept,v:CodeableConcept)=> (o.coding?.[0]?.code || o?.text )  === (v?.coding?.[0]?.code || v?.text )  }
+           getOptionLabel={(o :any )=> (  (o).text   ) } 
+           renderInput={(field)=> <TextField  label={props.label}  placeholder={props.placeholder} {...field} /> }  /> 
          }
       />    
   );
