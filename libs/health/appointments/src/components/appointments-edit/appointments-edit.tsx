@@ -235,7 +235,7 @@ console.log(newList)
             </Grid>
 
             <Grid item md={4}>
-              <TextField inputRef={input => input && input.focus()} {...register('participantReference')} value={patientId} style={{opacity: '0'}} autoFocus />
+                <TextField inputRef={input => input && input.focus()} {...register('participantReference')} value={patientId} style={{opacity: '0'}} autoFocus />
             </Grid>
 
             {/* <Grid item md={4}>
