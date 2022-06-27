@@ -46,7 +46,7 @@ export function SnomedAutoComplete(props: SnomedSearchProps) {
                  } 
             isOptionEqualToValue={ (o:CodeableConcept,v:CodeableConcept)=> (o.coding?.[0]?.code || o?.text )  === (v?.coding?.[0]?.code || v?.text )  }
            getOptionLabel={(o :any )=> (  (o).text   ) } 
-           renderInput={(field)=> <TextField  label={props.label}  placeholder={props.placeholder} {...field} /> }  /> 
+           renderInput={(field)=> <TextField  label={props.label} variant={'filled'} placeholder={props.placeholder} {...field} /> }  /> 
          }
       />    
   );

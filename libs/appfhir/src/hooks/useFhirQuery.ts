@@ -4,23 +4,29 @@ import { DEFAULT_FHIR_SERVER, DEFAULT_SYSTEM } from "../fhir.config";
 
 
 import  Axios from 'axios'; 
-import { DomainResource, Resource } from "fhir/r4";
+import { Bundle, DomainResource, Resource } from "fhir/r4";
 
 
 
-export const useFhirQuery = <T extends DomainResource|Resource>(resourceType:string,params:any={}):[results:T[],errors:any,doQuery:(params?:any)=>void,
+export const useFhirQuery = <T extends DomainResource|Resource>(resourceType:string,params:any={}):[results:T[],errors:any,doQuery:(params?:any)=>Promise<void | T[]>,
                 deleteResource:(id?:string)=>void, createResource:(payload:any)=>Promise<void>]=>{
     const [resource,setResource]=useState(resourceType); 
     const [results,setResults]=useState<any[]>([]); 
     const [error,setError]=useState(null); 
 
-    const makeRequest=useCallback((searchParams:any={})=>{
+    const makeRequest=useCallback( async (searchParams:any={})=>{
             console.log(`Calling Q`)
             const query = FhirService.createQuery({ ...params, ...searchParams});            
-            FhirClient.request(`${resourceType}?${query}`,).then(res=>{
-                    const entries = (res?.entry||[]) as any[]
-                    setResults( entries.map(r=> ({...r.resource,fullUrl:r.fullUrl}) ) )
-            }).catch(setError)
+            const reslist =  FhirClient.request(`${resourceType}?${query}`,).then(res=>{
+                    const entries = (res?.entry||[]) as any[]; 
+                    const results =  entries.map(r=> ({...r.resource,fullUrl:r.fullUrl}) )  
+                    setResults(results); 
+                    return results as T[]  
+            }).catch( (reason)=>{
+                    setError(reason); 
+                    
+            } ); 
+            return reslist ; 
     },[resourceType,params]);  
 
     const deleteResource = useCallback(async (id?:string)=>{

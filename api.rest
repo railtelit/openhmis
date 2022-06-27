@@ -2,7 +2,7 @@
 
 ## Check Patients
 # @name patient
-GET {{endpoint}}/Patient?_summary=true&name=P
+GET {{endpoint}}/Patient?_summary=true
 
 @id = {{patient.response.body.$.entry[0].resource.id}}
 
@@ -85,3 +85,9 @@ DELETE  {{endpoint}}/Organization/13
 ###
 
 GET {{endpoint}}/HealthcareService?organization=23
+
+###
+
+GET {{endpoint}}/Account
+
+###

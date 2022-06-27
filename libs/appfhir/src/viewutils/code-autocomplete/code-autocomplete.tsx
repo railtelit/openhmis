@@ -47,7 +47,7 @@ export function CodeAutocomplete({system,resourceId,multiple=false,control,name,
                       onChange(value); 
                       onValueChange && onValueChange(value);
                      }  } 
-                    renderInput={(params)=> <TextField label={label} 
+                    renderInput={(params)=> <TextField label={label} variant={'filled'}
                                {...params} /> } />
                }
        />
