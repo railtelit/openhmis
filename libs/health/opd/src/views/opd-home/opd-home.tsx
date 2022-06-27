@@ -1,4 +1,4 @@
-import { NameField, ResourcerefAutocomplete, ResourceTable, SimpleActionField, useFhirQuery  } from '@ha/appfhir';
+import { FhirService, NameField, ResourcerefAutocomplete, ResourceTable, SimpleActionField, useFhirQuery  } from '@ha/appfhir';
 import { Pagetitle } from '@ha/shared-ui';
 import { Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Table, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -24,7 +24,13 @@ export function OpdHome(props: OpdHomeProps) {
 
   useEffect(()=>{
       // Load Dept Options
-      getdepts(); 
+      getdepts().then((list:void | Organization[])=>{
+
+          if(  (list as any[]).length===1){
+              console.log('Setting Single Vale ')
+              list &&  encounterForm.setValue('serviceProvider', FhirService.toReference((list)[0])  )
+          }
+      }); 
   },[]);
   function onCreate(formValue:any){
       console.log(formValue)
@@ -43,7 +49,8 @@ export function OpdHome(props: OpdHomeProps) {
           </Grid>
                 <Grid container   >
                         <Grid item md={4}>
-                          <ResourcerefAutocomplete label={'Department'} name='serviceProvider' params={{type:'dept'}} getOptionLabel={(r)=>r.name}
+                          <ResourcerefAutocomplete label={'Department'} name='serviceProvider' params={{type:'dept'}} 
+                              getOptionLabel={(r)=>r.name} defaultValue={encounterForm.getValues()['serviceProvider']}
                              resourceType='Organization' control={encounterForm.control} />
                         </Grid>
                         <Grid item>

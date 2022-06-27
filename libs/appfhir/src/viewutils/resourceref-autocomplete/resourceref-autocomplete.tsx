@@ -14,7 +14,9 @@ export interface ResourcerefAutocompleteProps  {
        onChange?:(value:any)=>void,
        params?:any,
        label?:string, placeholder?:string,
-       getOptionLabel:(row:any)=> string
+       getOptionLabel:(row:any)=> string,
+       defaultValue?:any,
+       multiple?:boolean 
 }
 
 export function ResourcerefAutocomplete(props: ResourcerefAutocompleteProps ) {
@@ -28,15 +30,21 @@ export function ResourcerefAutocomplete(props: ResourcerefAutocompleteProps ) {
               );
           setrefoptions(options);
       } ); 
-  },[])
+  },[]); 
+  
+
   return (
     <div className={styles['container']}>
-         <Controller control={props.control} defaultValue={[]} name={props.name} render={({field:{value,onChange}})=>
-              <Autocomplete value={value} fullWidth onChange={(e,value)=>{
+         <Controller control={props.control} defaultValue={props.defaultValue||null}  name={props.name} 
+              render={({field:{value,onChange}})=>
+              <Autocomplete value={value} multiple={props.multiple||false} fullWidth onChange={(e,value)=>{
+                //console.log('ACV',value)
                 onChange(value); 
                 props.onChange && props.onChange(value) 
-              }} autoHighlight autoSelect options={refoptions} isOptionEqualToValue={(o,v)=> o.reference===v.reference }
-                getOptionLabel={(option:Reference)=> option.display||'' }
+              }} autoHighlight autoSelect   options={refoptions} 
+                isOptionEqualToValue={(o,v)=>{   return (o.reference||'') === (v.reference||'') } }
+                getOptionLabel={(option:Reference)=> option.display||
+                       (refoptions.find(r=>r.reference === option.reference )?.display )|| '---'  }
                renderInput={(params)=> <TextField label={props.label} placeholder={props.placeholder||''} {...params} variant={'filled'}  />} />
          } />
     </div>

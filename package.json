@@ -39,7 +39,6 @@
     "react-autocomplete": "^1.8.1",
     "react-dom": "18.0.0",
     "react-feather": "^2.0.10",
-    "react-file-base64": "^1.0.3",
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.18.0",
     "react-hook-form": "^7.33.0",
