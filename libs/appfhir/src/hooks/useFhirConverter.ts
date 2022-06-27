@@ -13,11 +13,11 @@ type ResourceConvert = 'Patient'|'Appointment'|'Organization'|'Location'
 export class PatientConverter implements FhirConverter{
      toResource(form: any){
             //
-            // console.log('Converting'); 
+            // console.log('Converting');
             // console.log(form)
             const {name,gender,mobileno,birthDate}= form||{}
             return {
-                gender,mobileno,birthDate,                
+                gender,mobileno,birthDate,
                 name:[
                     {family: form['name']}
                 ],
@@ -31,7 +31,7 @@ export class PatientConverter implements FhirConverter{
             }
      }
      toForm(resource: any){
-        const {name,gender,telecom,birthDate}=resource||{} 
+        const {name,gender,telecom,birthDate}=resource||{}
         if(resource){
             return {
                 gender,name:resource['name'][0]?.family,
@@ -41,7 +41,7 @@ export class PatientConverter implements FhirConverter{
         }
         return {}
      }
-}; 
+};
 
 export const converters:Record<ResourceConvert,FhirConverter>={
     'Patient':new PatientConverter(),
@@ -50,17 +50,17 @@ export const converters:Record<ResourceConvert,FhirConverter>={
     'Location':new LocationConverter(),
 }
 
-export const useFhirConverter=(resourceType:ResourceConvert):{ 
+export const useFhirConverter=(resourceType:ResourceConvert):{
         convertToResource: (form:any)=>any,
         convertToForm:(res:any)=>any,
         result:any
     }=>{
     const converter=converters[resourceType];
-    const [result,setResult]=useState(); 
+    const [result,setResult]=useState();
 
     const convertToResource=(form:any)=>{
-            const val = (converter.toResource(form)); 
-             
+            const val = (converter.toResource(form));
+
             setResult(val)
             return val;
     }

@@ -41,7 +41,7 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
   useEffect(()=>{
           console.log(`Pat Created : `);
           console.log(newPatient);
-          newPatient && newPatient.id && onCreate && onCreate(newPatient) && toast.success('Record Created ');
+          newPatient && newPatient.id && onCreate && toast.success('Record Created ');
   },[newPatient])
   useEffect(()=>{
      //

@@ -2,7 +2,7 @@
 
 ## Check Patients
 # @name patient
-GET {{endpoint}}/Patient?_summary=true
+GET {{endpoint}}/Patient?_summary=true&name=P
 
 @id = {{patient.response.body.$.entry[0].resource.id}}
 
@@ -25,9 +25,9 @@ Accept-Encoding: fhir+json
         {"use":"official","text":"Pract 3","family":"Loggy"}
     ]
     ,"resourceType":"Practitioner","active":true,
-    "telecom":[ 
+    "telecom":[
         {"system":"phone","value":"9797979797","use":"work"} ,
-        {"system":"email","value":"abc@abc.com","use":"work"} 
+        {"system":"email","value":"abc@abc.com","use":"work"}
     ]
 }
 ###
@@ -41,7 +41,7 @@ Content-Type: application/json
 
 {
     "resourceType":"PractitionerRole",
-    "practitioner":{ 
+    "practitioner":{
          "reference":   "Practitioner/218","display":"Prac 1"
     },
     "active":true
@@ -71,23 +71,16 @@ Content-Type: application/json
 {
     "name":"Metro Road Clinic" ,"resourceType":"Organization",
     "type":[
-        { 
+        {
             "text":"Dental Dept","coding":[
                 {"code":"dept","display":"Clinic"}
             ]
          }
     ]  ,
-    "partOf":{"reference":"Organization/7","display":"Smile Clinic"} 
+    "partOf":{"reference":"Organization/7","display":"Smile Clinic"}
 }
 ###
-DELETE  {{endpoint}}/Organization/13
+DELETE  {{endpoint}}/Organization/8
 
 ###
-
-GET {{endpoint}}/HealthcareService?organization=23
-
-###
-
-GET {{endpoint}}/Account
-
-###
+GET {{endpoint}}/Binary/28

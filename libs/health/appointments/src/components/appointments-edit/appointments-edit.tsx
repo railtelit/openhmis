@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Grid, Icon, IconButton, MenuItem, Paper, Stack, TextField } from '@mui/material';
 import styles from './appointments-edit.module.scss';
 import { useRef } from 'react';
-import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate } from '@ha/appfhir';
+import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate, AppointmentConverter } from '@ha/appfhir';
 import { toast } from 'react-toastify';
 import { useFieldArray, useForm } from 'react-hook-form'
 import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
@@ -25,7 +25,7 @@ export interface AppointmentsEditProps {
 
 const searchSubject_p = new Subject<string>();
 let newList:any = [];
-let patientId:string;
+//let patientId:string;
 
 
 export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,record}: AppointmentsEditProps) {
@@ -41,6 +41,8 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
   const [search,setSearch]=useState<any>('');
   const [limit,setLimit]=useState<number>(10);
   const [patients,errors_p,queryPatients_p] = useFhirQuery('Patient',{name:search,_count:limit});
+
+  const [patientId, setPatientId] = useState<any>();
 
 
   useEffect(() => {
@@ -67,24 +69,6 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
 
 
   const defaultAddress ={line1:'',line2:'',city:null,state:null,pincode:'' } ;
-  async function onSave(formValue:any){
-            ///  let newRecord= convertToResource(formValue)
-              let newRecord = formValue;
-              newRecord.start && ( newRecord.start += 'Z')
-              newRecord.end && ( newRecord.end += 'Z')
-              newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference += patientId)
-              console.log(newRecord);
-              // makeRequest(newRecord)
-              if(mode==='edit')
-                     updateAppointment(newRecord).then(_=>{
-                              toast.success(`Record Updated SuccessFully `)
-                    });
-               else
-                    await createAppointment(newRecord);
-
-
-  }
-
 
 
   // patient query
@@ -112,32 +96,46 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
   useEffect(()=>{
           console.log(`Pat Created : `);
           console.log(newAppointment);
-          newAppointment && newAppointment.id && onCreate && onCreate(newAppointment) && toast.success('Record Created ');
+          newAppointment && newAppointment.id && onCreate && toast.success('Record Created ');
   },[newAppointment])
+
   useEffect(()=>{
-     //
+
      if(mode==='edit' && record){
-          const formValue = convertToForm(record);
-          console.log(`Setting`);
-          console.log(record)
-          Object.keys(record).forEach(field=>{
+        const formValue = convertToForm(record);
+        console.log(`Setting`);
+        console.log(formValue)
+        Object.keys(formValue).forEach(field=>{
 
-               setValue(field,record[field])
-          })
-
-     }
-     //append(defaultAddress);
-     //setFocus('name');
-
+          if(field == "start"){
+            setValue(field,formValue[field].substring(0, 16));
+          }else if(field == "end"){
+            setValue(field,formValue[field].substring(0, 16));
+          }else{
+            setValue(field,formValue[field]);
+          }
+        })
+      }
   },[])
 
-  function setPatientId(data:any){
 
-    let patientData = JSON.stringify(data);
-    var obj = JSON.parse(patientData);
-    patientId = obj.id
-    console.log(obj.id)
-  }
+  async function onSave(formValue:any){
+
+    let newRecord= convertToResource(formValue)
+    //let newRecord = formValue;
+    newRecord.start && ( newRecord.start += 'Z')
+    newRecord.end && ( newRecord.end += 'Z')
+    //newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference = patientId)
+    //console.log("Record "+newRecord.end);
+    // makeRequest(newRecord)
+    if(mode==='edit')
+            updateAppointment(newRecord).then(_=>{
+                    toast.success(`Record Updated SuccessFully `)
+          });
+      else
+          await createAppointment(newRecord);
+
+}
 
 console.log(newList)
 
@@ -158,33 +156,26 @@ console.log(newList)
 
             <Grid item md={4}>
 
-                  {/* <TextField {...register('name')} onChange={ (v)=>{
-                      //setSearch(v.target.value)
-                      searchSubject_p.next(v.target.value)
-                  } } fullWidth placeholder='Type to Search...' ></TextField> */}
-
                 <Autocomplete disablePortal id="combo-box-demo"
                     options={newList}
-                    //getOptionLabel={(option:any) => option.label ? option.label : ""}
                     onChange={(event:any, value:any) =>{
 
-                      setPatientId(value);
+                      var obj = JSON.parse(JSON.stringify(value));
+                      setPatientId("Patient/"+obj.id);
                     }}
-                    renderInput={(params:any) => <TextField {...register('participant.0.actor.display')} {...params} label="Patient" />}/>
+                    renderInput={(params:any) => <TextField {...register('participant')} {...params} label="Patient" />}/>
 
-
-                    <TextField {...register('participant.0.actor.reference')} value={"Patient/"} label='Health Prof' style={{display:'none' }}></TextField>
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('start')}   type='datetime-local'  InputLabelProps={{shrink:true}} label='Date and Time' fullWidth   />
+                  <TextField {...register('start')} type='datetime-local'  InputLabelProps={{shrink:true}} label='Start Date and Time' required fullWidth   />
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('end')}  type={'datetime-local'} InputLabelProps={{shrink:true}} label='End Date and Time' fullWidth   />
+                  <TextField {...register('end')} type={'datetime-local'} InputLabelProps={{shrink:true}} label='End Date and Time' required fullWidth   />
             </Grid>
 
 
             <Grid item md={4}>
-                  <TextField {...register('serviceCategory')}  label='Category' select fullWidth placeholder='Category' >
+                  <TextField {...register('category')}  label='Category' select fullWidth placeholder='Category' >
                       <MenuItem value='Adoption'>Adoption</MenuItem>
                       <MenuItem value='Aged Care'>Aged Care</MenuItem>
                       <MenuItem value='Allied Health'>Allied Health</MenuItem>
@@ -243,12 +234,15 @@ console.log(newList)
                   <TextField {...register('healthprof')}  label='Health Prof' fullWidth placeholder='Health Prof' ></TextField>
             </Grid>
 
+            <Grid item md={4}>
+                <TextField inputRef={input => input && input.focus()} {...register('participantReference')} value={patientId} style={{opacity: '0'}} autoFocus />
+            </Grid>
 
             {/* <Grid item md={4}>
                   <TextField {...register('speciality')}  label='Specialty' fullWidth placeholder='Specialty' ></TextField>
             </Grid> */}
             <Grid item md={12}>
-                  <TextField label='Information' {...register('description')} multiline={true} rows={3} fullWidth />
+                  <TextField label='Description' {...register('description')} multiline={true} rows={3} fullWidth />
             </Grid>
 
         </Grid>
