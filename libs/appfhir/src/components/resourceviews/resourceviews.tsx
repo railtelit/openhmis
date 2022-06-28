@@ -13,7 +13,7 @@ export interface ResourceContactProps extends ContactPoint{
 }
 export function ResourceName  ( name:ResourceNameProps ) {
   return (
-      <div> {name?.family} {name?.given} {name?.text} {name?.defaultText} </div>
+      <div> {name?.family} {name?.given?.join(' ')}  {name?.defaultText} </div>
   )
 }
 

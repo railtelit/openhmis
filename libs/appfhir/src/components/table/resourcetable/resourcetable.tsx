@@ -1,6 +1,6 @@
 import { ColumnConfig } from '@ha/shared-ui';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFhirQuery } from '../../../hooks/useFhirQuery';
 import { useFhirResolver } from '../../../hooks/useFhirResolver';
 import styles from './resourcetable.module.scss';
@@ -32,16 +32,27 @@ export const  BooleanField:(fieldName:string,conf?:Omit<GridColDef,"field">)=>Gr
 export interface ResourcetableProps {
      resourceType:string,
      params?:any,
-     columns:ColumnConfig[]
+     columns:ColumnConfig[],
+     reload?:boolean,
+     refreshRow?:any
 }
 
-export function ResourceTable({resourceType,params={},columns}: ResourcetableProps) {
+export function ResourceTable({resourceType,params={},columns,reload,refreshRow}: ResourcetableProps) {
   const [rows,loaderror,queryResource,deleteResource,createResource]=useFhirQuery(resourceType,params); 
-
+  const [runquery,setrunquery]=useState(false)
   useEffect(()=>{
       queryResource(); 
-  },[])
-
+  },[]); 
+  useEffect(()=>{
+        if(refreshRow){
+            queryResource();
+        }
+  },[refreshRow])
+  
+  function refreshRows(){
+      // 
+  }
+ 
   return (
     <div className={styles['container']}>
         <DataGrid  autoHeight style={{minHeight:100}} columns={columns} rows={rows} /> 

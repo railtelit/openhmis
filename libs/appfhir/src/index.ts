@@ -1,3 +1,4 @@
+export * from './components/form/name-form-field/name-form-field';
 export * from './viewutils/resourceref-autocomplete/resourceref-autocomplete';
 export * from './viewutils/code-autocomplete/code-autocomplete';
 export * from './components/snomed/snomed-search/snomed-search';

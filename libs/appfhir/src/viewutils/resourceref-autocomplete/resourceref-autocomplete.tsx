@@ -14,7 +14,7 @@ export interface ResourcerefAutocompleteProps  {
        onChange?:(value:any)=>void,
        params?:any,
        label?:string, placeholder?:string,
-       getOptionLabel:(row:any)=> string,
+       getOptionLabel:(row:any)=> any,
        defaultValue?:any,
        multiple?:boolean 
 }

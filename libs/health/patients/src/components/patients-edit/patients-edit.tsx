@@ -34,7 +34,9 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
                               toast.success(`Record Updated SuccessFully `)
                     });
                else
-                    await createPatient(newRecord);
+                    await createPatient(newRecord).then(res=>{
+                              onCreate && onCreate(res);
+                    });
 
 
   }
