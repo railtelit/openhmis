@@ -9,12 +9,12 @@ export const useFhirCreate=<T extends DomainResource|Resource>(resourceType:stri
          const [response,setResponse]=useState<T|null>(null); 
          const [error,setError]=useState(null); 
 
-         const makeRequest=useCallback(async (payload:any)=>{
+         const makeRequest=useCallback(async (payload:T)=>{
        //       const payload ={resourceType,identifiers:[
        //              {system:DEFAULT_SYSTEM,id:'1234'}
        //       ]}
                
-             const create = await Axios.post(`${DEFAULT_FHIR_SERVER}/${resourceType}`,{ resourceType, ...payload}).then(res=>{
+             const create = await Axios.post(`${DEFAULT_FHIR_SERVER}/${resourceType}`,{  ...payload , resourceType }).then(res=>{
                      setResponse(res.data) ; 
                      return res.data as T    
               }); 

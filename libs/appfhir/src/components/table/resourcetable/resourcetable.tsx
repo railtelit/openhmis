@@ -18,7 +18,9 @@ export interface ActionFieldConfig{
 }
 
 
-export const  NameField:(conf?:Omit<GridColDef,"field">)=>GridColDef = (conf:Omit<GridColDef,'field'> ={} )=>( {...conf, headerName:'Name',  field:'name',renderCell:(params)=> <ResourceName  {...params.row?.name[0]}  />  } )
+export const  NameField:(conf?:Omit<GridColDef,"field">)=>GridColDef = (conf:Omit<GridColDef,'field'> ={} )=>( {...conf, headerName:'Name',  field:'name',renderCell:(params)=> <ResourceName  {...params.row?.name?.[0]}  />  } );
+
+export const  ReferenceDisplayField:( fieldName:string, conf?:Omit<GridColDef,"field">)=>GridColDef = ( fieldName:string, conf:Omit<GridColDef,'field'> ={} )=>( {...conf,field:fieldName,renderCell:(params)=> params.row?.[fieldName]?.display||''  } )
 
 export const  SimpleActionField:( actionConfig:ActionFieldConfig, conf?:ResourceColDef)=>GridColDef = ( config:ActionFieldConfig,  conf:ResourceColDef ={} )=>( {...conf,  field:config.actionName,renderCell:(params)=> <ActionButton  {...config} /> }) 
 
@@ -34,7 +36,8 @@ export interface ResourcetableProps {
      params?:any,
      columns:ColumnConfig[],
      reload?:boolean,
-     refreshRow?:any
+     refreshRow?:any,
+     
 }
 
 export function ResourceTable({resourceType,params={},columns,reload,refreshRow}: ResourcetableProps) {
@@ -44,7 +47,7 @@ export function ResourceTable({resourceType,params={},columns,reload,refreshRow}
       queryResource(); 
   },[]); 
   useEffect(()=>{
-        if(refreshRow){
+        if(refreshRow?.id){
             queryResource();
         }
   },[refreshRow])

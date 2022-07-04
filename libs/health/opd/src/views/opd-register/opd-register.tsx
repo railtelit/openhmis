@@ -1,15 +1,22 @@
 import { ResourceName, useFhirQuery } from '@ha/appfhir';
 import { Avatar, Button, Card, CardContent, Chip, Container, Grid, Icon, IconButton, ListItem, ListItemAvatar, ListItemText, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { Patient, Practitioner } from 'fhir/r4';
+import { Encounter, Organization, Patient, Practitioner, Reference } from 'fhir/r4';
 import {PatientsEdit} from '@ha/health/patients';
 import { useEffect, useState } from 'react';
 import styles from './opd-register.module.scss';
 import { CalendarPicker, DatePicker, LocalizationProvider } from '@mui/lab';
 import dayjs from '@date-io/dayjs'
+import  Dayjs from 'dayjs'
 import { ActionButton } from '@ha/shared-ui';
+import { useOPDService } from '../../lib/opd.service';
+
+Dayjs().format('YYYY-MM-DD')
 
 /* eslint-disable-next-line */
-export interface OpdRegisterProps {}
+export interface OpdRegisterProps {
+         serviceProvider?:Reference; 
+         onCreateEncounter?:(e:Encounter|null)=>void
+}
 
 interface SearchPatientProps{
     onSelectPatient:(p:Patient)=>void
@@ -86,14 +93,26 @@ export function OpdRegister(props: OpdRegisterProps) {
   const [patient,setPatient]=useState<Patient|null>(null);
   const [practselected,setPrac]=useState<Practitioner|null>(null)
   const [pracs,pracserror,loadpractitioners]=useFhirQuery<Practitioner>('Practitioner'); 
-  const [encounterdate,setencounterdate]=useState<any>(); 
-  const [selectedslots,setSelectedslots]=useState<any[]>([])
-  const slots = ['11:00','11:15','11:30'].map(s=> <ToggleButton key={s} value={s} > {s} </ToggleButton> )
+  const [encounterdate,setencounterdate]=useState<any>(new Date()); 
+  const [selectedslot,setSelectedslot]=useState<string|null>(null); 
+  const slots = ['11:00','11:15','11:30'].map(s=> <ToggleButton key={s} value={s} > {s} </ToggleButton> ); 
+  const opdService = useOPDService()
   useEffect(()=>{
         if(patient){
               loadpractitioners();
         }
-  },[patient])
+  },[patient]); 
+
+function createEncounter(){
+         if(patient && practselected){
+              opdService.createNewEncounter({patient,practitioner:practselected,serviceProvider:props.serviceProvider,startTime:selectedslot,
+                        date:encounterdate }).then(e=>{
+                        if(e)
+                         props.onCreateEncounter && props.onCreateEncounter(e)
+              })
+         }
+  }
+  
   return (
     <div className={styles['container']}>          
 <Container>
@@ -128,28 +147,26 @@ export function OpdRegister(props: OpdRegisterProps) {
               {patient&&practselected ? 
               
             <Grid container alignItems={'center'} spacing={2}>
-                <Grid item md={4} justifyContent={'start'} py={2} >
+                <Grid item md={2} justifyContent={'start'} py={2} >
                     
                     <Typography py={2} >Date</Typography>
-                    <LocalizationProvider  dateAdapter={dayjs} >
-                        {/* <CalendarPicker date={encounterdate}  onChange={(newdate)=>{
-                                setencounterdate(newdate);
-                        }} /> */}
-                        <DatePicker disablePast onChange={(newdate)=> setencounterdate(newdate) }  
+                    <LocalizationProvider  dateAdapter={dayjs}   >
+                        {/* Encounter Date */}
+                        <DatePicker    disablePast onChange={(newdate)=> setencounterdate(Dayjs(newdate).format('YYYY-MM-DD') ) }   
                             label='Select' value={encounterdate}
-                             renderInput={(params)=> <TextField fullWidth {...params} />}  />
+                            renderInput={(params)=> <TextField fullWidth {...params} />}  />
                     </LocalizationProvider>
                 </Grid>
-                <Grid item py={2} md={8}>
+                <Grid item py={2} md={10}>
                         <Typography py={2}>Slot</Typography>
-                        <ToggleButtonGroup exclusive value={selectedslots} onChange={(e,v)=>{
-                                setSelectedslots(v)
+                        <ToggleButtonGroup exclusive value={selectedslot||null} onChange={(e,v)=>{
+                                setSelectedslot(v)
                         }} >
                                 {slots}
                         </ToggleButtonGroup>
                 </Grid>
                 <Grid item justifyContent={'end'} >
-                        <Button variant='contained' color='error' >CREATE ENCOUNTER</Button>
+                        <Button variant='contained' onClick={()=> createEncounter() } color='error' >CREATE ENCOUNTER</Button>
                 </Grid>
             </Grid>
             : null } 

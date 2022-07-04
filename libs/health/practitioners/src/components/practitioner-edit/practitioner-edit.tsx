@@ -26,7 +26,7 @@ export function PractitionerEdit(props: PractitionerEditProps) {
   return (
     <div className={styles['container']}>
         <form onSubmit={pracform.handleSubmit(onSave)}>
-            <NameFormField control={pracform.control} name='name' value={props?.editpractitioner?.name} />
+            <NameFormField prefix='Dr.' control={pracform.control} name='name' value={props?.editpractitioner?.name} />
             <ButtonGroup sx={{p:1}}>
                 <Button type='submit'> {mode} </Button>
             </ButtonGroup>

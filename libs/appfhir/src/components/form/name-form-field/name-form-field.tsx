@@ -14,7 +14,7 @@ function NameInputs(props:{ value:HumanName , onChange:(value:HumanName)=>void})
       const {unsubscribe} = nameform.watch((value:any)=>{
       //  console.log('Changed',value);
         //const formValues=nameform.getValues(); 
-        props.onChange( { text: value['first']+' '+value['middle']+' '+value['last'] ,
+        props.onChange( { prefix:props?.value?.prefix,  text: value['first']+' '+value['middle']+' '+value['last'] ,
         given:[ value['first'] , value['middle'] ],family:value['last'] } )
       })
       //nameform.setValue( 'first',props);
@@ -30,12 +30,12 @@ function NameInputs(props:{ value:HumanName , onChange:(value:HumanName)=>void})
 export interface NameFormFieldProps{
   control:Control,
   value?:HumanName[],
-  name:string
+  name:string,prefix?:string
 }
 export function NameFormField(props:NameFormFieldProps){
   return <div>
-    <Controller    control={props.control} name= {props.name} defaultValue={props.value?.[0]||{given:['']} }
-        render={({field})=> <NameInputs  value={field.value||{given:['']}} 
+    <Controller    control={props.control} name= {props.name} defaultValue={props.value?.[0]||{given:[''],prefix:props.prefix } }
+        render={({field})=> <NameInputs  value={field.value||{given:[''],prefix:props.prefix}} 
           onChange={(val)=>{ 
               //console.log('Update',val)
               field.onChange(val) } } />
