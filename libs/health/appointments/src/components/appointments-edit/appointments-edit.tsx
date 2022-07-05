@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Grid, Icon, IconButton, MenuItem, Paper, Stack, TextField } from '@mui/material';
 import styles from './appointments-edit.module.scss';
 import { useRef } from 'react';
-import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate, AppointmentConverter } from '@ha/appfhir';
+import { useFhirConverter, useFhirCreate, useFhirQuery, useFhirResolver, useFhirUpdate, AppointmentConverter, CodeAutocomplete, SnomedAutoComplete, ResourcerefAutocomplete, ResourceName } from '@ha/appfhir';
 import { toast } from 'react-toastify';
 import { useFieldArray, useForm } from 'react-hook-form'
 import {debounceTime,tap,distinctUntilChanged} from 'rxjs/operators'
@@ -112,11 +112,12 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
           }else if(field == "end"){
             setValue(field,formValue[field].substring(0, 16));
           }else{
+            console.log(field,formValue[field])
             setValue(field,formValue[field]);
           }
         })
       }
-  },[])
+  },[record])
 
 
   async function onSave(formValue:any){
@@ -126,14 +127,14 @@ export function AppointmentsEdit({onClose=()=>{const i = true },mode,onCreate,re
     newRecord.start && ( newRecord.start += 'Z')
     newRecord.end && ( newRecord.end += 'Z')
     //newRecord.participant[0].actor.reference && ( newRecord.participant[0].actor.reference = patientId)
-    //console.log("Record "+newRecord.end);
+    console.log("Record ",newRecord);
     // makeRequest(newRecord)
     if(mode==='edit')
             updateAppointment(newRecord).then(_=>{
                     toast.success(`Record Updated SuccessFully `)
           });
-      else
-          await createAppointment(newRecord);
+       else
+           await createAppointment(newRecord);
 
 }
 
@@ -156,15 +157,15 @@ console.log(newList)
 
             <Grid item md={4}>
 
-                <Autocomplete disablePortal id="combo-box-demo"
+                {/* <Autocomplete disablePortal id="combo-box-demo"
                     options={newList}
                     onChange={(event:any, value:any) =>{
 
                       var obj = JSON.parse(JSON.stringify(value));
                       setPatientId("Patient/"+obj.id);
                     }}
-                    renderInput={(params:any) => <TextField {...register('participant')} {...params} label="Patient" />}/>
-
+                    renderInput={(params:any) => <TextField {...register('participant')} {...params} label="Patient" />}/> */}
+            <ResourcerefAutocomplete control={control}   resourceType='Patient' name='patient' getOptionLabel={(r)=>  r?.name?.[0]?.family } />
             </Grid>
             <Grid item md={4}>
                   <TextField {...register('start')} type='datetime-local'  InputLabelProps={{shrink:true}} label='Start Date and Time' required fullWidth   />
@@ -175,7 +176,7 @@ console.log(newList)
 
 
             <Grid item md={4}>
-                  <TextField {...register('category')}  label='Category' select fullWidth placeholder='Category' >
+                  {/* <TextField {...register('category')}  label='Category' select fullWidth placeholder='Category' >
                       <MenuItem value='Adoption'>Adoption</MenuItem>
                       <MenuItem value='Aged Care'>Aged Care</MenuItem>
                       <MenuItem value='Allied Health'>Allied Health</MenuItem>
@@ -187,10 +188,12 @@ console.log(newList)
                       <MenuItem value='Counselling'>Counselling</MenuItem>
                       <MenuItem value='Crisis Line (GPAH use only)'>Crisis Line (GPAH use only)</MenuItem>
 
-                  </TextField>
+                  </TextField> */}
+
+                <CodeAutocomplete label='Service Category' resourceId='service-category' control={control} name='serviceCategory' defaultValue={record?.['serviceCategory']} multiple={true} />
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('specialty')}  label='Specialty' select fullWidth placeholder='Specialty' >
+                  {/* <TextField {...register('specialty')}  label='Specialty' select fullWidth placeholder='Specialty' >
                       <MenuItem value='Anesthetics'>Anesthetics</MenuItem>
                       <MenuItem value='Burns care'>Burns care</MenuItem>
                       <MenuItem value='Cardiology'>Cardiology</MenuItem>
@@ -202,22 +205,25 @@ console.log(newList)
                       <MenuItem value='Psychotherapy'>Psychotherapy</MenuItem>
                       <MenuItem value='Radiology'>Radiology</MenuItem>
 
-                  </TextField>
+                  </TextField> */}
+                  <SnomedAutoComplete multiple={true} control={control}  label={'Specialty'} name='specialty' ecl='< 394658006' queryConfig={{ searchContext: 'concepts', loadOnInit: true }} />
+
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('appointmentType')}  label='Type' select fullWidth placeholder='Type' >
+                  {/* <TextField {...register('appointmentType')}  label='Type' select fullWidth placeholder='Type' >
                       <MenuItem value='CHECKUP'>CHECKUP</MenuItem>
                       <MenuItem value='EMERGENCY'>EMERGENCY</MenuItem>
                       <MenuItem value='FOLLOWUP'>FOLLOWUP</MenuItem>
                       <MenuItem value='ROUTINE'>ROUTINE</MenuItem>
                       <MenuItem value='WALKIN'>WALKIN</MenuItem>
 
-                  </TextField>
+                  </TextField> */}
+                  <CodeAutocomplete label='Appointment Type'  resourceId='v2-0276' control={control} name='appointmentType'
+                        defaultValue={record?.['appointmentType']} multiple={false} />
             </Grid>
 
-
             <Grid item md={4}>
-                  <TextField {...register('status')}  label='Status' select fullWidth placeholder='Status' >
+                  {/* <TextField {...register('status',)} defaultValue={record.status||''} label='Status' select fullWidth placeholder='Status' >
                       <MenuItem value='proposed'>Proposed</MenuItem>
                       <MenuItem value='pending'>Pending</MenuItem>
                       <MenuItem value='booked'>Booked</MenuItem>
@@ -228,10 +234,12 @@ console.log(newList)
                       <MenuItem value='entered-in-error'>Entered-In-Error</MenuItem>
                       <MenuItem value='checked-in'>Checked-In</MenuItem>
                       <MenuItem value='waitlist'>Waitlist</MenuItem>
-                  </TextField>
+                  </TextField> */}
+                  <CodeAutocomplete label='Status' resourceId='appointmentstatus' control={control} name='status' defaultValue={record?.['appointmentStatus']} multiple={false} />
             </Grid>
             <Grid item md={4}>
-                  <TextField {...register('healthprof')}  label='Health Prof' fullWidth placeholder='Health Prof' ></TextField>
+                  {/* <TextField {...register('healthprof')}  label='Health Prof' fullWidth placeholder='Health Prof' ></TextField> */}
+                  <ResourcerefAutocomplete control={control}  resourceType='Practitioner' name='doctor' getOptionLabel={(r)=>  r?.name?.[0]?.text }  />
             </Grid>
 
             <Grid item md={4}>

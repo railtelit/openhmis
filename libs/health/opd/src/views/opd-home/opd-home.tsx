@@ -9,6 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 import OpdRegister from '../opd-register/opd-register';
 import styles from './opd-home.module.scss';
+import AppointmentCards from '../../components/appointment-cards/appointment-cards';
 
 /* eslint-disable-next-line */
 export interface OpdHomeProps {}
@@ -17,14 +18,14 @@ export interface OpdHomeProps {}
 
 export function OpdHome(props: OpdHomeProps) {
 
-  const options:any[]=[]; 
+  const options:any[]=[];
   const [showregister,setshowregister]=useState(false);
   const [depts,deptloaderror,getdepts ]=useFhirQuery<Organization>('Organization',{type:'dept'})
   const encounterForm=useForm({});
 
   useEffect(()=>{
       // Load Dept Options
-      getdepts(); 
+      getdepts();
   },[]);
   function onCreate(formValue:any){
       console.log(formValue)
@@ -32,7 +33,7 @@ export function OpdHome(props: OpdHomeProps) {
 
   const columns:GridColDef[]=[ NameField({flex:1 }),{headerName:'Age',field:'age'},{headerName:'Contact',field:'contact'}
               ,{headerName:'Entry Date',field:'end'} ,  SimpleActionField( {label:'Vital',actionName:'vitalentry',} ) ,
-                 SimpleActionField({label:'Rx',actionName:'rx',navigateTo:'rx'})  
+                 SimpleActionField({label:'Rx',actionName:'rx',navigateTo:'rx'})
             ]
   return (
     <div className={styles['container']}>
@@ -49,10 +50,23 @@ export function OpdHome(props: OpdHomeProps) {
                         <Grid item>
                            <Button type='submit'>Create</Button>
                         </Grid>
-                </Grid>                
-          <Typography variant='caption'>Appointment Queue List</Typography>          
+                </Grid>
+
+          {/* <Typography variant='caption'>Appointment Queue List</Typography> */}
+
+          <Grid container>
+            <Grid item md={4}>
+
+              <AppointmentCards patient_name='Dhruv Solanki' appointment_time='11:30 AM' appointment_type='Follow-up' text_doctor='Dr. A K Sharma' color='black' color_bg='white'
+              icon='how_to_reg' checked_icon='how_to_reg' />
+
+            </Grid>
+          </Grid>
+
+
+
         </form>
-         Current Encounters        
+         Current Encounters
         <ResourceTable resourceType='Encounter' columns={columns}></ResourceTable>
         <Dialog fullWidth maxWidth={'lg'} open={showregister} onClose={()=>setshowregister(false)}>
             <DialogTitle>Direct Register</DialogTitle>
