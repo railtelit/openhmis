@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const FileBase64 = require('react-file-base64');
+// const FileBase64 = require('react-file-base64');
 
 export interface FileUploadProps {
   onCreate?:(newResource:any)=>void,
@@ -27,7 +27,8 @@ export function FileUpload({onCreate}: FileUploadProps) {
 
   async function handleFileRead(event:any){
     const file = event.target.files[0]
-    var rawBase64:any = await convertBase64(file)
+    // var rawBase64:any = await convertBase64(file)
+    const rawBase64:any=''
     base64 = rawBase64.substr(rawBase64.indexOf(',') + 1);
     mimeType = rawBase64.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];;
     console.log("base64 "+base64)
@@ -49,7 +50,7 @@ export function FileUpload({onCreate}: FileUploadProps) {
 
   async function onSave(formValue:any){
     ///  let newRecord= convertToResource(formValue)
-      let newRecord = formValue;
+      const newRecord = formValue;
       newRecord.data && ( newRecord.data = base64);
       newRecord.contentType = mimeType;
       console.log(newRecord);

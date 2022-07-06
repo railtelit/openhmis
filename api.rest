@@ -2,7 +2,7 @@
 
 ## Check Patients
 # @name patient
-GET {{endpoint}}/Patient?_summary=true&name=P
+GET {{endpoint}}/Patient?_summary=true
 
 @id = {{patient.response.body.$.entry[0].resource.id}}
 
@@ -54,7 +54,7 @@ GET {{endpoint}}/Location
 GET {{endpoint}}/Practitioner
 
 ###
-DELETE {{endpoint}}/Practitioner/237
+DELETE {{endpoint}}/Practitioner/245
 
 ###
 ## @name snomed
@@ -84,3 +84,27 @@ DELETE  {{endpoint}}/Organization/8
 
 ###
 GET {{endpoint}}/Binary/28
+
+###
+GET {{endpoint}}/Encounter?_summary=true
+###
+POST {{endpoint}}/Encounter
+Content-Type: application/json
+
+{
+    "resourceType":"Encounter",
+    "status":"planned",
+    "class":{ "code":"AMB" },
+    "subject":{"reference":"Patient/234","display":"June"}
+}
+###
+GET {{endpoint}}/Account?patient=234
+###
+POST {{endpoint}}/Account
+Content-Type: application/json
+
+{
+    "status":"active","resourceType":"Account",
+    "name":"Test",
+    "subject":[{"reference":"Patient/234"}]
+}

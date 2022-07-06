@@ -4,26 +4,11 @@ import React, {useState, useEffect} from "react";
 import Fade from '@mui/material/Fade';
 import axios from 'axios';
 
-export interface AppointmentCardsProps {
+export interface AppointmentCardsProps {}
 
-  text_doctor: string;
-  color?:string;
-  color_bg?:string;
-  patient_name: string;
-  appointment_time: string;
-  appointment_type: string;
-  icon?: string;
-  checked_icon?: string;
-}
-
-var jsonObj:any = [];
+var cardInfo:any = [];
 
 export function AppointmentCards(props: AppointmentCardsProps) {
-
-  const color = props.color;
-  const color_bg = props.color_bg;
-  const [style, setStyle] = useState({display: 'none'});
-
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -34,9 +19,23 @@ export function AppointmentCards(props: AppointmentCardsProps) {
     setAnchorEl(null);
   };
 
+  function tConvert (time:any) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) {
+      time = time.slice (1);
+      time[5] = +time[0] < 12 ? ' AM' : ' PM';
+      time[0] = +time[0] % 12 || 12;
+    }
+    return time.join ('');
+  }
+
   useEffect(() => {
 
     const loadUsers = async () => {
+
+      cardInfo = [];
 
       const response = await axios.get('http://at.erpapps.in/fhir/Appointment?_include=Appointment:patient');
       const posts = response.data.entry;
@@ -47,117 +46,130 @@ export function AppointmentCards(props: AppointmentCardsProps) {
         if(posts[i].resource.resourceType.startsWith('Appointment')){
 
           const participant = posts[i].resource.participant;
-          //console.log("participant" + participant);
+          //console.log("participant" + JSON.stringify(participant));
 
           for (var j = 0; j < participant.length; j++){
 
-            if(participant[j].actor.reference.startsWith('Patient')){
+            var reference = participant[j].actor.reference;
 
-              var patient_name = participant[j].actor.display;
-              //console.log("Appointment:- "+ patient_name);
+            if(reference.startsWith("Patient")){
 
-            }else if(participant[j].actor.reference.startsWith('Practitioner')){
+              var patient = participant[j].actor.display;
+              //console.log("participant patient:- " + patient);
 
-              var doctor_name = participant[j].actor.display;
-              //console.log("Appointment:- "+ doctor_name);
+            }else if(reference.startsWith("Practitioner")){
+
+              var doctor = participant[j].actor.display;
+              //console.log("participant doctor:- " + doctor);
             }
-
-            var appointment_type = posts[i].resource.appointmentType.coding[i].code;
-            var appointment_time = posts[i].resource.start;
-
-            var item:any = {};
-            item ["patient_name"] = patient_name;
-            item ["doctor_name"] = doctor_name;
-            item ["appointment_type"] = appointment_type;
-            item ["appointment_time"] = appointment_time;
-
-            jsonObj.push(item);
-            console.log("JSON:- " + JSON.stringify(jsonObj));
-
-            //console.log("Appointment:- "+ patient_name +" - "+ doctor_name +" - "+ appointment_time +" - "+ appointment_type);
           }
 
+          var appointment_time = posts[i].resource.start;
+          var appointment_type = posts[i].resource.appointmentType.coding[0].code;
 
+          var item:any = {};
+            item ["patient"] = patient;
+            item ["doctor"] = doctor;
+            item ["appointment_type"] = appointment_type;
+            item ["appointment_time"] = tConvert (appointment_time.substring(11, 16));
+
+            cardInfo.push(item);
         }
       }
+
+      console.log("JSON:- " + JSON.stringify(cardInfo));
+
     }
     loadUsers();
   }, [])
 
+  function showButton(e:any){
+    e.target.style.opacity = 1;
+  }
 
-  return (
+  function hideButton(e:any){
+    e.target.style.opacity = 0;
+  }
 
-    <Card sx={{backgroundColor: color_bg, color: color, padding: "10px", boxShadow: "3px 5px 10px 2px rgba(0, 0, 0, 0.5)"}}>
 
-      {/* , backgroundImage: backgroundImage, backgroundPosition: 'right', backgroundRepeat: "no-repeat", border: "1px solid",*/}
-        {/* sx={{backgroundColor: (theme) => theme.palette.info.main,color: 'white'}} */}
+  const renderCard = (card:any, index:any) => {
+    return (
 
-        <CardContent sx={{padding: 0,"&:last-child": {paddingBottom: 0} }}>
+      <Card key={index} sx={{backgroundColor: 'white', color: 'black', padding: "10px", boxShadow: "3px 5px 10px 2px rgba(0, 0, 0, 0.5)"}}>
 
-            <Box display="flex" alignItems="flex-start">
-                {/* <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon> */}
+        {/* , backgroundImage: backgroundImage, backgroundPosition: 'right', backgroundRepeat: "no-repeat", border: "1px solid",*/}
+          {/* sx={{backgroundColor: (theme) => theme.palette.info.main,color: 'white'}} */}
 
-                <IconButton aria-label="more" id="fade-button" aria-controls={open ? 'fade-menu' : undefined} aria-expanded={open ? 'true' : undefined} aria-haspopup="true" onClick={handleClick} >
-                    <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon>
-                </IconButton>
+          <CardContent sx={{padding: 0,"&:last-child": {paddingBottom: 0} }}>
 
-              <Menu id="fade-menu" MenuListProps={{ 'aria-labelledby': 'fade-button', }} anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} >
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Cancel</MenuItem>
-                <MenuItem onClick={handleClose}>Postponed</MenuItem>
-              </Menu>
+              <Box display="flex" alignItems="flex-start">
+                  {/* <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon> */}
 
-              <Box sx={{marginLeft: 'auto'}}>
-                  <Typography variant="h5" fontWeight="700">
-                      {props.text_doctor}
-                  </Typography>
+                  <IconButton aria-label="more" id="fade-button" aria-controls={open ? 'fade-menu' : undefined} aria-expanded={open ? 'true' : undefined} aria-haspopup="true" onClick={handleClick} >
+                      <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon>
+                  </IconButton>
+
+                <Menu id="fade-menu" MenuListProps={{ 'aria-labelledby': 'fade-button', }} anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} >
+                  <MenuItem onClick={handleClose}>Edit</MenuItem>
+                  <MenuItem onClick={handleClose}>Cancel</MenuItem>
+                  <MenuItem onClick={handleClose}>Postponed</MenuItem>
+                </Menu>
+
+                <Box sx={{marginLeft: 'auto'}}>
+                    <Typography variant="h5" fontWeight="700">
+                        {card.doctor}
+                    </Typography>
+                </Box>
+
               </Box>
 
-            </Box>
+              <Grid container>
 
-            <Grid container>
-                <Grid item md={3} onMouseEnter={e => { setStyle({display: 'block'}); }} onMouseLeave={e => { setStyle({display: 'none'}) }}>
-                    <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }} className='image_box'>
-                        <CardMedia component="img" sx={{ width: 50, height: 50 }} image="assets/images/users/user_image.png" />
-                    </Box>
-                    <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }}>
-                        <Button style={style}><Icon style={{ color: 'black', fontSize: 30 }}>camera_alt</Icon></Button>
-                    </Box>
-
-                </Grid>
-                <Grid item md={7}>
-                    <Grid item md={12}>
-                      <Box sx={{marginLeft: 'auto'}}>
-                          <Typography variant="h5" fontWeight="600">
-                              {props.patient_name}
-                          </Typography>
+                  <Grid item md={3}>
+                      <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }} className='image_box'>
+                          <CardMedia component="img" sx={{ width: 50, height: 50 }} image="assets/images/users/user_image.png" />
                       </Box>
-                    </Grid>
-                    <Grid item md={12}>
-                      <Box sx={{marginLeft: 'auto'}}>
-                          <Typography variant="h2" fontWeight="800">
-                              {props.appointment_time}
-                          </Typography>
+                      <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }}>
+                          <Button onMouseOver={e => { showButton(e) }} onMouseLeave={e => { hideButton(e) }} sx={{ opacity: 0 }}><Icon style={{ color: 'black', fontSize: 30 }}>camera_alt</Icon></Button>
                       </Box>
-                    </Grid>
-                    <Grid item md={12}>
-                      <Box sx={{marginLeft: 'auto'}}>
-                          <Typography variant="h5" fontWeight="500">
-                              {props.appointment_type}
-                          </Typography>
-                      </Box>
-                    </Grid>
-                </Grid>
-                <Grid item md={2} sx={{ display:'flex', justifyContent:'center', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Checkbox sx={{color: "#6745b5", transform: `scale(1.5)` }} icon={<Icon>{props.icon}</Icon>} checkedIcon={<Icon>{props.checked_icon}</Icon>}/>
-                </Grid>
-            </Grid>
+                  </Grid>
 
-        </CardContent>
+                  <Grid item md={7}>
+                      <Grid item md={12}>
+                        <Box sx={{marginLeft: 'auto'}}>
+                            <Typography variant="h5" fontWeight="600">
+                                {card.patient}
+                            </Typography>
+                        </Box>
+                      </Grid>
+                      <Grid item md={12}>
+                        <Box sx={{marginLeft: 'auto'}}>
+                            <Typography variant="h3" fontWeight="800">
+                                {card.appointment_time}
+                            </Typography>
+                        </Box>
+                      </Grid>
+                      <Grid item md={12}>
+                        <Box sx={{marginLeft: 'auto'}}>
+                            <Typography variant="h6" fontWeight="500">
+                                {card.appointment_type}
+                            </Typography>
+                        </Box>
+                      </Grid>
+                  </Grid>
+                  <Grid item md={2} sx={{ display:'flex', justifyContent:'center', flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <Checkbox sx={{color: "#6745b5", transform: `scale(1.5)` }} icon={<Icon>how_to_reg</Icon>} checkedIcon={<Icon>how_to_reg</Icon>}/>
+                  </Grid>
+              </Grid>
 
-    </Card>
+          </CardContent>
 
-  );
+      </Card>
+
+    );
+  };
+
+  return <div className="grid">{cardInfo.map(renderCard)}</div>;
 }
 
 export default AppointmentCards;
