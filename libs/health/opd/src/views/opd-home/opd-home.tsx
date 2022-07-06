@@ -10,10 +10,15 @@ import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 import OpdRegister from '../opd-register/opd-register';
 import styles from './opd-home.module.scss';
 import AppointmentCards from '../../components/appointment-cards/appointment-cards';
+import axios from 'axios';
 
 /* eslint-disable-next-line */
 export interface OpdHomeProps {}
 
+var doctor_name: string;
+var patient_name: string;
+var appointment_time: string;
+var appointment_type: SVGStringList;
 
 
 export function OpdHome(props: OpdHomeProps) {
@@ -22,6 +27,47 @@ export function OpdHome(props: OpdHomeProps) {
   const [showregister,setshowregister]=useState(false);
   const [depts,deptloaderror,getdepts ]=useFhirQuery<Organization>('Organization',{type:'dept'})
   const encounterForm=useForm({});
+
+  useEffect(() => {
+
+    const loadUsers = async () => {
+
+      const response = await axios.get('http://at.erpapps.in/fhir/Appointment?_include=Appointment:patient');
+      const posts = response.data.entry;
+      //console.log("Appointment Data:- "+ JSON.stringify(posts));
+
+      for (var i = 0; i < posts.length; i++){
+
+        if(posts[i].resource.resourceType.startsWith('Appointment')){
+
+          const participant = posts[i].resource.participant;
+          //console.log("participant" + participant);
+
+          for (var j = 0; j < participant.length; j++){
+
+            if(participant[j].actor.reference.startsWith('Patient')){
+
+              patient_name = participant[j].actor.display;
+              console.log("Appointment:- "+ patient_name);
+
+            }else if(participant[j].actor.reference.startsWith('Practitioner')){
+
+              doctor_name = participant[j].actor.display;
+              console.log("Appointment:- "+ doctor_name);
+            }
+
+            appointment_type = posts[i].resource.appointmentType.coding[i].code;
+            appointment_time = posts[i].resource.start;
+
+            //console.log("Appointment:- "+ patient_name +" - "+ doctor_name +" - "+ appointment_time +" - "+ appointment_type);
+          }
+
+
+        }
+      }
+    }
+    loadUsers();
+  }, [])
 
   useEffect(()=>{
       // Load Dept Options

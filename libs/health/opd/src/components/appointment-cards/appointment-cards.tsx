@@ -1,7 +1,8 @@
 //import styles from './appointment-cards.module.scss';
 import { Card, CardContent, Typography, Box, Fab, Icon, CardMedia, Grid, Checkbox, Button, IconButton, Menu, MenuItem   } from '@mui/material';
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Fade from '@mui/material/Fade';
+import axios from 'axios';
 
 export interface AppointmentCardsProps {
 
@@ -14,6 +15,8 @@ export interface AppointmentCardsProps {
   icon?: string;
   checked_icon?: string;
 }
+
+var jsonObj:any = [];
 
 export function AppointmentCards(props: AppointmentCardsProps) {
 
@@ -30,6 +33,57 @@ export function AppointmentCards(props: AppointmentCardsProps) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+
+    const loadUsers = async () => {
+
+      const response = await axios.get('http://at.erpapps.in/fhir/Appointment?_include=Appointment:patient');
+      const posts = response.data.entry;
+      //console.log("Appointment Data:- "+ JSON.stringify(posts));
+
+      for (var i = 0; i < posts.length; i++){
+
+        if(posts[i].resource.resourceType.startsWith('Appointment')){
+
+          const participant = posts[i].resource.participant;
+          //console.log("participant" + participant);
+
+          for (var j = 0; j < participant.length; j++){
+
+            if(participant[j].actor.reference.startsWith('Patient')){
+
+              var patient_name = participant[j].actor.display;
+              //console.log("Appointment:- "+ patient_name);
+
+            }else if(participant[j].actor.reference.startsWith('Practitioner')){
+
+              var doctor_name = participant[j].actor.display;
+              //console.log("Appointment:- "+ doctor_name);
+            }
+
+            var appointment_type = posts[i].resource.appointmentType.coding[i].code;
+            var appointment_time = posts[i].resource.start;
+
+            var item:any = {};
+            item ["patient_name"] = patient_name;
+            item ["doctor_name"] = doctor_name;
+            item ["appointment_type"] = appointment_type;
+            item ["appointment_time"] = appointment_time;
+
+            jsonObj.push(item);
+            console.log("JSON:- " + JSON.stringify(jsonObj));
+
+            //console.log("Appointment:- "+ patient_name +" - "+ doctor_name +" - "+ appointment_time +" - "+ appointment_type);
+          }
+
+
+        }
+      }
+    }
+    loadUsers();
+  }, [])
+
 
   return (
 
