@@ -7,6 +7,8 @@ import axios from 'axios';
 export interface AppointmentCardsProps {}
 
 var cardInfo:any = [];
+var appointment_sno:any;
+var appointment_image:any;
 
 export function AppointmentCards(props: AppointmentCardsProps) {
 
@@ -75,6 +77,9 @@ export function AppointmentCards(props: AppointmentCardsProps) {
             item ["doctor"] = doctor;
             item ["appointment_type"] = appointment_type;
             item ["appointment_time"] = tConvert (appointment_time.substring(11, 16));
+            item ["button_id"] = "button_"+Number(i+1);
+            item ["image_id"] = "image_"+Number(i+1);
+            item ["sno"] = Number(i+1);
 
             cardInfo.push(item);
         }
@@ -94,7 +99,8 @@ export function AppointmentCards(props: AppointmentCardsProps) {
     e.target.style.opacity = 0;
   }
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (event:any) => {
+    appointment_sno = event.currentTarget.value;
     inputRef.current!.click();
   };
 
@@ -104,13 +110,7 @@ export function AppointmentCards(props: AppointmentCardsProps) {
       return;
     }
 
-    setImage(URL.createObjectURL(event.target.files[0]));
-
-    // console.log('fileObj is', fileObj);
-    // event.target.value = null;
-    // console.log(event.target.files);
-    // console.log(fileObj);
-    // console.log(fileObj.name);
+    document.getElementById("image_"+appointment_sno)!.setAttribute( 'src', URL.createObjectURL(event.target.files[0]));
   };
 
   const handleError = () => setImage("assets/images/users/user_image.png");
@@ -118,7 +118,7 @@ export function AppointmentCards(props: AppointmentCardsProps) {
 
   return (
 
-      <Grid container component={Stack} direction="row">
+      <Grid container>
 
           {cardInfo.map((card:any, index:any) => (
 
@@ -139,7 +139,6 @@ export function AppointmentCards(props: AppointmentCardsProps) {
                         <Menu id="fade-menu" MenuListProps={{ 'aria-labelledby': 'fade-button', }} anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} >
                           <MenuItem onClick={handleClose}>Edit</MenuItem>
                           <MenuItem onClick={handleClose}>Cancel</MenuItem>
-                          <MenuItem onClick={handleClose}>Postponed</MenuItem>
                         </Menu>
 
                         <Box sx={{marginLeft: 'auto'}}>
@@ -147,19 +146,17 @@ export function AppointmentCards(props: AppointmentCardsProps) {
                                 {card.doctor}
                             </Typography>
                         </Box>
-
                       </Box>
 
                       <Grid container>
-
                           <Grid item md={3}>
                               <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }} className='image_box'>
-                                  <CardMedia component="img" sx={{ width: 50, height: 50 }} image={image} onError={handleError} />
+                                  <CardMedia id={card.image_id} component="img" sx={{ width: 50, height: 50 }} image={image} onError={handleError} />
                               </Box>
                               <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }}>
 
                                   <input type="file" ref={inputRef} onChange={onImageChange} className="filetype" hidden/>
-                                  <Button onClick={handleButtonClick} onMouseOver={e => { showButton(e) }} onMouseLeave={e => { hideButton(e) }} sx={{ opacity: 0 }}><Icon style={{ color: 'black', fontSize: 30 }}>camera_alt</Icon></Button>
+                                  <Button value={card.sno} onClick={handleButtonClick} onMouseOver={e => { showButton(e) }} onMouseLeave={e => { hideButton(e) }} sx={{ opacity: 0 }}><Icon style={{ color: 'black', fontSize: 30 }}>camera_alt</Icon></Button>
                               </Box>
                           </Grid>
 
