@@ -1,6 +1,6 @@
 //import styles from './appointment-cards.module.scss';
-import { Card, CardContent, Typography, Box, Fab, Icon, CardMedia, Grid, Checkbox, Button, IconButton, Menu, MenuItem   } from '@mui/material';
-import React, {useState, useEffect} from "react";
+import { Card, CardContent, Typography, Box, Fab, Icon, CardMedia, Grid, Checkbox, Button, IconButton, Menu, MenuItem, List, Stack  } from '@mui/material';
+import React, {useState, useEffect, useRef} from "react";
 import Fade from '@mui/material/Fade';
 import axios from 'axios';
 
@@ -9,6 +9,9 @@ export interface AppointmentCardsProps {}
 var cardInfo:any = [];
 
 export function AppointmentCards(props: AppointmentCardsProps) {
+
+  const [image, setImage] = useState("assets/images/users/user_image.png");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -91,85 +94,107 @@ export function AppointmentCards(props: AppointmentCardsProps) {
     e.target.style.opacity = 0;
   }
 
-
-  const renderCard = (card:any, index:any) => {
-    return (
-
-      <Card key={index} sx={{backgroundColor: 'white', color: 'black', padding: "10px", boxShadow: "3px 5px 10px 2px rgba(0, 0, 0, 0.5)"}}>
-
-        {/* , backgroundImage: backgroundImage, backgroundPosition: 'right', backgroundRepeat: "no-repeat", border: "1px solid",*/}
-          {/* sx={{backgroundColor: (theme) => theme.palette.info.main,color: 'white'}} */}
-
-          <CardContent sx={{padding: 0,"&:last-child": {paddingBottom: 0} }}>
-
-              <Box display="flex" alignItems="flex-start">
-                  {/* <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon> */}
-
-                  <IconButton aria-label="more" id="fade-button" aria-controls={open ? 'fade-menu' : undefined} aria-expanded={open ? 'true' : undefined} aria-haspopup="true" onClick={handleClick} >
-                      <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon>
-                  </IconButton>
-
-                <Menu id="fade-menu" MenuListProps={{ 'aria-labelledby': 'fade-button', }} anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} >
-                  <MenuItem onClick={handleClose}>Edit</MenuItem>
-                  <MenuItem onClick={handleClose}>Cancel</MenuItem>
-                  <MenuItem onClick={handleClose}>Postponed</MenuItem>
-                </Menu>
-
-                <Box sx={{marginLeft: 'auto'}}>
-                    <Typography variant="h5" fontWeight="700">
-                        {card.doctor}
-                    </Typography>
-                </Box>
-
-              </Box>
-
-              <Grid container>
-
-                  <Grid item md={3}>
-                      <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }} className='image_box'>
-                          <CardMedia component="img" sx={{ width: 50, height: 50 }} image="assets/images/users/user_image.png" />
-                      </Box>
-                      <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }}>
-                          <Button onMouseOver={e => { showButton(e) }} onMouseLeave={e => { hideButton(e) }} sx={{ opacity: 0 }}><Icon style={{ color: 'black', fontSize: 30 }}>camera_alt</Icon></Button>
-                      </Box>
-                  </Grid>
-
-                  <Grid item md={7}>
-                      <Grid item md={12}>
-                        <Box sx={{marginLeft: 'auto'}}>
-                            <Typography variant="h5" fontWeight="600">
-                                {card.patient}
-                            </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item md={12}>
-                        <Box sx={{marginLeft: 'auto'}}>
-                            <Typography variant="h3" fontWeight="800">
-                                {card.appointment_time}
-                            </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item md={12}>
-                        <Box sx={{marginLeft: 'auto'}}>
-                            <Typography variant="h6" fontWeight="500">
-                                {card.appointment_type}
-                            </Typography>
-                        </Box>
-                      </Grid>
-                  </Grid>
-                  <Grid item md={2} sx={{ display:'flex', justifyContent:'center', flexDirection: 'column', alignItems: 'flex-start' }}>
-                      <Checkbox sx={{color: "#6745b5", transform: `scale(1.5)` }} icon={<Icon>how_to_reg</Icon>} checkedIcon={<Icon>how_to_reg</Icon>}/>
-                  </Grid>
-              </Grid>
-
-          </CardContent>
-
-      </Card>
-
-    );
+  const handleButtonClick = () => {
+    inputRef.current!.click();
   };
 
-  return <div className="grid">{cardInfo.map(renderCard)}</div>;
+  const onImageChange = (event:any) => {
+    const fileObj = event.target.files && event.target.files[0];
+    if (!fileObj) {
+      return;
+    }
+
+    setImage(URL.createObjectURL(event.target.files[0]));
+
+    // console.log('fileObj is', fileObj);
+    // event.target.value = null;
+    // console.log(event.target.files);
+    // console.log(fileObj);
+    // console.log(fileObj.name);
+  };
+
+  const handleError = () => setImage("assets/images/users/user_image.png");
+
+
+  return (
+
+      <Grid container component={Stack} direction="row">
+
+          {cardInfo.map((card:any, index:any) => (
+
+              <Card key={index} sx={{width: '25%', backgroundColor: 'white', color: 'black', padding: "10px", boxShadow: "3px 5px 10px 2px rgba(0, 0, 0, 0.5)"}}>
+
+                {/* , backgroundImage: backgroundImage, backgroundPosition: 'right', backgroundRepeat: "no-repeat", border: "1px solid",*/}
+                  {/* sx={{backgroundColor: (theme) => theme.palette.info.main,color: 'white'}} */}
+
+                  <CardContent sx={{padding: 0,"&:last-child": {paddingBottom: 0}}}>
+
+                      <Box display="flex" alignItems="flex-start">
+                          {/* <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon> */}
+
+                          <IconButton aria-label="more" id="fade-button" aria-controls={open ? 'fade-menu' : undefined} aria-expanded={open ? 'true' : undefined} aria-haspopup="true" onClick={handleClick} >
+                              <Icon style={{ color: 'black', fontSize: 30 }}>more_vert</Icon>
+                          </IconButton>
+
+                        <Menu id="fade-menu" MenuListProps={{ 'aria-labelledby': 'fade-button', }} anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} >
+                          <MenuItem onClick={handleClose}>Edit</MenuItem>
+                          <MenuItem onClick={handleClose}>Cancel</MenuItem>
+                          <MenuItem onClick={handleClose}>Postponed</MenuItem>
+                        </Menu>
+
+                        <Box sx={{marginLeft: 'auto'}}>
+                            <Typography variant="h5" fontWeight="700">
+                                {card.doctor}
+                            </Typography>
+                        </Box>
+
+                      </Box>
+
+                      <Grid container>
+
+                          <Grid item md={3}>
+                              <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }} className='image_box'>
+                                  <CardMedia component="img" sx={{ width: 50, height: 50 }} image={image} onError={handleError} />
+                              </Box>
+                              <Box display="flex" alignItems="flex-start" style={{ display:'flex', justifyContent:'center' }}>
+
+                                  <input type="file" ref={inputRef} onChange={onImageChange} className="filetype" hidden/>
+                                  <Button onClick={handleButtonClick} onMouseOver={e => { showButton(e) }} onMouseLeave={e => { hideButton(e) }} sx={{ opacity: 0 }}><Icon style={{ color: 'black', fontSize: 30 }}>camera_alt</Icon></Button>
+                              </Box>
+                          </Grid>
+
+                          <Grid item md={7}>
+                              <Grid item md={12}>
+                                <Box sx={{marginLeft: 'auto'}}>
+                                    <Typography variant="h5" fontWeight="600">
+                                        {card.patient}
+                                    </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item md={12}>
+                                <Box sx={{marginLeft: 'auto'}}>
+                                    <Typography variant="h3" fontWeight="800">
+                                        {card.appointment_time}
+                                    </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item md={12}>
+                                <Box sx={{marginLeft: 'auto'}}>
+                                    <Typography variant="h6" fontWeight="500">
+                                        {card.appointment_type}
+                                    </Typography>
+                                </Box>
+                              </Grid>
+                          </Grid>
+                          <Grid item md={2} sx={{ display:'flex', justifyContent:'center', flexDirection: 'column', alignItems: 'flex-start' }}>
+                              <Checkbox sx={{color: "#6745b5", transform: `scale(1.5)` }} icon={<Icon>how_to_reg</Icon>} checkedIcon={<Icon>how_to_reg</Icon>}/>
+                          </Grid>
+                      </Grid>
+                  </CardContent>
+              </Card>
+          ))}
+      </Grid>
+    );
 }
 
 export default AppointmentCards;

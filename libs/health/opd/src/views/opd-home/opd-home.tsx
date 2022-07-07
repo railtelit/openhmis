@@ -70,12 +70,9 @@ export function OpdHome(props: OpdHomeProps) {
           {/* <Typography variant='caption'>Appointment Queue List</Typography> */}
 
           <Grid container>
-            <Grid item md={4}>
+            <Grid item md={12}>
 
               <AppointmentCards/>
-
-              {/* <AppointmentCards patient_name='Dhruv Solanki' appointment_time='11:30 AM' appointment_type='Follow-up' text_doctor='Dr. A K Sharma' color='black' color_bg='white'
-              icon='how_to_reg' checked_icon='how_to_reg' /> */}
 
             </Grid>
           </Grid>
