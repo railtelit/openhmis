@@ -111,7 +111,7 @@ export function PatientsEdit({onClose=()=>{const i = true },mode,onCreate,record
                     <Grid item md={12} >
                      <Box justifyContent={'end'}  > <IconButton onClick={()=>append(defaultAddress)}> <Icon>add</Icon> </IconButton> </Box>
                {
-                    fields.map( (item,index)=> <AddressForm onRemove={(index)=>remove(index)} errors={errors} key={item.id} register={register} id={item.id} index={index}  /> )
+                    fields.map( (item:any,index:any)=> <AddressForm onRemove={(index)=>remove(index)} errors={errors} key={item.id} register={register} id={item.id} index={index}  /> )
                }
 
                     </Grid>

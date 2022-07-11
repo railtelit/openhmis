@@ -14,7 +14,7 @@ Dayjs().format('YYYY-MM-DD')
 
 /* eslint-disable-next-line */
 export interface OpdRegisterProps {
-         serviceProvider?:Reference; 
+         serviceProvider?:Reference;
          onCreateEncounter?:(e:Encounter|null)=>void
 }
 
@@ -25,7 +25,7 @@ interface SearchPatientProps{
 function SearchPatient( props:SearchPatientProps ){
     const [creating,setcreating]=useState(false);
     const [searchresults,searcherror,searchpatients]=useFhirQuery<Patient>('Patient')
-    const [selected,setSelected]=useState(null); 
+    const [selected,setSelected]=useState(null);
     useEffect(()=>{
         searchpatients({}) ;
     },[])
@@ -36,20 +36,20 @@ function SearchPatient( props:SearchPatientProps ){
             searchpatients({name:text})
     }
     return <div>
-          
+
           <Grid container spacing={1} alignItems='center' >
               <Grid item md={6}>
                   <TextField onChange={(e)=>searchPatient(e.target.value)} fullWidth label='Contact/Name' variant='filled'/>
               </Grid>
               <Grid item md={6} alignItems='center'>
-                  {creating? 
+                  {creating?
                       <Button variant='outlined' fullWidth color='error' onClick={()=>setcreating(false)} >BACK TO SEARCH</Button>
                       : <Button variant='contained' onClick={()=>setcreating(true)} fullWidth color='primary'>ADD NEW PATIENT</Button>
                   }
               </Grid>
               <Grid item md={12}>
-                    {creating? <PatientsEdit onCreate={(p)=>selectPatient(p) } onClose={()=>setcreating(false)} mode='create' />: 
-                      searchresults.map(p=> <PatientCard key={`P${p.id}` } onClick={()=>selectPatient(p)} actions={<IconButton onClick={()=>selectPatient(p)}><Icon>check</Icon></IconButton>} p={p} /> ) 
+                    {creating? <PatientsEdit onCreate={(p)=>selectPatient(p) } onClose={()=>setcreating(false)} mode='create' />:
+                      searchresults.map(p=> <PatientCard key={`P${p.id}` } onClick={()=>selectPatient(p)} actions={<IconButton onClick={()=>selectPatient(p)}><Icon>check</Icon></IconButton>} p={p} /> )
                     }
               </Grid>
           </Grid>
@@ -61,7 +61,7 @@ function PatientCard({p,actions,onClick }:{p:Patient,actions?:any,onClick?:()=>v
           <CardContent sx={{p:0,m:0,py:0}}>
               <Grid container>
                   <Grid item md={2}> <Avatar/> </Grid>
-                  <Grid item md > 
+                  <Grid item md >
                         <Stack>
                             <Typography variant='h5' > <ResourceName  defaultText='-' {...(p?.name?.[0]) } /></Typography>
                             <Typography variant='caption' sx={{fontStyle:'italic'}} > Contact: {p?.telecom?.[0].value} </Typography>
@@ -75,10 +75,10 @@ function PatientCard({p,actions,onClick }:{p:Patient,actions?:any,onClick?:()=>v
 
 function PractitionerCard({prac,action}:{prac:Practitioner,action:any}){
         return  <Card sx={{py:0}}>
-        <CardContent  sx={{p:0}}>  
+        <CardContent  sx={{p:0}}>
             <Grid container alignItems={'center'}>
                 <Grid item md={10}>
-                    <ResourceName {...prac.name?.[0]} defaultText='' />   
+                    <ResourceName {...prac.name?.[0]} defaultText='' />
                 </Grid>
                 <Grid item md={2}>
                      {action}
@@ -92,16 +92,16 @@ export function OpdRegister(props: OpdRegisterProps) {
   const [departments]=useFhirQuery('Organization',{});
   const [patient,setPatient]=useState<Patient|null>(null);
   const [practselected,setPrac]=useState<Practitioner|null>(null)
-  const [pracs,pracserror,loadpractitioners]=useFhirQuery<Practitioner>('Practitioner'); 
-  const [encounterdate,setencounterdate]=useState<any>(new Date()); 
-  const [selectedslot,setSelectedslot]=useState<string|null>(null); 
-  const slots = ['11:00','11:15','11:30'].map(s=> <ToggleButton key={s} value={s} > {s} </ToggleButton> ); 
+  const [pracs,pracserror,loadpractitioners]=useFhirQuery<Practitioner>('Practitioner');
+  const [encounterdate,setencounterdate]=useState<any>(new Date());
+  const [selectedslot,setSelectedslot]=useState<string|null>(null);
+  const slots = ['11:00','11:15','11:30'].map(s=> <ToggleButton key={s} value={s} > {s} </ToggleButton> );
   const opdService = useOPDService()
   useEffect(()=>{
         if(patient){
               loadpractitioners();
         }
-  },[patient]); 
+  },[patient]);
 
 function createEncounter(){
          if(patient && practselected){
@@ -112,11 +112,11 @@ function createEncounter(){
               })
          }
   }
-  
+
   return (
-    <div className={styles['container']}>          
+    <div className={styles['container']}>
 <Container>
-         
+
           <Grid container >
               <Grid item md={12}>
                   <Typography variant='h5' title='' > Patient </Typography>
@@ -141,18 +141,18 @@ function createEncounter(){
                         </Grid>
                       </Stack>
                       :null}
-              </Grid>              
+              </Grid>
           </Grid>
               {/* Show Calender */}
-              {patient&&practselected ? 
-              
+              {patient&&practselected ?
+
             <Grid container alignItems={'center'} spacing={2}>
                 <Grid item md={2} justifyContent={'start'} py={2} >
-                    
+
                     <Typography py={2} >Date</Typography>
                     <LocalizationProvider  dateAdapter={dayjs}   >
                         {/* Encounter Date */}
-                        <DatePicker    disablePast onChange={(newdate)=> setencounterdate(Dayjs(newdate).format('YYYY-MM-DD') ) }   
+                        <DatePicker    disablePast onChange={(newdate)=> setencounterdate(Dayjs(newdate).format('YYYY-MM-DD') ) }
                             label='Select' value={encounterdate}
                             renderInput={(params)=> <TextField fullWidth {...params} />}  />
                     </LocalizationProvider>
@@ -169,7 +169,7 @@ function createEncounter(){
                         <Button variant='contained' onClick={()=> createEncounter() } color='error' >CREATE ENCOUNTER</Button>
                 </Grid>
             </Grid>
-            : null } 
+            : null }
           </Container>
     </div>
   );

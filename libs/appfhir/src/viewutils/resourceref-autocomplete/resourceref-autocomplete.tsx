@@ -16,32 +16,32 @@ export interface ResourcerefAutocompleteProps  {
        label?:string, placeholder?:string,
        getOptionLabel:(row:any)=> any,
        defaultValue?:any,
-       multiple?:boolean 
+       multiple?:boolean
 }
 
 export function ResourcerefAutocomplete(props: ResourcerefAutocompleteProps ) {
-  const [resourcelist,loaderror,getresources]=useFhirQuery(props.resourceType); 
+  const [resourcelist,loaderror,getresources]=useFhirQuery(props.resourceType);
   const [refoptions,setrefoptions]=useState<Reference[]>([])
   useEffect(()=>{
       getresources(props.params||{}).then( (results) =>{
-          const options:Reference[] = (results as any[]).map(r=> 
+          const options:Reference[] = (results as any[]).map(r=>
                 ({ display:props.getOptionLabel(r),reference:`${props.resourceType}/${r.id}`
                 })
               );
           setrefoptions(options);
-      } ); 
-  },[]); 
-  
+      } );
+  },[]);
+
 
   return (
     <div className={styles['container']}>
-         <Controller control={props.control} defaultValue={props.defaultValue||null}  name={props.name} 
+         <Controller control={props.control} defaultValue={props.defaultValue||null}  name={props.name}
               render={({field:{value,onChange}})=>
               <Autocomplete value={value} multiple={props.multiple||false} fullWidth onChange={(e,value)=>{
                 //console.log('ACV',value)
-                onChange(value); 
-                props.onChange && props.onChange(value) 
-              }} autoHighlight autoSelect   options={refoptions} 
+                onChange(value);
+                props.onChange && props.onChange(value)
+              }} autoHighlight autoSelect   options={refoptions}
                 isOptionEqualToValue={(o,v)=>{   return (o.reference||'') === (v.reference||'') } }
                 getOptionLabel={(option:Reference)=> option.display||
                        (refoptions.find(r=>r.reference === option.reference )?.display )|| '---'  }
