@@ -71,7 +71,7 @@ export function OpdHome(props: OpdHomeProps) {
 
           <Grid container>
             <Grid item md={12}>
-
+               
               <AppointmentCards/>
 
             </Grid>
