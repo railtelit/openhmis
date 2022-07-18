@@ -4,7 +4,8 @@ import PageContainer from '../../components/container/PageContainer';
 import DashboardCards from '../dashboard-cards/dashboard-cards'
 import DashboardCharts from '../dashboard-charts/dashboard-charts'
 import { useState } from 'react';
-
+import { useNavigate} from 'react-router-dom';
+import Pharmacy from '../pharmacy/pharmacy'
 
 const style = {
   position: 'absolute',
@@ -22,18 +23,7 @@ export interface HmisDashboardProps {}
 
 export function HmisDashboard(props: HmisDashboardProps) {
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const [isActive, setIsActive] = useState(false);
-
-  const handleClick = () => {
-
-    setIsActive(current => !current);
-
-    // setIsActive(true);
-  };
+  const [showLogin, setShowLogin] = useState(false);
 
   return (
 
@@ -57,253 +47,13 @@ export function HmisDashboard(props: HmisDashboardProps) {
             <DashboardCharts/>
         </Grid>
 
+
         <Grid item xs={12} sm={4} lg={4}>
 
-          <div>
-            <Button onClick={handleOpen}>Open modal</Button>
-            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" aria-setsize={16}>
-              <Box sx={style}>
-                <div className="accordion" id="accordionExample">
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingOne">
-                    <div
-                      className="accordion-button"
-                      //type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                      data-size="A4"
-                      style={{ backgroundColor: "lightgray",marginTop:'0px'}}
-                    >
-                      Aceto AminoPhene 500mg
-                    </div>
-                  </h2>
-                </div>
-              </div>
-              <div
-                id="collapseOne"
-                className="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body">
-                  <div>
-                    <h2>Dosage</h2>
-                  </div>
-                  <Grid container spacing={2}>
-                    <Grid item xs={4}>
+          <Button onClick={() => setShowLogin(true)}>Open Modal</Button>
 
-                    <Box
-                      // className="tabActive"
-                      sx={{
-                        border: '2px solid #EAEAEA',
-                        borderRadius: '25px',
-                        padding: '5px',
-                        width: '95px',
-                        height: '35px',
-                        textAlign: 'center',
-                        // background: '#EAEAEA'
-                        backgroundColor: isActive ? '#9543AA' : '',
-                        color: isActive ? 'white' : '',
-                      }}
-                      onClick={handleClick}
-                      >Tab 1</Box>
+          <Pharmacy/>
 
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-
-                        variant="contained"
-                        style={{
-
-                          borderRadius: 28,
-                        }}
-
-                      >
-
-                        2 Tab
-                      </Button>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                        }}
-                      >
-                        Custom
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <br></br>
-                  <div>
-                    <h2>Frequency</h2>
-                  </div>
-                  <Grid container spacing={2}>
-                    <Grid item xs={5}>
-                      <ButtonGroup
-                        style={{ borderRadius: "60" }}
-                        variant="contained"
-                        aria-label="outlined primary button group"
-                      >
-                        <Button className="example" style={{ color: "black" }}>
-                          Morning
-                        </Button>
-                        <Button className="example">Afternoon</Button>
-                        <Button className="example" style={{}}>
-                          Evening
-                        </Button>
-                      </ButtonGroup>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "100px",
-                        }}
-                      >
-                        SOS
-                      </Button>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "100px",
-                        }}
-                      >
-                        QID
-                      </Button>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "150px",
-                        }}
-                      >
-                        After Lunch
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <br></br>
-                  <Grid container spacing={1}>
-                    <Grid item xs={4}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "200px",
-                        }}
-                      >
-                        Before Bedtime
-                      </Button>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "200px",
-                        }}
-                      >
-                        Once a week
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <br></br>
-                  <div>
-                    <h2>
-                      Days&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting
-                      From
-                    </h2>
-                  </div>
-                  <Grid container spacing={2}>
-                    <Grid item xs={3}>
-                      {/* <RemoveIcon onClick={decNum}>-</RemoveIcon>
-
-                      <input
-                        type="text"
-                        style={{ width: "50px", textAlign: "center" }}
-                        value={num}
-                        onChange={handleChange}
-                      />
-
-                      <AddIcon onClick={incNum}>+</AddIcon> */}
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "120px",
-                        }}
-                      >
-                        Today
-                      </Button>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        className="example"
-                        variant="contained"
-                        style={{
-                          borderRadius: 28,
-                          width: "150px",
-                        }}
-                      >
-                        Tomorrow
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <div>
-                    <TextField
-                      style={{
-                        marginLeft: "40px",
-                        width: "600px",
-                      }}
-                      id="standard-basic"
-                      label="Special Instruction"
-                      variant="standard"
-                    />
-                    <br></br>
-                  </div>
-                </div>
-              </div>
-              <Button
-                style={{ color: "black", fontWeight: "700", marginLeft: "280px" }}
-                variant="text"
-              >
-                {/* <AddIcon /> */}
-                Add More
-              </Button>
-              <br></br>
-
-              <Button
-                style={{
-                  backgroundColor: "black",
-                  color: "white",
-                  marginLeft: "150px",
-                  width: "400px",
-                }}
-                variant="contained"
-              >
-                CONFIRM
-              </Button>
-              </Box>
-            </Modal>
-          </div>
         </Grid>
 
       </Grid>
