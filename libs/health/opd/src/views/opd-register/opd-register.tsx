@@ -152,9 +152,9 @@ function createEncounter(){
                     <Typography py={2} >Date</Typography>
                     <LocalizationProvider  dateAdapter={dayjs}   >
                         {/* Encounter Date */}
-                        <DatePicker    disablePast onChange={(newdate)=> setencounterdate(Dayjs(newdate).format('YYYY-MM-DD') ) }
+                        <DatePicker    disablePast onChange={(newdate:any)=> setencounterdate(Dayjs(newdate).format('YYYY-MM-DD') ) }
                             label='Select' value={encounterdate}
-                            renderInput={(params)=> <TextField fullWidth {...params} />}  />
+                            renderInput={(params:any)=> <TextField fullWidth {...params} />}  />
                     </LocalizationProvider>
                 </Grid>
                 <Grid item py={2} md={10}>
