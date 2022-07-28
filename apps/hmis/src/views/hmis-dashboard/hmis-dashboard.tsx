@@ -47,15 +47,6 @@ export function HmisDashboard(props: HmisDashboardProps) {
             <DashboardCharts/>
         </Grid>
 
-
-        <Grid item xs={12} sm={4} lg={4}>
-
-          <Button onClick={() => setShowLogin(true)}>Open Modal</Button>
-
-          <Pharmacy/>
-
-        </Grid>
-
       </Grid>
 
     </Container>
