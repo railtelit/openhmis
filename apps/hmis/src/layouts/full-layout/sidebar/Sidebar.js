@@ -80,7 +80,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
                           }),
                         }}
                       >
-                        <FeatherIcon icon={item.icon} width="20" height="20" />
+                        {item.maticon ? <Icon>{item.maticon}</Icon> : <FeatherIcon icon={item.icon} width="20" height="20" /> } 
                       </ListItemIcon>
                       <ListItemText>{item.title}</ListItemText>
                       {index === open || pathWithoutLastPart === item.href ? (
@@ -116,7 +116,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
                                   }),
                                 }}
                               >
-                                <FeatherIcon icon={child.icon} width="20" height="20" />
+                               {child.maticon ? <Icon>{child.maticon}</Icon> :  <FeatherIcon icon={child.icon} width="20" height="20" /> }
                               </ListItemIcon>
                               <ListItemText>{child.title}</ListItemText>
                             </ListItem>

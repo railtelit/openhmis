@@ -4,17 +4,17 @@ import { Button, ButtonProps } from '@mui/material';
 /* eslint-disable-next-line */
 export interface ActionbuttonProps  extends ButtonProps{
     label:any, 
-    navigateTo?:string, 
+    navigateTo?:string,     
     onClick?:()=>void,
     //type?:string,    
 }
 
-export function ActionButton(props: ActionbuttonProps) {
+export function ActionButton({navigateTo,...props}: ActionbuttonProps) {
   const navigate = useNavigate()
   return (
-      <Button {...props}     type={props.type||'submit'} onClick={()=>{
+      <Button   variant={props.variant||'contained'}   type={props.type||'submit'} onClick={()=>{
             props.onClick && props.onClick();
-            props.navigateTo && navigate(props.navigateTo);
+            navigateTo && navigate(navigateTo);
        }} >{props.label} </Button>
   );
 }

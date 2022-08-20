@@ -1,9 +1,11 @@
+/* eslint-disable no-var */
 //import styles from './appointment-cards.module.scss';
 import { Card, CardContent, Typography, Box, Fab, Icon, CardMedia, Grid, Checkbox, Button, IconButton, Menu, MenuItem, List, Stack  } from '@mui/material';
 import React, {useState, useEffect, useRef} from "react";
 import Fade from '@mui/material/Fade';
 import axios from 'axios';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppointmentCardsProps {}
 
 var cardInfo:any = [];
@@ -69,8 +71,8 @@ export function AppointmentCards(props: AppointmentCardsProps) {
             }
           }
 
-          var appointment_time = posts[i].resource.start;
-          var appointment_type = posts[i].resource.appointmentType.coding[0].code;
+          var appointment_time = posts[i]?.resource?.start;
+          var appointment_type = posts[i]?.resource?.appointmentType?.coding[0]?.code;
 
           var item:any = {};
             item ["patient"] = patient;

@@ -15,7 +15,7 @@ export const useFhirQuery = <T extends DomainResource|Resource>(resourceType:str
     const [error,setError]=useState(null); 
 
     const makeRequest=useCallback( async (searchParams:any={})=>{
-            console.log(`Calling Q`)
+            //console.log(`Calling Q`)
             const query = FhirService.createQuery({ ...params, ...searchParams});            
             const reslist =  FhirClient.request(`${resourceType}?${query}`,).then(res=>{
                     const entries = (res?.entry||[]) as any[]; 

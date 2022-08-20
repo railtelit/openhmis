@@ -10,6 +10,30 @@ const Menuitems = [
     icon: 'hard-drive',
     href: '/dashboard',
   },
+  {
+      navlabel: true ,
+      title:'Doctors Desk',
+      maticon:'medical_information',
+      children:[
+        {
+          title:'My Patients',         
+          href:'/doctor/patients'
+        },
+        {
+          title:'Availability',         
+          href:'/doctor/schedule'
+        },
+        {
+          title:'Messages',         
+          href:'/doctor/messages'
+        },
+      ]
+  },
+  {
+    title:'Nurse Desk',
+    href:'/nurse',
+    maticon:'vaccines'
+  },
   
   {
     navlabel: true,
