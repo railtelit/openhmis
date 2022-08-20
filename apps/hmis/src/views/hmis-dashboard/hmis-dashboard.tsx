@@ -1,14 +1,30 @@
 import styles from './hmis-dashboard.module.scss';
-import { Card, CardContent, Typography, Box, Fab, Icon, Grid, Container } from '@mui/material';
+import { Card, CardContent, Typography, Box, Fab, Icon, Grid, Container, Button, Modal, ButtonGroup, TextField } from '@mui/material';
 import PageContainer from '../../components/container/PageContainer';
 import DashboardCards from '../dashboard-cards/dashboard-cards'
 import DashboardCharts from '../dashboard-charts/dashboard-charts'
+import { useState } from 'react';
+import { useNavigate} from 'react-router-dom';
+import Pharmacy from '../pharmacy/pharmacy'
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
-/* eslint-disable-next-line */
 export interface HmisDashboardProps {}
 
 export function HmisDashboard(props: HmisDashboardProps) {
+
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
 
     <Container >
@@ -30,9 +46,8 @@ export function HmisDashboard(props: HmisDashboardProps) {
         <Grid item xs={12} sm={4} lg={4}>
             <DashboardCharts/>
         </Grid>
+
       </Grid>
-
-
 
     </Container>
   );

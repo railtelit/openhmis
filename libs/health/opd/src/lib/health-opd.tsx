@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import DoctorDesk from '../views/doctor-desk/doctor-desk';
 import OpdHome from '../views/opd-home/opd-home';
 import OpdRx from '../views/opd-rx/opd-rx';
 import styles from './health-opd.module.scss';
@@ -12,6 +13,7 @@ export function HealthOpd(props: HealthOpdProps) {
           <Routes>
               <Route path='/' element={<OpdHome/>} />
               <Route path='/rx' element={<OpdRx/>} />
+              <Route path='/doctor-desk' element={<DoctorDesk/>} />
           </Routes>
     </div>
   );
