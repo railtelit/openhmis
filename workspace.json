@@ -11,6 +11,7 @@
     "health-practitioners": "libs/health/practitioners",
     "hmis": "apps/hmis",
     "hmis-e2e": "apps/hmis-e2e",
-    "shared-ui": "libs/shared-ui"
+    "shared-ui": "libs/shared-ui",
+    "welcome": "apps/welcome"
   }
 }
