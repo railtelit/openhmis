@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  welcome:
+    build:
+      context: .
+      dockerfile: ./apps/welcome/Dockerfile
+      args:
+        - appname=welcome
+    image: openhmis-welcome
+    
+    ports:
+      - 8700:80

@@ -1,5 +1,6 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 import AppLinkCard from '../../components/app-link-card/app-link-card';
+import PageFooter from '../../components/page-footer/page-footer';
 import WelcomeHeader from '../../components/welcome-header/welcome-header';
 import Projectimages from '../../sections/projectimages/projectimages';
 import styles from './welcome-main.module.scss';
@@ -30,14 +31,46 @@ export function WelcomeMain(props: WelcomeMainProps) {
             </div>
           </section>
           <Projectimages />
-          <Grid item xs={12} md={12} >
-            <AppLinkCard title='Health Sathi' description='Your Digital Health Companian at your fingertips. Manage Health Information and control the Personal Data Sharing to CareTeams. Seamlessly Login with ABHA address. Register easily using mobileno, AADHAAR or Driving License'
-                  img='https://peakspancapital.com/uploads/icons/themes/Digital-Health-1.png' />
-            <AppLinkCard title='HFR' img='https://abdm.gov.in:8081/uploads/HFR_83b029dd20.svg' 
-                description="It is a comprehensive repository of health facilities of the nation across different systems of medicine. It includes both public and private health facilities including hospitals, clinics, diagnostic laboratories and imaging centers, pharmacies, etc. Enrolling in the Health Facility Registry will enable them to get connected to India's digital health ecosystem." />
-            <AppLinkCard title='HIU' />
-          </Grid>
-        
+          <div id="features" className='mt-1'>
+            <Grid container>
+              <Grid item  md={12} justifyContent={'center'} alignContent={'center'} className="py-2">
+                  <Typography textAlign={'center'} variant='h5'>Features</Typography>
+              </Grid>
+              <Grid item xs={12} md={12} >
+                <AppLinkCard title='Apna Health Sathi' description={
+                    <p>
+                      A Digital Health Companian at your fingertips. Manage Health Information and control the Personal Data Sharing to CareTeams. Seamlessly Login with ABHA address. Register easily using mobileno, AADHAAR or Driving License
+                    </p>
+                  }
+                      img='https://peakspancapital.com/uploads/icons/themes/Digital-Health-1.png' />
+                <AppLinkCard title='HFR' img='https://abdm.gov.in:8081/uploads/HFR_83b029dd20.svg' reverse={true}
+                    description={ <p>
+                      It is a comprehensive repository of health facilities of the nation across different systems of medicine. It includes both public and private health facilities including hospitals, clinics, diagnostic laboratories and imaging centers, pharmacies, etc. Enrolling in the Health Facility Registry will enable them to get connected to India\'s digital health ecosystem.' 
+                    </p> }
+                    />
+                <AppLinkCard title='HIU' img='https://abdm.gov.in:8081/uploads/ABHA_No_b115ea676e.svg'
+                  description={
+                  <div>
+                  The following capabilities are expected of HIU services in the federated health records context:
+                  <ul>
+                    <li>
+                      Ability to search for and identify a patient by her ABHA Number, and seek consent to view her health records.
+                    </li>
+                    <li>
+                        Once the consent is granted, use the HIU application to view the patient’s health records. This is particularly useful for verification of data formats when you as HIP are sending over patient’s health records.
+                    </li>
+                    <li>
+                        Ability to request and receive data in a safe and secure manner, manage data lifecycle, and enable secure data storage and access.
+                    </li>
+                  </ul>
+                </div>
+                } />
+              </Grid>
+            </Grid>
+          </div>
+
+
+          <PageFooter />
       
     </div>
   );

@@ -1,11 +1,13 @@
 import { Card, CardContent, Grid } from '@mui/material';
+import { width } from '@mui/system';
 import styles from './app-link-card.module.scss';
 
 /* eslint-disable-next-line */
 export interface AppLinkCardProps {
     title?:string,
-    description?:string,
-    img?:string
+    description?:any,
+    img?:string,
+    reverse?:boolean
 }
 
 export function AppLinkCard(props: AppLinkCardProps) {
@@ -14,18 +16,19 @@ export function AppLinkCard(props: AppLinkCardProps) {
       <div className='max-w-screen-xl px-4 py-2 mx-auto space-y-12 lg:space-y-10 lg:py-10 lg:px-6'>
         
         <Card>
-        <CardContent>  
-          <Grid container >
-            <Grid item lg >
+        <CardContent sx={{width:'100%'}} >  
+          <Grid container  direction={props.reverse?'row-reverse':'row'}>
+            <Grid item lg={10} md={10} >
           <h1 className='text-3xl font-extrabold text-purple'>
              {props.title}
           </h1>   
-          <p>
+         
             {props.description}
-          </p>
+                   
             </Grid>
-            <Grid item xs={12} md={3}  alignContent={'center'} alignSelf={'center'} alignItems={'center'} >
-                <img src={props.img} alt="" height={100} width={100} />
+            <Grid item xs={12} lg md  justifyContent={'right'} textAlign={'center'} justifySelf={'center'} 
+                          alignContent={'center'} alignSelf={'center'} alignItems={'center'} >
+                <img src={props.img} alt="" height={100} width={100}   />
             </Grid>
           </Grid>
         </CardContent>

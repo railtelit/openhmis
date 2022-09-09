@@ -6,10 +6,10 @@ export interface ProjectimagesProps {}
 export function Projectimages(props: ProjectimagesProps) {
   return (
     <section className="bg-white dark:bg-gray-900">
-    <div className="max-w-screen-xl px-4 pb-8 mx-auto lg:pb-16">
+    <div className="max-w-screen-xl px-4 pb-2 mx-auto lg:pb-16">
         <div className="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-3 dark:text-gray-400">
             <a href="#" className="flex items-center lg:justify-center">
-              <img src="https://abdm.gov.in:8081/uploads/digital_mission_a6ed582996.svg" alt="" />                                          
+              <img src="https://abdm.gov.in:8081/uploads/digital_mission_a6ed582996.svg" width={100} alt="" />                                          
             </a>
             <a href="#" className="flex items-center lg:justify-center">
                 <img src="https://abdm.gov.in:8081/uploads/ndhm_logo_65d00d9518.png" alt=""  />
