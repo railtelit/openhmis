@@ -25,7 +25,7 @@ export function WelcomeMain(props: WelcomeMainProps) {
                   
                 </div>
               </div>
-              <div className="hidden lg:mt-0 lg:col-span-5 lg:flex" >
+              <div className="  xs:flex lg:mt-0 lg:col-span-5 lg:flex" >
                 <img src="assets/logo/mobiledoctor.jpeg" alt="hero image" />
               </div>
             </div>
