@@ -37,9 +37,9 @@ export function WelcomeMain(props: WelcomeMainProps) {
                   <Typography textAlign={'center'} variant='h5'>Features</Typography>
               </Grid>
               <Grid item xs={12} md={12} >
-                <AppLinkCard title='Apna Health Sathi' description={
+                <AppLinkCard title='OpenHMIS Arogya Saathi (PHR)' description={
                     <p>
-                      A Digital Health Companian at your fingertips. Manage Health Information and control the Personal Data Sharing to CareTeams. Seamlessly Login with ABHA address. Register easily using mobileno, AADHAAR or Driving License
+                      A Personal Digital Health Companian at your fingertips. Manage Health Information and control the Personal Data Sharing to CareTeams. Seamlessly Login with ABHA address. Register easily using mobileno, AADHAAR or Driving License
                     </p>
                   }
                       img='https://peakspancapital.com/uploads/icons/themes/Digital-Health-1.png' />

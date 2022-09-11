@@ -1,5 +1,6 @@
-import { configStore } from 'libs/apptheme/src';
-import { StrictMode, Suspense } from 'react';
+
+import { configStore } from '@ha/apptheme';
+import './i18n';
 import * as ReactDOMClient from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -12,11 +13,10 @@ const root = ReactDOMClient.createRoot(
 root.render(
   <Provider store={configStore} >
   
-  <StrictMode>    
     <BrowserRouter>
       <App />
-    </BrowserRouter>
-  </StrictMode>
+    
+    </BrowserRouter>  
     
   </Provider>
 );

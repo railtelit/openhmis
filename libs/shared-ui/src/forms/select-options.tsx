@@ -9,11 +9,12 @@ export interface SelectOptionsProps {
 }
 
 export function SelectOptions({options,label,...others}: SelectOptionsProps) {
+  console.log(options)
   return (
     <FormControl fullWidth>
         <InputLabel> {label} </InputLabel>
       <Select fullWidth label={label||'---'} {...others} >
-             {options.map(option=> <MenuItem key={option} value={option} > {option} </MenuItem>)}
+             {options.map(option=> <MenuItem key={option} value={option}  >{option}</MenuItem>)}
       </Select>
     </FormControl>
     

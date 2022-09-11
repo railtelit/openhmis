@@ -17,7 +17,7 @@ export function WelcomeHeader(props: WelcomeHeaderProps) {
         <nav className="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
             <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
                 <a href="#" className="flex items-center">
-                    <img src="assets/logo/openhmis.png" className="h-6 mr-3 sm:h-9" alt="Landwind Logo" />
+                    <img src="assets/logo/openhmis.png" className="h-6 mr-3 sm:h-9" alt="OPENHMIS" />
                     <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white text-primary">OpenHMIS</span>
                 </a>
                 <div className="flex items-center lg:order-2">

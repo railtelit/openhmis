@@ -3,5 +3,6 @@
 
 export const environment = {
   production: false,
-  API_ENDPOINT:'localhost:3001/api'
+  API_ENDPOINT:'localhost:3001/api',
+  SITE_KEY:'6LdLEe4hAAAAAMXc9--irwMFCw31-0FwfG5KN9eZ'
 };
