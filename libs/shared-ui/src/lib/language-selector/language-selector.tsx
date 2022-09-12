@@ -10,7 +10,7 @@ export interface LanguageSelectorProps {
 export function LanguageSelector(props: LanguageSelectorProps) {
   const LANGUAGE_OPTIONS:any={en:'English',hi:'नमस्ते','tg':"తెలుగు"}; 
   const [lang,setLang]=useState(localStorage.getItem('language')); 
-  
+ 
   return (
       //  This At Top : 
       

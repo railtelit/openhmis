@@ -4,6 +4,7 @@ import { BuildTheme } from '../../../assets/global/Theme-variable';
 
 const ThemeSettings = () => {
   const customizer = useSelector((state) => state.CustomizerReducer);
+  //console.log('Cmizor', customizer)
   const theme = BuildTheme({
     direction: customizer.activeDir,
     theme: customizer.activeTheme,

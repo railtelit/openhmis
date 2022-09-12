@@ -12,6 +12,8 @@ import { AuthContext, AuthContextInterface } from './AuthProvider';
 import { APP_ROUTES } from './routes';
 import ReCaptcha  from 'react-google-recaptcha'
 import { environment } from '../environments/environment';
+import { Provider } from 'react-redux';
+import { appStore } from './store/app.store';
 
 
 export function App() {
@@ -23,35 +25,40 @@ export function App() {
    const [authStore,setAuthStore]=useState<AuthContextInterface>({})
    useEffect(()=>{
          navigate('login')
-   },[])
-  return (    
-           <AppThemeProvider>
-                  <CssBaseline/>      
-                    <Container sx={{padding:2}} > 
-                      <Typography variant='h3'>OpenHMIS</Typography>          
-                    </Container>
-                  
-                  <AuthContext.Provider value={authStore} >
-                    {routes}                    
-                    <AuthContext.Consumer   >
-                      {(value)=> 
-                        !value.captcha?  <Grid container justifyContent={'center'}>                      
-                            <ReCaptcha onChange={(token)=>{
-                                setAuthStore((value)=>({...value,captcha:token}))
-                            }}  sitekey={environment.SITE_KEY} />
-                        </Grid> : <></>
-                      }
+   },[]); 
+   
 
-                    </AuthContext.Consumer>
-                  </AuthContext.Provider>
-                  <Grid sx={{position:'fixed',right:0,bottom:0}} container justifyContent={'end'}>
-                      <LanguageSelector onChange={(v)=>{
-                           console.log(`Changing to ${v} `)
-                          i18n.changeLanguage(v);
-                      }} />
-                  </Grid>
-           </AppThemeProvider>
-    
+  return (    
+<Provider store={appStore}>
+               <AppThemeProvider>
+  
+                      <CssBaseline/>
+                        <Container sx={{padding:2}} >
+                          <Typography variant='h3'>OpenHMIS</Typography>
+                        </Container>
+  
+                      <AuthContext.Provider value={authStore} >
+                        {routes}
+                        <AuthContext.Consumer   >
+                          {(value)=>
+                            !value.captcha?  <Grid container justifyContent={'center'}>
+                                <ReCaptcha onChange={(token)=>{
+                                    setAuthStore((value)=>({...value,captcha:token}))
+                                }}  sitekey={environment.SITE_KEY} />
+                            </Grid> : <></>
+                          }
+                        </AuthContext.Consumer>
+                      </AuthContext.Provider>
+                      <Grid sx={{position:'fixed',right:0,bottom:0}} container justifyContent={'end'}>
+                          <LanguageSelector onChange={(v)=>{
+                               console.log(`Changing to ${v} `)
+                              i18n.changeLanguage(v);
+                          }} />
+                      </Grid>
+  
+  
+    </AppThemeProvider>
+</Provider>
   );
 }
 
