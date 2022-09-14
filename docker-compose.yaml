@@ -10,3 +10,12 @@ services:
     
     ports:
       - 8700:80
+  patient-phr:
+    build:
+      context: .
+      dockerfile: ./apps/patient/phr/Dockerfile
+      args:
+        - appname=phr
+    image: openhmis-patient-phr    
+    ports:
+      - 8701:80
