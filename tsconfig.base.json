@@ -24,7 +24,10 @@
       "@ha/health/organizations": ["libs/health/organizations/src/index.ts"],
       "@ha/health/patients": ["libs/health/patients/src/index.ts"],
       "@ha/health/practitioners": ["libs/health/practitioners/src/index.ts"],
-      "@ha/shared-ui": ["libs/shared-ui/src/index.ts"]
+      "@ha/shared-ui": ["libs/shared-ui/src/index.ts"],
+      "constants": ["./node_modules/constants-browserify"],
+      "crypto": ["./node_modules/crypto-browserify"],
+      "stream": ["./node_modules/stream-browserify"]
     }
   },
   "exclude": ["node_modules", "tmp"]

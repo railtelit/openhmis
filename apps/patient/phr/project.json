@@ -14,7 +14,8 @@
         "baseHref": "/",
         "main": "apps/patient/phr/src/main.tsx",
         "polyfills": "apps/patient/phr/src/polyfills.ts",
-        "tsConfig": "apps/patient/phr/tsconfig.app.json",
+        "es2015Polyfills": "apps/patient/phr/src/polyfills.ts",
+        "tsConfig": "apps/patient/phr/tsconfig.app.json",        
         "assets": [
           "apps/patient/phr/src/favicon.ico",
           "apps/patient/phr/src/assets"

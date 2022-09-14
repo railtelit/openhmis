@@ -14,6 +14,7 @@ import ReCaptcha  from 'react-google-recaptcha'
 import { environment } from '../environments/environment';
 import { Provider } from 'react-redux';
 import { appStore } from './store/app.store';
+import { useApiService } from './hooks/useApiService';
 
 
 export function App() {
@@ -24,17 +25,18 @@ export function App() {
    const {t,i18n}=useTranslation(); 
    const [authStore,setAuthStore]=useState<AuthContextInterface>({})
    useEffect(()=>{
-         navigate('login')
+         navigate('login');
+         // Load Cert ; 
    },[]); 
-   
-
+   //const apiService=useApiService(); 
   return (    
 <Provider store={appStore}>
                <AppThemeProvider>
   
                       <CssBaseline/>
                         <Container sx={{padding:2}} >
-                          <Typography variant='h3'>OpenHMIS</Typography>
+                          <img  src='assets/logo/openhmis.png' alt='HIND' width={90} />
+                          {/* <img  src='assets/logo/hindilogo1.png' alt='HIND' width={150} /> */}
                         </Container>
   
                       <AuthContext.Provider value={authStore} >

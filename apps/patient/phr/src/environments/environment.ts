@@ -4,5 +4,6 @@
 export const environment = {
   production: false,
   API_ENDPOINT:'http://localhost:3333/api',
+  MOCK_ENDPOINT:'/assets/json',
   SITE_KEY:'6LdLEe4hAAAAAMXc9--irwMFCw31-0FwfG5KN9eZ'
 };
