@@ -7,7 +7,8 @@ export interface AuthState{
         step:number,
         verifyToken?:string,
         userToken?:string|null,
-        userAccount?:any 
+        userAccount?:any,
+        qrCode?:any 
 }
 export interface AppStoreState{
             isLoading:boolean
@@ -34,6 +35,7 @@ const authSlice = createSlice({
           nextStep:(state,action)=>({...state,step:state.step+1}),
           onProfileError:(state)=>({...state,userAccount:null,userToken:null}),
           onProfileLoad:( (state,action:PayloadAction<any>)=>({...state,userAccount:action.payload })),
+          onQrcode:((state,action)=>({...state,qrCode:action.payload})),
           onLogout:((state)=>({...state,userAccount:null,userToken:null}))
     }
 });
@@ -55,7 +57,7 @@ export const appStore = configureStore({
 }); 
 
 export const {onVerifyOtpTransaction,ongenerateotptransaction,
-            onuserAuthorizedToken,nextStep,onProfileError,onProfileLoad,onLogout} = authSlice.actions
+            onuserAuthorizedToken,nextStep,onProfileError,onProfileLoad,onLogout,onQrcode} = authSlice.actions
 export const {setLoading}  = appSlice.actions;
 export type AppState = ReturnType<typeof appStore.getState>; 
 
