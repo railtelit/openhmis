@@ -17,6 +17,9 @@ export function  useApiService(){
     async function query(url:string,params:any,headers:any={}){
              return Axios.get(`${environment.API_ENDPOINT}/${url}`,{params,headers})
     }
+    async function getBinaryData(url:string,params:any,headers:any={}){
+             return Axios.get(`${environment.API_ENDPOINT}/${url}`,{params,headers,responseType:'blob',responseEncoding:'base64'})
+    }
     async function getHealthidCert(){
             let CERT = localStorage.getItem('HID_CERT'); 
             if(!CERT){
@@ -26,6 +29,6 @@ export function  useApiService(){
             }; 
             return CERT
     }
-    return  {doAction,query,getHealthidCert}
+    return  {doAction,query,getHealthidCert,getBinaryData}
 
 }

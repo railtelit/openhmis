@@ -25,10 +25,21 @@ export const useAccountService=()=>{
                     navigate('/login');
                 }                
         }
+        async function loadQrcode(){
+                try{
+                         const result = (await apiService.query(
+                                        QUERIES_URL.LOAD_QRCODE,{},
+                                        {"X-Token":`Bearer ${authState.userToken}`})).data
+                         //console.log( typeof result );
+                         return result
+                }catch(err){
+                        //
+                }
+        }
         async function logout(){
                 localStorage.removeItem('token'); 
                 storedispatch(onLogout());
                 navigate('/login')
         }
-        return {loadProfile,logout}
+        return {loadProfile,loadQrcode, logout}
 }

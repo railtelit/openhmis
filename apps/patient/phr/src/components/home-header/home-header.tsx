@@ -1,4 +1,4 @@
-import { Grid, Icon, IconButton } from '@mui/material';
+import { Avatar, Grid, Icon, IconButton } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useAccountService } from '../../app/hooks/accountService';
@@ -18,7 +18,12 @@ export function HomeHeader(props: HomeHeaderProps) {
         </Grid>
         <Grid item>    
            <Link to={'profile'} >
-               <IconButton><Icon>account_circle</Icon></IconButton>
+               <IconButton>
+                {authState.userAccount?.profilePhoto? 
+                   <Avatar src={`data:image/png;base64,${authState.userAccount?.profilePhoto}`} ></Avatar>
+                 : <Icon>profile_circle</Icon>
+                 }
+               </IconButton>
            </Link>        
             <Link to={'qrcode'}>
               <IconButton><Icon>qr_code_scanner</Icon></IconButton>
