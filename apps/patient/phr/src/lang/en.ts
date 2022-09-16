@@ -7,6 +7,6 @@ export const en:LanguageInterface = {
     },actionLabel:{verifyOtp:"VERIFY OTP"}},
     login:{title:'Lets Login'},
     registration:{title:'Register for ABHA ID',method:{aadhaar:{
-        title:"AADHAAR VERIFICATION"
+        title:"AADHAAR NUMBER"
     },documentid:{title:"Drivers License"}}}
 }

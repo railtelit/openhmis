@@ -13,7 +13,7 @@ export const useAccountService=()=>{
         async function loadProfile(){
                 //
                 // X-Token
-                const token = authState.userToken; 
+                const token = authState.userToken||localStorage.getItem('token'); 
                 try{
                    // console.log('Xtoken',token)
                     const result = (await apiService.query(QUERIES_URL.LOAD_PROFILE,{},{"X-Token":`Bearer ${token}`})).data; 

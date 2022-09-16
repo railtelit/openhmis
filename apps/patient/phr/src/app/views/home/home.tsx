@@ -25,7 +25,7 @@ export function Home(props: HomeProps) {
        
         <HomeHeader />
         <Stack>HealthId : {authState.userAccount?.healthId} </Stack>
-        {JSON.stringify(authState.userAccount)}
+        {/* {JSON.stringify(authState.userAccount)} */}
         {routes}
         <Outlet></Outlet>
       </div>

@@ -109,10 +109,10 @@ export function Login(props: LoginProps) {
         </Grid>,
       // Select Account 
       <Grid container>
-          
+{/*           
            <Button onClick={()=>{
                // loginService.userAuthorizedToken({})
-           }} >SELECT ACCOUNT</Button>
+           }} >SELECT ACCOUNT</Button> */}
       </Grid>
           
   ]
@@ -145,10 +145,14 @@ export function Login(props: LoginProps) {
                       {StepsView[loginState.step]}    
                           
                       <Stack  direction={'row'} justifyContent={'space-between'}>
-                          <Container>
+                          {
+                             loginState.step===0?<Container  >
                               Not Registered ? 
                             <Button  onClick={()=>navigate('/register')} >Create ABHA ID</Button>
-                          </Container>                          
+                          </Container>
+                          : null
+                          }
+
                           {/* Action Button */}       
 
                           {StepActions[loginState.step]}                    

@@ -1,4 +1,4 @@
-import { Button, Container, Grid, List, ListItem, Typography } from '@mui/material';
+import { Button, Container, Divider, Grid, List, ListItem, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -37,12 +37,17 @@ export function Register(props: RegisterProps) {
              </Grid>
              {method===null?
               <Grid container p={3}  justifyContent={'center'}>
-                     <List>
+                     <List>                        
+                        <Typography textAlign={'center'} >Register Using</Typography>
                          {Object.keys(methodTypes).map(m=> <ListItem key={m}>
                             <Button fullWidth variant='outlined' onClick={()=>{
                                 setMethod(m)
                             }} > {t(`registration.method.${m}.title`)} </Button>
                          </ListItem> )}
+                         <Divider/>
+                         <ListItem>
+                            <Button fullWidth onClick={()=>navigate('/login')} variant='outlined' color={'error'}>CANCEL</Button>
+                         </ListItem>
                      </List>
               </Grid> 
               : methodViews[method]
