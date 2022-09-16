@@ -12,6 +12,8 @@ spec:
       labels:
         app: phr
     spec:
+      imagePullSecrets:
+        - name: jfrogcred
       containers:
       - name: phr
         image: railtelhrit.jfrog.io/openhmis-docker/patient-phr:latest
