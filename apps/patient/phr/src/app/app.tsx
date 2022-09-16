@@ -35,7 +35,10 @@ export function App() {
   
                       <CssBaseline/>
                         <Container sx={{padding:2}} >
+                          <Grid alignItems={'center'} justifyContent={'space-between'} >
                           <img  src='assets/logo/openhmis.png' alt='HIND' width={90} />
+                          <Typography variant='caption' >Version:0.3</Typography>
+                          </Grid>
                           {/* <img  src='assets/logo/hindilogo1.png' alt='HIND' width={150} /> */}
                         </Container>
   

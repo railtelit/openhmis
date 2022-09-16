@@ -6,8 +6,7 @@ services:
       dockerfile: ./apps/welcome/Dockerfile
       args:
         - appname=welcome
-    image: openhmis-welcome
-    
+    image: railtelhrit.jfrog.io/openhmis-docker/welcome:latest
     ports:
       - 8700:80
   patient-phr:
@@ -16,6 +15,6 @@ services:
       dockerfile: ./apps/patient/phr/Dockerfile
       args:
         - appname=phr
-    image: openhmis-patient-phr    
+    image: railtelhrit.jfrog.io/openhmis-docker/patient-phr:latest
     ports:
       - 8701:80

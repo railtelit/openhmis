@@ -23,7 +23,8 @@ export function  useApiService(){
     async function getHealthidCert(){
             let CERT = localStorage.getItem('HID_CERT'); 
             if(!CERT){
-                 CERT = (await query(CERT_URLS.HIP_CERT,{})).data;
+                console.log(`Getting CERT ${CERT_URLS.HIP_CERT} `);
+                 CERT = (await Axios.get(CERT_URLS.HIP_CERT,{})).data;
                  if(CERT)
                     localStorage.setItem('HID_CERT',CERT);
             }; 
