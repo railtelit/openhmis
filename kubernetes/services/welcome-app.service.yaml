@@ -12,8 +12,10 @@ spec:
       labels:
         app: welcome
     spec:
-      containers:
-      - name: welcome
+      imagePullSecrets:
+        - name: jfrogcred
+      containers:      
+      - name: welcome        
         image: railtelhrit.jfrog.io/openhmis-docker/welcome:latest
         resources:
           limits:
