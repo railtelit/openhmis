@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: welcome
+  name: phr
   namespace: openhmis
 spec:
   selector:
     matchLabels:
-      app: welcome
+      app: phr
   template:
     metadata:
       labels:
-        app: welcome
+        app: phr
     spec:
       containers:
-      - name: welcome
-        image: railtelhrit.jfrog.io/openhmis-docker/welcome:latest
+      - name: phr
+        image: railtelhrit.jfrog.io/openhmis-docker/patient-phr:latest
         resources:
           limits:
             memory: "128Mi"
@@ -25,12 +25,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: welcome-service
+  name: phr-service
   namespace: openhmis
 spec:
   selector:
-    app: welcome
+    app: phr
   ports:
   - port: 80
     targetPort: 80
-

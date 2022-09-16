@@ -1,8 +1,8 @@
 import styles from './qrcode.module.scss';
 import QR from 'react-qr-code'
 import { Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../../store/app.store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState, onQrcode } from '../../../store/app.store';
 import { useAccountService } from '../../../hooks/accountService';
 import { useEffect, useState } from 'react';
 /* eslint-disable-next-line */
@@ -13,10 +13,13 @@ export interface QrcodeProps {
 export function Qrcode(props: QrcodeProps) {
   const account=useSelector((state:AppState)=>state.auth); 
   const accservice=useAccountService(); 
-  const [qrCode,setqrCode]=useState<any>(null)
+  const [qrCode,setqrCode]=useState<any>(account.qrCode); 
+  const stateaction=useDispatch()
   useEffect(()=>{
+       if(!account.qrCode)
        accservice.loadQrcode().then(v=> {
             //setqrCode(Buffer.from(v,'binary').toString('base64'));
+             stateaction(onQrcode(v))
              setqrCode(v)
        })
   },[])
