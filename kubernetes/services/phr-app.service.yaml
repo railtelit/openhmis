@@ -23,6 +23,7 @@ spec:
           limits:
             memory: "328Mi"
             cpu: "600m"
+            ephemeral-storage: 1Gi
         ports:
         - containerPort: 80
 ---
