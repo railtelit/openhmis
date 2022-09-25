@@ -41,6 +41,7 @@
     "i18next": "^21.9.1",
     "jsencrypt": "^3.2.1",
     "jsreport-browser-client-dist": "^1.3.0",
+    "keycloak-js": "^19.0.2",
     "mui-autocomplete-suggestions": "^2.1.0",
     "node-rsa": "^1.1.1",
     "performant-array-to-tree": "^1.11.0",

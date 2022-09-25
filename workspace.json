@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "admin": "apps/admin",
     "appfhir": "libs/appfhir",
     "apptheme": "libs/apptheme",
     "health-appointments": "libs/health/appointments",
@@ -10,8 +11,10 @@
     "health-organizations": "libs/health/organizations",
     "health-patients": "libs/health/patients",
     "health-practitioners": "libs/health/practitioners",
+    "hipu": "apps/hipu",
     "hmis": "apps/hmis",
     "hmis-e2e": "apps/hmis-e2e",
+    "hpr": "apps/hpr",
     "patient-phr": "apps/patient/phr",
     "shared-ui": "libs/shared-ui",
     "welcome": "apps/welcome"
