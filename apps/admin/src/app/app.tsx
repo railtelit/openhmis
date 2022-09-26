@@ -10,12 +10,16 @@ import AppToolbar from '../components/app-toolbar/app-toolbar';
 import { Outlet, useRoutes } from 'react-router-dom';
 import { appRoutes } from './app.routes';
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export function App() {  
    const authState=useSelector((state:AppState)=>state.auth);
    const routes =useRoutes(appRoutes)   
   return (    
       
-      <KeycloakProvider keycloak={KeyCloak} >      
+      <KeycloakProvider keycloak={KeyCloak} >    
+      <ToastContainer position='top-center' hideProgressBar={true}   ></ToastContainer>
+            
       <AppThemeProvider>
             <CssBaseline/>
             <Container>

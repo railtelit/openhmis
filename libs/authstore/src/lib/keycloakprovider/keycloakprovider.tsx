@@ -19,14 +19,14 @@ export function KeycloakProvider({keycloak,...props}: KeycloakproviderProps) {
       }      
         keycloak.onReady=(success=>{
            if(success){
-              console.log(keycloak.token)
+              //console.log(keycloak.tokenParsed)
               authAction(setUserRoles(keycloak.tokenParsed?.realm_access?.roles||[] ))
               setReady(true); 
               keycloak.loadUserInfo().then(value=>{                 
                  authAction(onLoadUserInfo(value))
                }); 
                keycloak.loadUserProfile().then((profile)=>{
-                 console.log(profile)
+                 //console.log(profile)
                 authAction(onProfileLoad(profile))
               })
            }
