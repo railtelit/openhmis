@@ -24,11 +24,16 @@ export function AppToolbar(props: AppToolbarProps) {
 
                 </Box>
                 
-                <Box display={'flex'} flexGrow={0}>
+                <Box display={'flex'} flexGrow={0}>                    
                     <IconButton>
                         <Avatar alt='User'>
                           <Icon>user</Icon>
                         </Avatar>
+                    </IconButton>
+                    <IconButton onClick={()=>{
+                       kc?.logout()
+                    }}>
+                        <Icon>logout</Icon>
                     </IconButton>
                 </Box>
 

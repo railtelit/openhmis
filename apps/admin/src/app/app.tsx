@@ -9,9 +9,10 @@ import { AppState, AppStoreType } from './store/app.store';
 import AppToolbar from '../components/app-toolbar/app-toolbar';
 import { Outlet, useRoutes } from 'react-router-dom';
 import { appRoutes } from './app.routes';
+import { useEffect } from 'react';
 export function App() {  
    const authState=useSelector((state:AppState)=>state.auth);
-   const routes =useRoutes(appRoutes)
+   const routes =useRoutes(appRoutes)   
   return (    
       
       <KeycloakProvider keycloak={KeyCloak} >      

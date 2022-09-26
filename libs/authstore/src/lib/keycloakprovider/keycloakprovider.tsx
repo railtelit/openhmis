@@ -14,8 +14,12 @@ export function KeycloakProvider({keycloak,...props}: KeycloakproviderProps) {
   const [ready,setReady]=useState(false);
   const authAction=useDispatch()
   useEffect(()=>{
+      keycloak.onTokenExpired=()=>{
+           keycloak.updateToken(600)
+      }      
         keycloak.onReady=(success=>{
            if(success){
+              console.log(keycloak.token)
               authAction(setUserRoles(keycloak.tokenParsed?.realm_access?.roles||[] ))
               setReady(true); 
               keycloak.loadUserInfo().then(value=>{                 
