@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin
+  namespace: openhmis
+spec:
+  selector:
+    matchLabels:
+      app: admin
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      imagePullSecrets:
+        - name: jfrogcred
+      containers:
+      - name: admin
+        image: railtelhrit.jfrog.io/openhmis-docker/admin:latest
+        resources:
+          requests:
+            ephemeral-storage: 1Gi
+          limits:
+            memory: "228Mi"
+            cpu: "500m"
+            ephemeral-storage: 1Gi
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-service
+  namespace: openhmis
+spec:
+  selector:
+    app: admin
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: admin-service-ingress
+  labels:
+    name: admin-service-ingress
+spec:
+  rules:
+  - host: admin.openhmis.erpapps.in
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: admin-service
+            port: 
+              number: 80
