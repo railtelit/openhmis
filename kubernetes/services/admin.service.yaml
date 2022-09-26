@@ -45,6 +45,7 @@ metadata:
   name: admin-service-ingress
   labels:
     name: admin-service-ingress
+    namespace: openhmis
 spec:
   rules:
   - host: admin.openhmis.erpapps.in
