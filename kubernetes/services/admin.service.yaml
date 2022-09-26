@@ -45,7 +45,9 @@ metadata:
   name: admin-service-ingress
   labels:
     name: admin-service-ingress
+    namespace: openhmis
 spec:
+  ingressClassName: nginx
   rules:
   - host: admin.openhmis.erpapps.in
     http:
