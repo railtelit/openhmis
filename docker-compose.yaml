@@ -18,3 +18,12 @@ services:
     image: railtelhrit.jfrog.io/openhmis-docker/patient-phr:latest
     ports:
       - 8701:80
+  admin:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+      args:
+        - appname=admin
+    image: railtelhrit.jfrog.io/openhmis-docker/admin:latest
+    ports:
+      - 8702:80

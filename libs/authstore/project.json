@@ -1,0 +1,23 @@
+{
+  "root": "libs/authstore",
+  "sourceRoot": "libs/authstore/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/authstore/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/authstore"],
+      "options": {
+        "jestConfig": "libs/authstore/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
