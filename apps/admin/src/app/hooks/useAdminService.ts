@@ -1,22 +1,21 @@
 import { useKeycloak } from "@ha/authstore"
 import  Axios  from "axios"
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { BASE_URLS } from "../endpoints"
 import { onServiceInfoLoad } from "../store/app.store";
+import { Queries } from "./queries";
+import { useApiService } from "./useApiService";
 
 
 export const useAdminService=()=>{
         const kc =useKeycloak();
-        const appAction=useDispatch()
+        const appAction=useDispatch();
+        const apiService=useApiService()
       async function  loadServices(){
-             
-                    const response=  (await Axios.get(`${BASE_URLS.API_ENDPOINT}/admin/services`,{headers:{'Authorization':`Bearer ${kc?.token}`}})
-                            .catch(err=>{
-                                    console.log(err);
-                                    toast.error(err?.message,{})
-                                   return {data:{}}
-                            })).data 
+                        
+                    const response= await apiService.query(Queries.admin.getServices)
                     appAction(onServiceInfoLoad(response));
                     return response
              
