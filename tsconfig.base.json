@@ -18,6 +18,7 @@
       "@ha/appfhir": ["libs/appfhir/src/index.ts"],
       "@ha/apptheme": ["libs/apptheme/src/index.ts"],
       "@ha/authstore": ["libs/authstore/src/index.ts"],
+      "@ha/common": ["libs/common/src/index.ts"],
       "@ha/health/appointments": ["libs/health/appointments/src/index.ts"],
       "@ha/health/configurations": ["libs/health/configurations/src/index.ts"],
       "@ha/health/dashboard": ["libs/health/dashboard/src/index.ts"],

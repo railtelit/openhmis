@@ -1,9 +1,11 @@
 import { useKeycloak } from '@ha/authstore';
-import { Button, Card, CardContent, CardHeader, Icon, List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { Button, Card, CardContent, CardHeader, Grid, Icon, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAdminService } from '../../hooks/useAdminService';
-import { AppState, onServiceInfoLoad } from '../../store/app.store';
+import { AppState,  ServiceInterface, setCurrentService } from '../../store/app.store';
 import styles from './admin-home.module.scss';
 
 /* eslint-disable-next-line */
@@ -13,12 +15,27 @@ export function AdminHome(props: AdminHomeProps) {
   const adminService=useAdminService()
   const kc=useKeycloak();
   const appAction=useDispatch()
-  const appState=useSelector((state:AppState)=> state.appstate)
+  const appState=useSelector((state:AppState)=> state.appstate); 
+  const nav=useNavigate()
+  const [homeState,setHomeState]=useState({isbreathing:false})
   useEffect(()=>{
-        adminService.loadServices()
-  },[])
+        adminService.loadServices(); 
+        adminService.loadStateMaster();
+        adminService.checkHeartbeat().then(res=>{
+                if(res?.status==='UP'){
+                     setHomeState((state)=>({...state,isbreathing:true}))
+                }else{
+                    toast.error(`bridge Not UP`)
+                }
+        })
+  },[]);
+  function initManageAdmin(service:ServiceInterface){
+        // 
+        appAction(setCurrentService(service));
+        nav('/manage-admin')
+  }
   return (
-    <div className={styles['container']}>      
+    <div className={styles['container']}>
             
         <Card>            
             <CardHeader subheader={appState.serviceinfo?.bridge?.name} title={<Typography variant='h3'>Repository Bridge</Typography>}  />
@@ -28,16 +45,29 @@ export function AdminHome(props: AdminHomeProps) {
                     <Typography variant='body2'  > 
                            {appState.serviceinfo?.bridge?.url}
                     </Typography>
+                    <Icon>{homeState.isbreathing?'check':'times'}</Icon>
                 </Stack>
             </CardContent>
         </Card>
-        <Card>            
-            <CardHeader subheader={`Total:`+appState.serviceinfo?.services?.length} title={<Typography variant='h3'>Services</Typography>}  />
-            <CardContent>
+        <Card>           
+            <CardHeader  subheader={`Total:`+appState.serviceinfo?.services?.length} 
+                title={
+                    <Grid container justifyContent={'space-between'} >
+                        <Typography variant='h3'>Services</Typography>
+                        <IconButton onClick={()=>{
+                                adminService.loadServices();
+                        }} ><Icon>refresh</Icon></IconButton>
+                    </Grid>
+                } />                          
+            <CardContent >                
                 <List >
-                    {(appState.serviceinfo?.services||[]).map(s=><ListItem key={s?.id}  >
-                        <ListItemText  primary={s?.name} secondary={s?.types?.join(',')} prefix={s?.id} />
-                        <Typography variant='body2'>{s?.id}</Typography>
+                    {(appState.serviceinfo?.services||[]).map(s=><ListItem key={s?.id}   sx={{padding:0}} >
+                        <ListItemButton>
+                        <ListItemText color='blue'
+                         onClick={()=>initManageAdmin(s)}
+                         primary={s?.name} secondary={s?.types?.join(',')} prefix={s?.id} />
+                        <Typography variant='body2'>{s?.id}</Typography>                                                
+                        </ListItemButton>
                     </ListItem> )}
                 </List>
             </CardContent>
