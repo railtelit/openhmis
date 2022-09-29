@@ -5,6 +5,7 @@
     "appfhir": "libs/appfhir",
     "apptheme": "libs/apptheme",
     "authstore": "libs/authstore",
+    "common": "libs/common",
     "health-appointments": "libs/health/appointments",
     "health-configurations": "libs/health/configurations",
     "health-dashboard": "libs/health/dashboard",

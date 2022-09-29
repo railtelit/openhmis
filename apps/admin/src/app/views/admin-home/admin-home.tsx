@@ -1,8 +1,9 @@
 import { useKeycloak } from '@ha/authstore';
-import { Button, Card, CardContent, CardHeader, Grid, Icon, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { Button, Card, CardContent, CardHeader, Grid, Icon, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAdminService } from '../../hooks/useAdminService';
 import { AppState,  ServiceInterface, setCurrentService } from '../../store/app.store';
 import styles from './admin-home.module.scss';
@@ -16,8 +17,17 @@ export function AdminHome(props: AdminHomeProps) {
   const appAction=useDispatch()
   const appState=useSelector((state:AppState)=> state.appstate); 
   const nav=useNavigate()
+  const [homeState,setHomeState]=useState({isbreathing:false})
   useEffect(()=>{
-        adminService.loadServices()
+        adminService.loadServices(); 
+        adminService.loadStateMaster();
+        adminService.checkHeartbeat().then(res=>{
+                if(res?.status==='UP'){
+                     setHomeState((state)=>({...state,isbreathing:true}))
+                }else{
+                    toast.error(`bridge Not UP`)
+                }
+        })
   },[]);
   function initManageAdmin(service:ServiceInterface){
         // 
@@ -35,19 +45,23 @@ export function AdminHome(props: AdminHomeProps) {
                     <Typography variant='body2'  > 
                            {appState.serviceinfo?.bridge?.url}
                     </Typography>
+                    <Icon>{homeState.isbreathing?'check':'times'}</Icon>
                 </Stack>
             </CardContent>
         </Card>
-        <Card>            
-            <CardHeader subheader={`Total:`+appState.serviceinfo?.services?.length} title={<Typography variant='h3'>Services</Typography>}  />
-            <CardContent>
-                <Grid justifyContent={'end'} >
+        <Card>           
+            <CardHeader  subheader={`Total:`+appState.serviceinfo?.services?.length} 
+                title={
+                    <Grid container justifyContent={'space-between'} >
+                        <Typography variant='h3'>Services</Typography>
                         <IconButton onClick={()=>{
                                 adminService.loadServices();
                         }} ><Icon>refresh</Icon></IconButton>
-                </Grid>
+                    </Grid>
+                } />                          
+            <CardContent >                
                 <List >
-                    {(appState.serviceinfo?.services||[]).map(s=><ListItem key={s?.id}  >
+                    {(appState.serviceinfo?.services||[]).map(s=><ListItem key={s?.id}   sx={{padding:0}} >
                         <ListItemButton>
                         <ListItemText color='blue'
                          onClick={()=>initManageAdmin(s)}

@@ -1,3 +1,4 @@
+
 import { KeycloakInstance } from 'keycloak-js';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -10,10 +11,11 @@ export interface KeycloakproviderProps {
     keycloak: KeycloakInstance, children:any,
     onReady?:(response:any)=>Promise<void>
 }
-
+ 
 export function KeycloakProvider({keycloak,...props}: KeycloakproviderProps) {
   const [ready,setReady]=useState(false);
-  const authAction=useDispatch()
+  const authAction=useDispatch(); 
+
   useEffect(()=>{
       keycloak.onTokenExpired=()=>{
            keycloak.updateToken(10).then(v=>console.log(`Token Refreshed`))

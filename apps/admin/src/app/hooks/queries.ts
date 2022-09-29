@@ -5,6 +5,11 @@ export const Queries={
              getStates:'getStates',getDistricts:'getDistricts'
         },
         admin:{
-            getServices:'admin/services'
+            getServices:'services',
+            manageService:{
+                 getServiceAdmin:'getServiceAdmin',
+             
+            },
+            heartbeat:'verifyHeartbeat'
         }
 }

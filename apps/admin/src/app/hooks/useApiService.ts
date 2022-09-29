@@ -10,7 +10,8 @@ export const useApiService=()=>{
         async function post( actionUrl:string, payload:any={}){            
             const response =  (await Axios.post(`${environment.API_ENDPOINT}/${actionUrl}`,payload )
                .catch(err=> { 
-                   toast.error(err?.message,{}  );return {data:{}} 
+                   //toast.error(err?.message,{}  );
+                   return {data:{}} 
                }) )
             return response.data||{}
         }

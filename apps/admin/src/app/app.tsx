@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {   useDispatch, useSelector  } from 'react-redux';
 import { AppThemeProvider } from '@ha/apptheme';
-import {   Backdrop,  Card, CardContent, CircularProgress, Container, CssBaseline, LinearProgress, Typography } from '@mui/material';
+import {   Backdrop,  Card,  CircularProgress, Container, CssBaseline, LinearProgress
+             } from '@mui/material';
 import styles from './app.module.scss'; 
-import { AuthStateInterface, KeycloakProvider  } from '@ha/authstore';
+import {   KeycloakProvider  } from '@ha/authstore';
 import { KeyCloak } from './keycloak';
-import { AppState, AppStoreType, setLoading } from './store/app.store';
+import { AppState,   setLoading } from './store/app.store';
 import AppToolbar from '../components/app-toolbar/app-toolbar';
 import { Outlet, useRoutes } from 'react-router-dom';
 import { appRoutes } from './app.routes';
@@ -14,6 +15,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAdminService } from './hooks/useAdminService';
 import  Axios  from 'axios';
+import { environment } from '../environments/environment';
 export function App() {  
    const authState=useSelector((state:AppState)=>state.auth);
    const appState=useSelector((state:AppState)=>state.appstate);
@@ -21,28 +23,30 @@ export function App() {
    const adminService=useAdminService();
    const appAction=useDispatch()
    useEffect(()=>{      
-     Axios.interceptors.request.use(async (config)=>{            
+      // Set Base Url 
+      Axios.defaults.baseURL=environment.API_ENDPOINT
+      Axios.interceptors.request.use(async (config)=>{            
             appAction(setLoading(true)); 
             if(KeyCloak.isTokenExpired(6)){
                   await KeyCloak.updateToken(6)
             }
             config.headers={...config.headers,'Authorization':`Bearer ${KeyCloak.token}`}
             return config  
-      },(err)=>{
+        },(err)=>{
             
             appAction(setLoading(false)); 
             toast.error(`Request Error :  ${err?.message} `); 
             throw err 
-      });
-      Axios.interceptors.response.use((config)=>{
+        });
+        Axios.interceptors.response.use((config)=>{
             //console.log('Response ok')   
             appAction(setLoading(false))            
             return config 
-      },err=>{
+        },err=>{
            appAction(setLoading(false));
            toast.error(err?.message,{}); 
            throw err
-     });
+        });
  
 },[])
   return (    
