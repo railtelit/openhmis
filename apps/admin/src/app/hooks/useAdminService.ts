@@ -1,11 +1,11 @@
 import { useKeycloak } from "@ha/authstore"
 import { useApiService } from "@ha/common";
 import  Axios  from "axios"
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { BASE_URLS } from "../endpoints"
-import { AppState, onLoadStateMaster, onServiceInfoLoad } from "../store/app.store";
+import { AppState, appStore, onLoadStateMaster, onServiceInfoLoad } from "../store/app.store";
 import { Queries } from "./queries";
  
 
@@ -14,14 +14,16 @@ export const useAdminService=()=>{
         const kc =useKeycloak();
         const appAction=useDispatch();
         const appState=useSelector((state:AppState)=> state.appstate)
-        const apiService=useApiService()
+        const apiService=useApiService();
+      const [serviceInfo,setServiceInfo]=useState(appState.serviceinfo); 
+      useEffect(()=>{
+                 setServiceInfo(appState.serviceinfo)
+      },[appState])
       async function  loadServices(){
                         
                     const response= await apiService.query(Queries.admin.getServices)
                     appAction(onServiceInfoLoad(response));
-                    return response
-             
-            
+                    return response                         
       }
       async function loadStateMaster(){
               const list =await apiService.query(Queries.common.getStates);
@@ -34,9 +36,11 @@ export const useAdminService=()=>{
       }
       
       async function checkHeartbeat(){
-             if(appState.serviceinfo?.bridge.url){
-                    // return (await Axios.get(appState.serviceinfo.bridge.url+`/v0.5/heartbeat`)).data
-                    return apiService.query(Queries.admin.heartbeat)
+                const serviceInfo  = appStore.getState().appstate.serviceinfo
+                //console.log(`at run `,serviceInfo)
+             if(serviceInfo?.bridge?.url){
+                     return (await Axios.get(serviceInfo.bridge.url+`/v0.5/heartbeat`)).data
+                        // return apiService.query(Queries.admin.heartbeat)
              }
       }
 

@@ -6,6 +6,7 @@ export const Actions={
                 updateServiceInfo:`updateServiceInfo`,
                 createServiceAdmin:'createServiceAdmin',
                 deactivateServiceAdmin:'deactivateServiceAdmin',
-                activateServiceAdmin:'activateServiceAdmin'
+                activateServiceAdmin:'activateServiceAdmin',
+                unAssignAdminUser:'unAssignAdminUser'
         }
 }

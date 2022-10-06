@@ -17,17 +17,23 @@ export function AdminHome(props: AdminHomeProps) {
   const appAction=useDispatch()
   const appState=useSelector((state:AppState)=> state.appstate); 
   const nav=useNavigate()
-  const [homeState,setHomeState]=useState({isbreathing:false})
-  useEffect(()=>{
-        adminService.loadServices(); 
-        adminService.loadStateMaster();
-        adminService.checkHeartbeat().then(res=>{
+  const [homeState,setHomeState]=useState({isbreathing:false});
+   async function homeInit(){
+         const serviceInfo = await  adminService.loadServices(); 
+     
+        await adminService.loadStateMaster();
+        
+        await adminService.checkHeartbeat().then(res=>{
                 if(res?.status==='UP'){
                      setHomeState((state)=>({...state,isbreathing:true}))
                 }else{
+                    
                     toast.error(`bridge Not UP`)
                 }
         })
+   }
+  useEffect( ()=>{
+        homeInit();
   },[]);
   function initManageAdmin(service:ServiceInterface){
         // 

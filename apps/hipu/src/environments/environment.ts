@@ -3,4 +3,6 @@
 
 export const environment = {
   production: false,
+  KEYCLOAK_URL:'https://auth.openhmis.erpapps.in',
+  CLIENT_ID:'react-app',
 };

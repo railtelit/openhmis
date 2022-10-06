@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Actions } from '../../hooks/actions';
+import { useApiService } from '../../hooks/useApiService';
 import { useManageServiceAdmin } from '../../hooks/useManageServiceAdmin';
 import { AppState, ServiceInterface } from '../../store/app.store';
 import { AdminUserInterface, ServiceMasterInterface } from '../../store/interfaces';
@@ -24,6 +26,7 @@ export function ManageAdmin(props: ManageAdminProps) {
   const [initError,setInitError]=useState<{message:string}|null>(null)
   const [serviceState,setServiceState]= useState<ServiceMasterInterface>() 
   const [districtOptions,setDistrictOptions]=useState<any[]>([])
+  const apiService=useApiService()
   function initService(){
      if(!appState.currentService){
          nav('/');
@@ -57,6 +60,19 @@ export function ManageAdmin(props: ManageAdminProps) {
                setDistrictOptions(list)
           })
   }
+  const  UserActiveActions=()=><Grid container justifyContent={'center'}>
+                <Button color='error' onClick={()=>{ 
+                         //
+                         if(serviceMaster)
+                          apiService.post(Actions.manageAdminUser.unAssignAdminUser,{serviceid:serviceMaster.serviceid}).then(
+                                    async  (r)=> {
+                                             const serviceUpdate =  await  manageService.getServiceAdmin({serviceid:serviceMaster.serviceid})
+                                             setServiceMaster(serviceUpdate)
+                                             setAdminUser(serviceUpdate)
+                                    }
+                          )
+                }}  >UnAssign AdminUser</Button>
+  </Grid>
   const RetryBox=()=><Grid container justifyContent={'center'} p={5}>
      
           <Stack>               
@@ -74,8 +90,8 @@ export function ManageAdmin(props: ManageAdminProps) {
                                            
                           <Grid container alignItems={'center'} spacing={2}>
                               <Grid item md={4}> ServiceId: {serviceMaster?.serviceid} </Grid>
-                              <Grid item md={4}> Name: {serviceMaster?.name} </Grid>
-                              <Grid item md={4}> UserName: {adminUser?.username} </Grid>
+                              <Grid item md={4}> Name: {serviceMaster?.servicename} </Grid>
+                              <Grid item md={4}> UserName: {adminUser?.adminuserid} </Grid>
                               <Grid item md={3}>
                                    <FormControl fullWidth>
                                         <FormLabel>State</FormLabel>                                         
@@ -94,9 +110,9 @@ export function ManageAdmin(props: ManageAdminProps) {
                                              <FormControl fullWidth>                                                   
                                                   <FormLabel>District</FormLabel>
                                                   <Select disabled={adminUser?.stateCode} 
-                                                       value={serviceState?.districtCode||''} 
+                                                       value={serviceState?.districtCode||0 } 
                                                        onChange={({target:{value}})=>{
-                                                            setServiceState((state:any)=>({...state,districtCode:value||''}))
+                                                            setServiceState((state:any)=>({...state,districtCode:value||0 }))
                                                        }}>
                                                        {districtOptions.map(o=>
                                                             <MenuItem key={o?.code} value={o?.code} > {o?.name}</MenuItem>)}
@@ -105,15 +121,19 @@ export function ManageAdmin(props: ManageAdminProps) {
                               </Grid>
                           </Grid>
                          <Grid container p={3} justifyContent={'center'} >                                                            
-                          {!adminUser?.serviceid?
+                          {!adminUser?.adminuserid?
                           <Button disabled={!serviceState?.stateCode} onClick={()=>{
                                    if(serviceState)
                                         manageService.createServiceAdminUser(serviceState).then(res=>{
                                                    setAdminUser(res)
-                                                   toast.success(`Userid Created : ${res.username} `)
+                                                   toast.success(`Userid Created : ${res?.adminuserid} `)
                                         })
                           }} variant='contained'>CREATE SERVICE ADMIN</Button>:
-                             <Typography color={'green'}>Active</Typography>  }
+                              <Container>
+                                   <UserActiveActions />
+                                   <Typography color={'green'}>Active</Typography>
+                              </Container>
+                           }
                          </Grid>
                     </Card>
                }

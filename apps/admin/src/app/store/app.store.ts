@@ -3,7 +3,7 @@ import {configureStore, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {CustomizerReducer} from "@ha/apptheme";
 
 export interface ServiceInterface{
-        id:string,name:string,types:string[]
+        id:string,name:string,types:string[],servicename:string
 }
 export interface ServiceInfoInterface{
         bridge:{id:string,name:string,url:string,active:boolean,blacklisted:false},

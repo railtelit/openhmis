@@ -1,0 +1,23 @@
+{
+  "root": "libs/hipu/helpdesk",
+  "sourceRoot": "libs/hipu/helpdesk/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/hipu/helpdesk/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/hipu/helpdesk"],
+      "options": {
+        "jestConfig": "libs/hipu/helpdesk/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

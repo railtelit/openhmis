@@ -14,6 +14,8 @@
     "health-patients": "libs/health/patients",
     "health-practitioners": "libs/health/practitioners",
     "hipu": "apps/hipu",
+    "hipu-admin": "libs/hipu/admin",
+    "hipu-helpdesk": "libs/hipu/helpdesk",
     "hmis": "apps/hmis",
     "hmis-e2e": "apps/hmis-e2e",
     "hpr": "apps/hpr",

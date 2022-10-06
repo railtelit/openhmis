@@ -11,7 +11,8 @@ export interface AdminUserInterface{
         serviceid:string,
         username:string,
         isActive:boolean,
-        stateCode?:boolean
+        stateCode?:boolean,
+        adminuserid?:string
 }
 export type ServiceMasterInterface = ServiceInterface & {serviceid:string,districtCode:string,stateCode:string} 
 
