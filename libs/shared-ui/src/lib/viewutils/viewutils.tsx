@@ -1,4 +1,4 @@
-import { styled, Typography, TypographyProps } from '@mui/material';
+import { styled, TextField, TextFieldProps, Typography, TypographyProps } from '@mui/material';
 
 import styles from './viewutils.module.scss';
 
@@ -6,3 +6,6 @@ import styles from './viewutils.module.scss';
 export interface ViewutilsProps {}
 
 export const T=({text,...props}:TypographyProps&{text:string})=><Typography>{text}</Typography>
+
+
+export const TF=(  props:TextFieldProps )=><TextField fullWidth {...props} variant={'filled'} />

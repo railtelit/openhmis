@@ -1,7 +1,8 @@
 import { T } from '@ha/shared-ui';
-import { Card, CardContent, Grid, Icon, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Grid, Icon, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AdminControlCard from '../../components/admin-control-card/admin-control-card';
 import styles from './admin-dashboard.module.scss';
 
@@ -24,6 +25,7 @@ const TotalCard=(props:{total:number,title:string,icon?:string,color?:string})=>
 </Card>
 
 export function AdminDashboard(props: AdminDashboardProps) {
+     const nav=useNavigate()
   return (
         <Container>
          <Grid container spacing={1} alignItems={'center'} justifyContent={'space-around'} >
@@ -39,9 +41,29 @@ export function AdminDashboard(props: AdminDashboardProps) {
               </Grid>
          </Grid>
 
-          <Typography>Organization</Typography>
-          
+     
           <Grid container spacing={2}>
+               <Grid item md={4}>
+                         <Card> 
+                              <Typography variant='h6'>Setup</Typography>
+                              <Divider/>
+                              <List>                              
+                                   <ListItem >
+                                        
+                                             <ListItemButton onClick={()=>nav('/admin/setup-org')} >
+                                                  <ListItemText primary={'Organisation'} ></ListItemText>
+                                             </ListItemButton>
+                                         
+                                         
+                                   </ListItem>
+                                   <ListItem>
+                                        <ListItemButton onClick={()=>nav('/admin/setup-locations')}>
+                                             <ListItemText primary={'Location'} ></ListItemText>
+                                        </ListItemButton>
+                                   </ListItem>
+                              </List>
+                         </Card>
+               </Grid>
               <Grid item md={4}>
                    <AdminControlCard title='HelpDesk Team' roleName='helpdesk' />
                    

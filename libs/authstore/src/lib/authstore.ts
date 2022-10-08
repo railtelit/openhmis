@@ -25,4 +25,4 @@ export const authSlice=createSlice({
 
 export const AuthStoreReducer=authSlice.reducer
 
-export const  {onProfileLoad,onLoadUserInfo,setUserRoles,onReady}=  authSlice.actions
+export const  {onProfileLoad,onLoadUserInfo,setUserRoles,onReady} =  authSlice.actions

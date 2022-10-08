@@ -8,6 +8,10 @@ export const useApiService=()=>{
             const response =  await Axios.post(`${actionUrl}`,payload )              
             return response.data||{}
         }
+        async function del( actionUrl:string, payload:any={}){            
+            const response =  await Axios.delete(`${actionUrl}`,payload )              
+            return response.data||{}
+        }
         
         async function query(queryUrl:string,params:any={}){
             console.log('querying here ',params)
@@ -15,5 +19,5 @@ export const useApiService=()=>{
             return response?.data||{}            
         }
 
-        return {post,query}
+        return {post,query,del}
 }
