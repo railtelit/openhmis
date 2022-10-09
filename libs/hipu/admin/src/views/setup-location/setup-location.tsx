@@ -1,7 +1,8 @@
 import { useApiService, useApiState, useReadState } from '@ha/common';
 import { T, TF } from '@ha/shared-ui';
 import { TabPanel } from '@mui/lab';
-import { Autocomplete, Button, Card, CardContent, Dialog, FormControl, FormLabel, Grid, Icon, IconButton, Stack, Tab, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, FormControl, FormLabel, Grid, Icon, IconButton, Stack, Tab, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -35,8 +36,7 @@ const CreateLocationForm=( props:{onSave:()=>void} )=>{
          })
    } ) }>
      <Grid container spacing={2} >
-          <Grid item md={12} >
-                                                  
+          <Grid item md={12} >                                                  
                 <TextField variant='filled' fullWidth {...locForm.register('locationname')} label={'Name'} />
           </Grid>
           <Grid item md={12}>
@@ -57,7 +57,9 @@ const CreateLocationForm=( props:{onSave:()=>void} )=>{
                   </ToggleButtonGroup>
               </FormControl>
           </Grid>
-          <Button type='submit' >SAVE</Button>
+          <Grid item md={12} container justifyContent={'end'}>
+              <Button type='submit'  >SAVE</Button>
+          </Grid>
    </Grid>
    </form>
   
@@ -66,40 +68,54 @@ const CreateLocationForm=( props:{onSave:()=>void} )=>{
 export function SetupLocation(props: SetupLocationProps) {
   const locState=useApiState<any[]>('locations',{processGroup:'admin'})
   const apiService=useApiService()
+  const [showCreate,setShowCreate]=useState(false)
   return (
     <div className={styles['container']}>
       <Card>
           <CardContent>
         <Grid container justifyContent={'space-between'} >
-           <Typography variant='h6'> Setup Locations </Typography>
+           <Box>
+              <Icon>domain</Icon>
+              <Typography variant='h6'> Setup Locations </Typography>
+           </Box>
+           <Grid item>
+            <Button onClick={()=>setShowCreate(true)}>ADD LOCATION</Button>
            <Link to={'..'}>
-              <IconButton ><Icon>undo</Icon></IconButton>
+              <IconButton color='error' value={'CLOSE'}   ><Icon>analytics</Icon></IconButton>
             </Link>
+           </Grid>
         </Grid>
-        <CreateLocationForm  onSave={()=>{
-            locState.loadState() ;
-        }} />
-        {
-          locState.state && locState.state.map(loc=><Grid item key={loc?.id} md={4} xs={12} >
-                <Card>
-                    <Typography> {loc?.locationname} </Typography>
-                    <CardContent>
-                        <Stack spacing={2}>
-                             <FormControl> 
-                                <FormLabel>Role Type</FormLabel>
-                                <Typography> {loc?.roletype} </Typography>
-                             </FormControl>
-                             <Button fullWidth color='error' onClick={()=>{
-                                //    
-                                      apiService.del(`admin/locations/${loc?.id}`,{id:loc?.id}).then(rem=>{
-                                            locState.loadState();
-                                      })
-                              }} >REMOVE</Button>
-                        </Stack>
-                    </CardContent>
-                </Card>
-          </Grid> )
-        }
+        <Dialog onClose={()=>setShowCreate(false)} open={showCreate}  fullWidth maxWidth={'lg'} >
+            <DialogTitle><Typography variant='h6'>ADD A LOCATION</Typography> </DialogTitle>
+              <DialogContent>
+                <CreateLocationForm  onSave={()=>{
+                    locState.loadState() ;
+                }} />
+              </DialogContent>
+        </Dialog>
+        <Grid container >
+          {
+            locState.state && locState.state.map(loc=><Grid item key={loc?.id} md={4} xs={12} >
+                  <Card>
+                      <Typography> {loc?.locationname} </Typography>
+                      <CardContent>
+                          <Stack spacing={2}>
+                               <FormControl>
+                                  <FormLabel>Role Type</FormLabel>
+                                  <Typography> {loc?.roletype} </Typography>
+                               </FormControl>
+                               <Button fullWidth color='error' onClick={()=>{
+                                  //
+                                        apiService.del(`admin/locations/${loc?.id}`,{id:loc?.id}).then(rem=>{
+                                              locState.loadState();
+                                        })
+                                }} >REMOVE</Button>
+                          </Stack>
+                      </CardContent>
+                  </Card>
+            </Grid> )
+          }
+        </Grid>
           </CardContent>
       </Card>
     </div>

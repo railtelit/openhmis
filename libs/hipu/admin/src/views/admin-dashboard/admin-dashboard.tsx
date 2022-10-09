@@ -13,8 +13,8 @@ export interface AdminDashboardProps {}
 const TotalCard=(props:{total:number,title:string,icon?:string,color?:string})=><Card  sx={{boxShadow:5}} >
      <CardContent >
             <Grid container alignItems={'center'} spacing={2} marginBottom={0}  >
-              <Grid item md={'auto'} > <Icon color='primary' fontSize={'large'} >{props?.icon||'insights'}</Icon> </Grid>
-              <Grid item md container >
+              <Grid item md={'auto'} xs={'auto'} > <Icon color='primary' fontSize={'large'} >{props?.icon||'insights'}</Icon> </Grid>
+              <Grid item md xs container >
                   <Stack alignItems={'right'} textAlign={'right'} flexGrow={1} >
                       <Typography variant='h2' fontWeight={'bold'} > {props.total} </Typography>
                       <Typography color={ props?.color||'warning'} variant='caption'> {props.title} </Typography>
@@ -43,9 +43,12 @@ export function AdminDashboard(props: AdminDashboardProps) {
 
      
           <Grid container spacing={2}>
-               <Grid item md={4}>
+               <Grid item md={4} xs={12}>
                          <Card> 
-                              <Typography variant='h6'>Setup</Typography>
+                              <Stack direction={'row'}>
+                                   <Icon>settings</Icon>
+                                   <Typography variant='h6'>Setup</Typography>
+                              </Stack>
                               <Divider/>
                               <List>                              
                                    <ListItem >
@@ -64,9 +67,11 @@ export function AdminDashboard(props: AdminDashboardProps) {
                               </List>
                          </Card>
                </Grid>
-              <Grid item md={4}>
-                   <AdminControlCard title='HelpDesk Team' roleName='helpdesk' />
-                   
+              <Grid item md={4} xs={12}>
+                   <AdminControlCard title='HelpDesk Team' managelink='manage-worker' icon='group' roleName='helpdesk' />                   
+              </Grid>
+              <Grid item md={4} xs={12}>
+                   <AdminControlCard title='Practitioners' roleName='doctor'  managelink='manage-practitioner' icon='contacts' />                   
               </Grid>
           </Grid>
           
