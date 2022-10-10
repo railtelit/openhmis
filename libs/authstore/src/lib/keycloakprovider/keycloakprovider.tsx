@@ -9,7 +9,8 @@ import styles from './keycloakprovider.module.scss';
 /* eslint-disable-next-line */
 export interface KeycloakproviderProps {
     keycloak: KeycloakInstance, children:any,
-    onReady?:(response:any)=>Promise<void>
+    onReady?:(response:any)=>Promise<void>,
+    onLogout?:()=>void
 }
  
 export function KeycloakProvider({keycloak,...props}: KeycloakproviderProps) {
@@ -19,7 +20,13 @@ export function KeycloakProvider({keycloak,...props}: KeycloakproviderProps) {
   useEffect(()=>{
       keycloak.onTokenExpired=()=>{
            keycloak.updateToken(10).then(v=>console.log(`Token Refreshed`))
-      }      
+      }     
+      keycloak.onAuthLogout=()=>{
+          //
+          if(props.onLogout){
+            props.onLogout();
+          }
+      } 
         keycloak.onReady=(success=>{
            if(success){
               //console.log(keycloak.tokenParsed)

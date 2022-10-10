@@ -79,14 +79,20 @@ export function SetupLocation(props: SetupLocationProps) {
               <Typography variant='h6'> Setup Locations </Typography>
            </Box>
            <Grid item>
-            <Button onClick={()=>setShowCreate(true)}>ADD LOCATION</Button>
+            <Button variant='contained' size='small' onClick={()=>setShowCreate(true)}>ADD LOCATION</Button>
            <Link to={'..'}>
               <IconButton color='error' value={'CLOSE'}   ><Icon>analytics</Icon></IconButton>
             </Link>
            </Grid>
         </Grid>
         <Dialog onClose={()=>setShowCreate(false)} open={showCreate}  fullWidth maxWidth={'lg'} >
-            <DialogTitle><Typography variant='h6'>ADD A LOCATION</Typography> </DialogTitle>
+            <DialogTitle>
+              <Stack direction={'row'} justifyContent={'space-between'} >
+                <Typography variant='h6'>ADD A LOCATION</Typography> 
+                <IconButton onClick={()=>setShowCreate(false)}><Icon>close</Icon></IconButton>
+                 
+              </Stack>
+            </DialogTitle>
               <DialogContent>
                 <CreateLocationForm  onSave={()=>{
                     locState.loadState() ;
@@ -97,14 +103,14 @@ export function SetupLocation(props: SetupLocationProps) {
           {
             locState.state && locState.state.map(loc=><Grid item key={loc?.id} md={4} xs={12} >
                   <Card>
-                      <Typography> {loc?.locationname} </Typography>
+                      <Typography fontWeight='bolder' variant='h5' > {loc?.locationname} </Typography>
                       <CardContent>
                           <Stack spacing={2}>
                                <FormControl>
                                   <FormLabel>Role Type</FormLabel>
-                                  <Typography> {loc?.roletype} </Typography>
+                                  <Typography variant='caption'> {loc?.roletype} </Typography>
                                </FormControl>
-                               <Button fullWidth color='error' onClick={()=>{
+                               <Button fullWidth variant='outlined' color='error' onClick={()=>{
                                   //
                                         apiService.del(`admin/locations/${loc?.id}`,{id:loc?.id}).then(rem=>{
                                               locState.loadState();

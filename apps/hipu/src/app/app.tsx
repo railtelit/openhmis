@@ -11,7 +11,7 @@ import  Axios  from 'axios';
 import { environment } from '../environments/environment';
 import {KeycloakSecurity as KeyCloak}  from './keycloak'
 import { useDispatch } from 'react-redux';
-import { setLoading } from './app.store';
+import { setCurrentRole, setLoading } from './app.store';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,7 +39,7 @@ Axios.interceptors.response.use((config)=>{
     return config 
 },err=>{
    appAction(setLoading(false));
-   toast.error(err?.message,{}); 
+   toast.error( (err?.response?.data?.message||[])?.join(',') ,{}); 
    throw err
 });
 
@@ -48,10 +48,10 @@ Axios.interceptors.response.use((config)=>{
 
   return (
       
-      <KeycloakProvider keycloak={KeycloakSecurity}>
+      <KeycloakProvider onLogout={()=>{ appAction(setCurrentRole(null)) }} keycloak={KeycloakSecurity}>
           <AppThemeProvider  >
                 <CssBaseline/>      
-                <ToastContainer  position='top-center' hideProgressBar={true} />
+                <ToastContainer autoClose={3000} pauseOnHover={false}  newestOnTop={true}  position='top-center' hideProgressBar={true} />
                 <Container sx={{pt:3}}>
                     {routes}
                 </Container>

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../app.store';
 import styles from './app-home.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 /* eslint-disable-next-line */
 export interface AppHomeProps {}
@@ -20,7 +20,8 @@ export function AppHome(props: AppHomeProps) {
   const nav=useNavigate(); 
   
   useEffect(()=>{
-       const roles=kc?.resourceAccess?.[clientid].roles||[]
+       const roles=kc?.resourceAccess?.[clientid].roles||[]; 
+       
        setUserRoles(roles);
        if(roles.length===0){
          nav('/404');
@@ -32,7 +33,7 @@ export function AppHome(props: AppHomeProps) {
   return (
     <Container>
     
-                 
+                <Outlet /> 
        
     </Container>
   );

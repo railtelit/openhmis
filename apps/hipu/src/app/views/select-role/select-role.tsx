@@ -1,5 +1,5 @@
 import { useKeycloak } from '@ha/authstore';
-import { List, Card, ListItem, ListItemButton, ListItemText, Typography, Avatar, IconButton, Icon } from '@mui/material';
+import { List, Card, ListItem, ListItemButton, ListItemText, Typography, Avatar, IconButton, Icon, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../app.store';
@@ -23,7 +23,14 @@ export function SelectRole(props: SelectRoleProps) {
   },[])  
   return (
     <div className={styles['container']}>
-        <Typography variant='h3'>Select Role</Typography>
+        <Grid container justifyContent={'space-between'} >
+            <Typography variant='h3'>Select Role</Typography>
+            <IconButton aria-label="Logout" color='error'  onClick={()=>{
+                kc?.logout();
+            }}>
+              <Icon>logout</Icon>
+            </IconButton>
+        </Grid>
        <List>
                         {userRoles.map((role=> 
                         <Card key={role} >

@@ -5,15 +5,17 @@ import {CustomizerReducer} from '@ha/apptheme'
 import {CommonStoreReducer} from '@ha/common'
 
 export interface AppStateInterface{
-        isLoading:boolean
+        isLoading:boolean,
+        currentRole:string|null
 }
 
-const initialState:AppStateInterface={isLoading:false}
+const initialState:AppStateInterface={isLoading:false,currentRole:null}
 export const appSlice=createSlice({
      name:'app',
      initialState,
      reducers:{
-         setLoading:(state,p:PayloadAction<boolean>)=>({...state,isLoading:p.payload})
+         setLoading:(state,p:PayloadAction<boolean>)=>({...state,isLoading:p.payload}),
+         setCurrentRole:(state,p)=>({...state,currentRole:p.payload})
      }
 })
 
@@ -29,4 +31,4 @@ export const AppStore=configureStore({
 
 export type AppState=ReturnType<typeof AppStore.getState>
 
-export const {setLoading} = appSlice.actions
+export const {setLoading,setCurrentRole} = appSlice.actions

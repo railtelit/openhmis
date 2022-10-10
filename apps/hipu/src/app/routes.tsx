@@ -19,26 +19,30 @@ const roleMappings={
 }
 const Admin =  withSuspense(React.lazy( ()=>import('@ha/hipu/admin') ))
 const RoleViews= {
-      Admin:  withSuspense(React.lazy( ()=>import('@ha/hipu/admin') ) )
+      Admin:  withSuspense(React.lazy( ()=>import('@ha/hipu/admin') ) ),
+      Helpdesk:  withSuspense(React.lazy( ()=>import('@ha/hipu/helpdesk') ) ),
 }
 
 export const AppRoutes:RouteObject[]=[
     {
-        path:'/',index:true,element:<AppHome/>
+        path:'/', element:<AppHome/>,
+        children:[
+                        {
+                    path:'/logout',element:<Logout/>
+                },
+                {
+                    path:'/selectrole',element:<SelectRole />
+                },
+                {
+                    path:'/404',element:<Forbidden/>
+                },
+                {
+                    path:`${AppPaths.admin}/*`,element:RoleViews.Admin 
+                },
+                {
+                    path:`${AppPaths.receptionist}/*`, element:RoleViews.Helpdesk
+                }
+        ]
     },
-    {
-        path:'/logout',element:<Logout/>
-    },
-    {
-        path:'/selectrole',element:<SelectRole />
-    },
-    {
-        path:'/404',element:<Forbidden/>
-    },
-    {
-        path:`${AppPaths.admin}/*`,element:RoleViews.Admin 
-    },
-    {
-        path:AppPaths.receptionist
-    }
+   
 ]
