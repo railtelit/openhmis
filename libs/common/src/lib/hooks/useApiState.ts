@@ -7,7 +7,8 @@ export interface UseApiStateInterface{
         loadOnStart?:boolean
         endpoint?:string, 
         processGroup?:string,
-        processName?:string
+        processName?:string,
+        initialState?:any
 }
 export const useApiState = <T=any>( stateName:string, props:UseApiStateInterface ={loadOnStart:true} )=>{
 
@@ -18,6 +19,9 @@ export const useApiState = <T=any>( stateName:string, props:UseApiStateInterface
             if(props.loadOnStart??true){
                      console.log(`Loading State..`)
                     loadState();
+            }
+            if(!state && props.initialState!== undefined){
+                        dispatch(setState({[stateName]:props.initialState}))
             }
     },[])
 

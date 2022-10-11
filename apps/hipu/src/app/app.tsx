@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { setCurrentRole, setLoading } from './app.store';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from 'react';
 
 export function App() {
   const routes=useRoutes(AppRoutes); 
@@ -44,15 +45,17 @@ Axios.interceptors.response.use((config)=>{
 });
 
  const theme=useTheme();
- const composeTheme = createTheme( theme,   )
-
+ const composeTheme = createTheme( theme,   ); 
+ useEffect(()=>{
+     appAction({type:'THEME_COLOR',payload:'PURPLE_THEME'})
+ },[])
   return (
       
       <KeycloakProvider onLogout={()=>{ appAction(setCurrentRole(null)) }} keycloak={KeycloakSecurity}>
           <AppThemeProvider  >
                 <CssBaseline/>      
                 <ToastContainer autoClose={3000} pauseOnHover={false}  newestOnTop={true}  position='top-center' hideProgressBar={true} />
-                <Container sx={{pt:3}}>
+                <Container sx={{pt:1}}>
                     {routes}
                 </Container>
                 <Outlet/>

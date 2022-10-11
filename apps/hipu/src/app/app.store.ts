@@ -32,3 +32,4 @@ export const AppStore=configureStore({
 export type AppState=ReturnType<typeof AppStore.getState>
 
 export const {setLoading,setCurrentRole} = appSlice.actions
+
